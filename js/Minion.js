@@ -22,13 +22,15 @@ class Minion{
 
     starve() {
         let minion = this;
-        setInterval(function () {
+        let inter = setInterval(function () {
             if (minion.health <= 0) {
-                console.log(minion.id + " has died from starving")
+                console.log(minion.id + " has died from starving");
+                clearInterval(inter);
+                minion = null;
             } else {
-                minion.health = minion.health - (minion.hunger /100);
+                minion.health = minion.health - ((minion.hunger /100) + (minion.thirst /1000));
             }
-        }, 10000)
+        }, 1000)
     }
 
 
