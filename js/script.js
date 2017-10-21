@@ -1,6 +1,15 @@
+"use strict";
+
 $(function () {
 
     let map = new MapGen(12,20);
+    let population = populate(0);
+
+    console.log(population);
+
+    $('#test').on('click', function () {
+        console.log(population[0]);
+    });
 
     function mapViz(map) {
         for (let i = 0 ; i <= map.x ; i++) {
@@ -18,7 +27,14 @@ $(function () {
     mapViz(map);
 
 
-    console.log(map);
+    function populate(num) {
+        let pop = [];
+        for (let i = 0; i <= num ; i++) {
+            pop[i] = new Minion(i);
+        }
+        return pop;
+    }
+
 
 });
 
