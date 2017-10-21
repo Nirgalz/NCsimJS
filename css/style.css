@@ -1,0 +1,21 @@
+td {
+    height: 30px;
+    width: 30px;
+    border: 1px solid;
+}
+
+.water{
+    background-color: aqua;
+}
+
+.dirt{
+    background-color: khaki;
+}
+
+.grass{
+    background-color: lightgreen;
+}
+
+.forest{
+    background-color: forestgreen;
+}
