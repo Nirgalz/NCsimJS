@@ -15,6 +15,7 @@ class MapGen {
                 landscape[index].x = i;
                 landscape[index].y = j;
                 landscape[index].type = this.randomTiles();
+                landscape[index].resources = this.resourcesGen(landscape[index].type);
                 index++;
             }
         }
@@ -24,7 +25,7 @@ class MapGen {
     randomTiles() {
         let tileType = '';
 
-        let randomInt = Math.floor((Math.random() * 100) + 1);
+        let randomInt = this.randomInt();
         if (randomInt <= 25) {
             tileType = 'water';
         } else if (randomInt <= 50) {
@@ -35,6 +36,34 @@ class MapGen {
             tileType = 'forest';
         }
         return tileType;
+    }
+
+    randomInt(){
+        return Math.floor((Math.random() * 100) + 1);
+    }
+
+    resourcesGen(type){
+        let resources = {};
+        switch (type){
+            case 'water':
+                resources.fish = this.randomInt();
+                resources.water = this.randomInt();
+                break;
+            case 'dirt':
+                resources.worm = this.randomInt();
+                resources.dirt = this.randomInt();
+                break;
+            case 'grass':
+                resources.grass = this.randomInt();
+                resources.sheep = this.randomInt();
+                break;
+            case 'forest':
+                resources.wood = this.randomInt();
+                resources.boar = this.randomInt();
+                resources.berry = this.randomInt();
+                break;
+        }
+        return resources;
     }
 
 }
