@@ -2,37 +2,65 @@
 
 $(function () {
 
-    let map = new MapGen(12,20);
-    let population = populate(0);
+    //map and seed pop parameters
+    let mapSize = [12,20];
+    let seedPopParam = 500;
+
+    //generates map and pop
+    let map = new MapGen(mapSize);
+    let population = populate(seedPopParam, mapSize);
 
     console.log(population);
 
-    $('#test').on('click', function () {
+    $('#test').on('click', function ()
+    {
         console.log(population[0]);
     });
 
+    //map visualisation
     function mapViz(map) {
-        for (let i = 0 ; i <= map.x ; i++) {
+        for (let i = 0 ; i <= map.x ; i++)
+        {
             $('#map').append('<tr id="row-'+ i+'"></tr>');
             for (let j = 0 ; j <= map.y ; j++) {
                 $('#row-'+i).append('<td id=tile-'+ i +'-'+ j +' title=>')
             }
         }
 
-        map.landscape.forEach(function (elem) {
+        map.landscape.forEach(function (elem)
+        {
             $('#tile-'+elem.x +'-'+ elem.y).addClass(elem.type).attr('title', 'res'+JSON.stringify(elem.resources));
         })
     }
 
-    mapViz(map);
 
+    //generates the adequate number of minions in random coordinates
+    function populate(num, mapSize)
+    {
 
-    function populate(num) {
+        mapViz(map);
         let pop = [];
-        for (let i = 0; i <= num ; i++) {
-            pop[i] = new Minion(i);
+        for (let i = 0; i <= num - 1 ; i++)
+        {
+            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map);
         }
-        return pop;
+        console.log(pop);
+
+        for ( let k = 0 ; k<=pop.length - 1 ; k++)
+        {
+            let coords = '#tile-' + pop[k].xCoordinate + '-' + pop[k].yCoordinate;
+
+            $(coords).append('.') ;
+        }
+
+
+    }
+
+
+
+    //randomizes from 1 to maxRange
+    function randomIntInRange(maxRange) {
+            return Math.floor((Math.random() * maxRange) + 1);
     }
 
 

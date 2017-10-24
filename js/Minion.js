@@ -1,16 +1,21 @@
 class Minion{
 
-    constructor(id){
+    constructor(id, x, y, map)
+    {
         this.id = id;
+        this.xCoordinate = x;
+        this.yCoordinate = y;
         this.health = 50;
         this.hunger = 50;
         this.thirst = 10;
-        this.inventory = {};
+        this.inventory = {wood:0};
         this.birthday = new Date().getTime();
         this.starve();
+        // this.gather(map);
     }
 
-    getAge() {
+    getAge()
+    {
         let nowTime = new Date().getTime();
         let t = nowTime - this.birthday;
 
@@ -20,7 +25,8 @@ class Minion{
         return  h + ':' + m + ':' + s;
     }
 
-    starve() {
+    starve()
+    {
         let minion = this;
         let inter = setInterval(function () {
             if (minion.health <= 0) {
@@ -31,6 +37,20 @@ class Minion{
                 minion.health = minion.health - ((minion.hunger /100) + (minion.thirst /1000));
             }
         }, 1000)
+    }
+
+    gather(map)
+    {
+        for (let n = 0 ; n <= map.landscape.length ; n++)
+        {
+            if (map.landscape[n].x === this.xCoordinate || map.landscape[n].y === this.yCoordinate) {
+                let minion = this;
+
+                setInterval(function (minion) {
+                    minion.inventory.wood = minion.inventory.wood +1;
+                }, 10)
+            }
+        }
     }
 
 

@@ -1,8 +1,8 @@
 class MapGen {
 
-    constructor(x,y) {
-        this.x = x;
-        this.y = y;
+    constructor(mapSize) {
+        this.x = mapSize[0];
+        this.y = mapSize[1];
         this.landscape = this.generate();
     }
 
