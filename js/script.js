@@ -4,17 +4,21 @@ $(function () {
 
     //map and seed pop parameters
     let mapSize = [12,20];
-    let seedPopParam = 500;
+    let seedPopParam = 10;
+    
 
     //generates map and pop
     let map = new MapGen(mapSize);
     let population = populate(seedPopParam, mapSize);
 
+
+    let AImgr = new AIManager(population,map);
+
     console.log(population);
 
     $('#test').on('click', function ()
     {
-        console.log(population[0]);
+        console.log(population);
     });
 
     //map visualisation

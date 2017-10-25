@@ -38,19 +38,19 @@ class Minion{
             }
         }, 1000)
     }
-
-    gather(map)
+    
+    eat(quantity)
     {
-        for (let n = 0 ; n <= map.landscape.length ; n++)
+        this.hunger = this.hunger - quantity;
+        if (this.hunger <0)
         {
-            if (map.landscape[n].x === this.xCoordinate || map.landscape[n].y === this.yCoordinate) {
-                let minion = this;
-
-                setInterval(function (minion) {
-                    minion.inventory.wood = minion.inventory.wood +1;
-                }, 10)
-            }
+            this.hunger = 0;
         }
+    }
+
+    gather(type, quantity)
+    {
+        this.inventory[type] = this.inventory[type] + quantity;
     }
 
 
