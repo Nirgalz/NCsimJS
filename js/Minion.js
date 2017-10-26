@@ -35,6 +35,7 @@ class Minion{
                 minion = null;
             } else {
                 minion.health = minion.health - ((minion.hunger /100) + (minion.thirst /1000));
+                minion.hunger = minion.hunger +  (1 - (minion.health / 100));
             }
         }, 1000)
     }
@@ -42,10 +43,9 @@ class Minion{
     eat(quantity)
     {
         this.hunger = this.hunger - quantity;
-        if (this.hunger <0)
-        {
-            this.hunger = 0;
-        }
+        if (this.hunger <0) this.hunger = 0;
+        this.health = this.health + quantity;
+        if (this.health > 100) this.health = 100;
     }
 
     gather(type, quantity)

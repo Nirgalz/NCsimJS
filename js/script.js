@@ -6,6 +6,7 @@ $(function () {
     let mapSize = [12,20];
     let seedPopParam = 10;
     
+    let Display = new DisplayManager();
 
     //generates map and pop
     let map = new MapGen(mapSize);
@@ -13,6 +14,7 @@ $(function () {
 
 
     let AImgr = new AIManager(population,map);
+    AImgr.start();
 
     console.log(population);
 
@@ -20,43 +22,28 @@ $(function () {
     {
         console.log(population);
     });
+    
+    $('#checkData').on('click', function ()
+    {
+        AImgr.checkData();
+    });
 
-    //map visualisation
-    function mapViz(map) {
-        for (let i = 0 ; i <= map.x ; i++)
-        {
-            $('#map').append('<tr id="row-'+ i+'"></tr>');
-            for (let j = 0 ; j <= map.y ; j++) {
-                $('#row-'+i).append('<td id=tile-'+ i +'-'+ j +' title=>')
-            }
-        }
-
-        map.landscape.forEach(function (elem)
-        {
-            $('#tile-'+elem.x +'-'+ elem.y).addClass(elem.type).attr('title', 'res'+JSON.stringify(elem.resources));
-        })
-    }
+    
 
 
     //generates the adequate number of minions in random coordinates
     function populate(num, mapSize)
     {
 
-        mapViz(map);
+        Display.mapViz(map);
         let pop = [];
         for (let i = 0; i <= num - 1 ; i++)
         {
             pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map);
         }
-        console.log(pop);
-
-        for ( let k = 0 ; k<=pop.length - 1 ; k++)
-        {
-            let coords = '#tile-' + pop[k].xCoordinate + '-' + pop[k].yCoordinate;
-
-            $(coords).append('.') ;
-        }
-
+        Display.minionViz(pop);
+        
+        return pop;
 
     }
 

@@ -1,10 +1,25 @@
 class AIManager{
     
-    start(pop, map){
+    constructor(pop, map)
+    {
+        this.pop = pop;
+        this.map = map;
+    }
+    
+    checkData()
+    {
+        console.log(this.pop);
+        console.log(this.map);
+    }
+    
+    start()
+    {
+        let AIData = this;
         let inter = setInterval(function () {
-            if (pop[0].hunger > 20) {
-               pop[0].eat(10);
-               console.log(pop[0]);
+            if (AIData.pop[0].hunger > 20) {
+               AIData.pop[0].eat(10);
+               
+               console.log(AIData.pop[0]);
             } 
         }, 1000)
     }
