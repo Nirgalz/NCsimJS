@@ -51,7 +51,6 @@ class AIManager{
             {
                 
                 let position = AIData.getMapTile(AIData.pop[l]);
-                console.log(AIData.map.landscape[position].resources.food);
 
                     if (AIData.map.landscape[position].resources.food <100){
                                             

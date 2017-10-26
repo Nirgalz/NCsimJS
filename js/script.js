@@ -16,8 +16,6 @@ $(function () {
     let AImgr = new AIManager(population,map);
     AImgr.start();
 
-    console.log(population);
-
     $('#test').on('click', function ()
     {
         console.log(population);
@@ -26,6 +24,14 @@ $(function () {
     $('#checkData').on('click', function ()
     {
         AImgr.checkData();
+    });
+
+    $('#spawnMinion').on('click', function () {
+        population.push(new Minion(population.length, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y]))
+    });
+
+    $('#killMinion').on('click', function () {
+        population.splice(-1,1);
     });
 
     
@@ -51,7 +57,7 @@ $(function () {
         Display.mapViz(map);
         Display.minionViz(population);
 
-    },100)
+    },100);
     
     
     function showTile(x,y){
