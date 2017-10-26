@@ -54,6 +54,12 @@ $(function () {
     },100)
     
     
+    function showTile(x,y){
+        
+        $('#tileInfo').text()
+    }
+    
+    
 
     //randomizes from 1 to maxRange
     function randomIntInRange(maxRange) {

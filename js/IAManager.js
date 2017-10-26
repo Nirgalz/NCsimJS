@@ -20,13 +20,13 @@ class AIManager{
             for (let l = 0 ; l <= AIData.pop.length - 1; l++)
             {
 
-                if (AIData.pop[l].hunger > 20 && AIData.pop[l].isAlive === true) 
+                if (AIData.pop[l].hunger >= 90 && AIData.pop[l].isAlive === true) 
             {
 
-                if(AIData.pop[l].inventory.food >= 2)
+                if(AIData.pop[l].inventory.food >= 10)
                 {
-                    AIData.pop[l].eat(1);
-                    AIData.pop[l].inventory.food -=1;
+                    AIData.pop[l].eat(10);
+                    AIData.pop[l].inventory.food -=10;
 
                 } 
                 else
@@ -46,11 +46,26 @@ class AIManager{
                     
                 }
                
-            } 
+            }
+            else if (AIData.pop[l].hunger < 90 && AIData.pop[l].isAlive === true)
+            {
+                
+                let position = AIData.getMapTile(AIData.pop[l]);
+                console.log(AIData.map.landscape[position].resources.food)
+
+                    if (AIData.map.landscape[position].resources.food <100){
+                                            
+                        AIData.map.landscape[position].resources.food += 1;
+                    }
+                    else if (AIData.map.landscape[position].resources.food >=100){
+                        AIData.map.landscape[position].resources.food = 100;
+                        AIData.pop[l].move();
+                    }
+            }
             }
         
             
-        }, 100)
+        }, 10)
     }
     
     getMapTile(minion)

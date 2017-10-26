@@ -7,7 +7,7 @@ class DisplayManager
         {
             $('#map').append('<tr id="row-'+ i+'"></tr>');
             for (let j = 0 ; j <= map.y ; j++) {
-                $('#row-'+i).append('<td id=tile-'+ i +'-'+ j +' ></td>')
+                $('#row-'+i).append('<td onclick="showTile('+i+','+j+')" id=tile-'+ i +'-'+ j +' ></td>')
             }
         }
 
@@ -18,6 +18,7 @@ class DisplayManager
     }
     
     minionViz(pop) {
+        $('#minionInfo').empty();
         for ( let k = 0 ; k<=pop.length - 1 ; k++)
         {
             let coords = '#tile-' + pop[k].xCoordinate + '-' + pop[k].yCoordinate;
@@ -29,6 +30,8 @@ class DisplayManager
             {
                 $(coords).append('<i class="fa fa-plus-square" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
             }
+
+            $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].activity+'</td><td>'+pop[k].hunger+'</td></tr>')
         }
     }
     

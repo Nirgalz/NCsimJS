@@ -4,6 +4,7 @@ class Minion{
     {
         this.id = id;
         this.isAlive = true;
+        this.activity = 'idle';
         this.xCoordinate = x;
         this.yCoordinate = y;
         this.health = 50;
@@ -35,7 +36,7 @@ class Minion{
                 clearInterval(inter);
                 minion.isAlive = false;
             } else {
-                minion.health = minion.health - ((minion.hunger /100) + (minion.thirst /1000));
+                minion.health = minion.health - (minion.hunger /300);
                 minion.hunger = minion.hunger +  (1 - (minion.health / 100));
             }
         }, 100)
@@ -43,16 +44,19 @@ class Minion{
     
     eat(quantity)
     {
-        this.hunger = this.hunger - quantity;
+        this.hunger = this.hunger - (quantity/10);
         if (this.hunger <0) this.hunger = 0;
-        this.health = this.health + quantity;
+        this.health = this.health + (quantity/10);
         if (this.health > 100) this.health = 100;
+        this.activity = 'eating';
     }
 
     gather(quantity)
     {
         this.inventory["food"] = this.inventory["food"] + quantity;
+        this.activity = 'gathering';
     }
+    
     
     move()
     {
