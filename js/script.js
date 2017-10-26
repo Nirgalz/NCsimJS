@@ -3,8 +3,8 @@
 $(function () {
 
     //map and seed pop parameters
-    let mapSize = [12,20];
-    let seedPopParam = 2;
+    let mapSize = [5,5];
+    let seedPopParam = 4;
     
     let Display = new DisplayManager();
 
@@ -46,6 +46,12 @@ $(function () {
         return pop;
 
     }
+    
+    let refreshDisplay = setInterval(function(){
+        Display.mapViz(map);
+        Display.minionViz(population);
+
+    },100)
     
     
 

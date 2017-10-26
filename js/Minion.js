@@ -58,7 +58,6 @@ class Minion{
     {
         this.xCoordinate = this.randomIntInRange(this.mapLimits[0])
         this.yCoordinate = this.randomIntInRange(this.mapLimits[1])
-        console.log(this.id + "has moved ")
     }
     
     //randomizes from 1 to maxRange

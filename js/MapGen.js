@@ -16,6 +16,7 @@ class MapGen {
                 landscape[index].y = j;
                 landscape[index].type = this.randomTiles();
                 landscape[index].resources = this.resourcesGen(landscape[index].type);
+
                 index++;
             }
         }
@@ -63,6 +64,11 @@ class MapGen {
                 break;
         }
         return resources;
+    }
+    
+    
+    ressourcesRenewal() {
+        
     }
 
 }
