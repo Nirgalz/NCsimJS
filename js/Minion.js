@@ -46,7 +46,8 @@ class Minion{
     {
         this.hunger = this.hunger - (quantity/10);
         if (this.hunger <0) this.hunger = 0;
-        this.health = this.health + (quantity/10);
+        if (this.hunger >100) this.hunger = 100;
+        this.health = this.health + (quantity / 10);
         if (this.health > 100) this.health = 100;
         this.activity = 'eating';
     }
@@ -60,8 +61,8 @@ class Minion{
     
     move()
     {
-        this.xCoordinate = this.randomIntInRange(this.mapLimits[0])
-        this.yCoordinate = this.randomIntInRange(this.mapLimits[1])
+        this.xCoordinate = this.randomIntInRange(this.mapLimits[0]+ 1) - 1;
+        this.yCoordinate = this.randomIntInRange(this.mapLimits[1] + 1) - 1;
     }
     
     //randomizes from 1 to maxRange

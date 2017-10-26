@@ -2,7 +2,7 @@
 td {
     height: 50px;
     width: 50px;
-  
+    position: relative;
 }
 
 .water{
@@ -28,9 +28,8 @@ td {
 progress{
     max-width: 50px;
     max-height: 5px;
-    border-style: 0px solid;
-  
-    vertical-align: top;
+    position: absolute;
+    top: 0;
 }
 
 
