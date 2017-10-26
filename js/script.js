@@ -4,7 +4,7 @@ $(function () {
 
     //map and seed pop parameters
     let mapSize = [12,20];
-    let seedPopParam = 10;
+    let seedPopParam = 2;
     
     let Display = new DisplayManager();
 
@@ -39,20 +39,22 @@ $(function () {
         let pop = [];
         for (let i = 0; i <= num - 1 ; i++)
         {
-            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map);
+            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y]);
         }
         Display.minionViz(pop);
         
         return pop;
 
     }
-
-
+    
+    
 
     //randomizes from 1 to maxRange
     function randomIntInRange(maxRange) {
             return Math.floor((Math.random() * maxRange) + 1);
     }
+
+    
 
 
 });

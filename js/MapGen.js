@@ -46,21 +46,20 @@ class MapGen {
         let resources = {};
         switch (type){
             case 'water':
-                resources.fish = this.randomInt();
+                resources.food = this.randomInt();
                 resources.water = this.randomInt();
                 break;
             case 'dirt':
-                resources.worm = this.randomInt();
+                resources.food = this.randomInt();
                 resources.dirt = this.randomInt();
                 break;
             case 'grass':
                 resources.grass = this.randomInt();
-                resources.sheep = this.randomInt();
+                resources.food = this.randomInt();
                 break;
             case 'forest':
                 resources.wood = this.randomInt();
-                resources.boar = this.randomInt();
-                resources.berry = this.randomInt();
+                resources.food = this.randomInt();
                 break;
         }
         return resources;

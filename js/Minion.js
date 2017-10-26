@@ -3,15 +3,16 @@ class Minion{
     constructor(id, x, y, map)
     {
         this.id = id;
+        this.isAlive = true;
         this.xCoordinate = x;
         this.yCoordinate = y;
         this.health = 50;
         this.hunger = 50;
         this.thirst = 10;
-        this.inventory = {wood:0};
+        this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
         this.starve();
-        // this.gather(map);
+        this.mapLimits = map;
     }
 
     getAge()
@@ -32,12 +33,12 @@ class Minion{
             if (minion.health <= 0) {
                 console.log(minion.id + " has died from starving");
                 clearInterval(inter);
-                minion = null;
+                minion.isAlive = false;
             } else {
                 minion.health = minion.health - ((minion.hunger /100) + (minion.thirst /1000));
                 minion.hunger = minion.hunger +  (1 - (minion.health / 100));
             }
-        }, 1000)
+        }, 100)
     }
     
     eat(quantity)
@@ -48,9 +49,21 @@ class Minion{
         if (this.health > 100) this.health = 100;
     }
 
-    gather(type, quantity)
+    gather(quantity)
     {
-        this.inventory[type] = this.inventory[type] + quantity;
+        this.inventory["food"] = this.inventory["food"] + quantity;
+    }
+    
+    move()
+    {
+        this.xCoordinate = this.randomIntInRange(this.mapLimits[0])
+        this.yCoordinate = this.randomIntInRange(this.mapLimits[1])
+        console.log(this.id + "has moved ")
+    }
+    
+    //randomizes from 1 to maxRange
+    randomIntInRange(maxRange) {
+            return Math.floor((Math.random() * maxRange) + 1);
     }
 
 
