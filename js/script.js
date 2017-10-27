@@ -72,6 +72,17 @@ $(function () {
             return Math.floor((Math.random() * maxRange) + 1);
     }
 
+
+
+
+
+
+    //pixi.js tests
+    
+    function setup () {
+        gameScene = new Container();
+        stage.addChild(gameScene);
+    }
     
 
 

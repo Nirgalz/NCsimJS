@@ -24,14 +24,17 @@ class DisplayManager
             let coords = '#tile-' + pop[k].xCoordinate + '-' + pop[k].yCoordinate;
             if (pop[k].isAlive === true)
             {
-                $(coords).append('<i class="fa fa-user-circle" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
+               
+               $(coords).append('<img src="media/face-3-1.png" id=minion-'+(k +1) +'>') ;
+               // $(coords).append('<i class="fa fa-user-circle" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
             }
             else if (pop[k].isAlive === false)
             {
-                $(coords).append('<i class="fa fa-plus-square" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
+                $(coords).append('<img src="media/face-3-4.png" id=minion-'+(k +1) +'>') ;
+                //$(coords).append('<i class="fa fa-plus-square" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
             }
 
-            $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].activity+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td>')
+            $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].activity+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td>')
         }
     }
     

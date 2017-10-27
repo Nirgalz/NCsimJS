@@ -32,19 +32,20 @@ class Minion{
         let minion = this;
         let inter = setInterval(function () {
             if (minion.health <= 0) {
-                console.log(minion.id + " has died from starving");
+                console.log(minion.id + " has died from starving after " + minion.getAge());
                 clearInterval(inter);
                 minion.isAlive = false;
             } else {
                 minion.health = minion.health - (minion.hunger /300);
-                minion.hunger = minion.hunger +  (1 - (minion.health / 100));
+                minion.hunger = minion.hunger +  (1 - (minion.health / 300));
+                if (minion.hunger > 100) minion.hunger = 100;
             }
         }, 100)
     }
     
     eat(quantity)
     {
-        this.hunger = this.hunger - (quantity/10);
+        this.hunger = 0;
         if (this.hunger <0) this.hunger = 0;
         if (this.hunger >100) this.hunger = 100;
         this.health = this.health + (quantity / 10);
@@ -54,7 +55,7 @@ class Minion{
 
     gather(quantity)
     {
-        this.inventory["food"] = this.inventory["food"] + quantity;
+        this.inventory["food"] += quantity;
         this.activity = 'gathering';
     }
     
