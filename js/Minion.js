@@ -9,7 +9,6 @@ class Minion{
         this.yCoordinate = y;
         this.health = 50;
         this.hunger = 50;
-        this.thirst = 10;
         this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
         this.starve();
@@ -36,9 +35,9 @@ class Minion{
                 clearInterval(inter);
                 minion.isAlive = false;
             } else {
-                minion.health = minion.health - (minion.hunger /300);
-                minion.hunger = minion.hunger +  (1 - (minion.health / 300));
+                minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
+                if (minion.hunger >= 100) minion.health -= 1 ;
             }
         }, 100)
     }
@@ -46,9 +45,7 @@ class Minion{
     eat(quantity)
     {
         this.hunger = 0;
-        if (this.hunger <0) this.hunger = 0;
-        if (this.hunger >100) this.hunger = 100;
-        this.health = this.health + (quantity / 10);
+        this.health = this.health + quantity;
         if (this.health > 100) this.health = 100;
         this.activity = 'eating';
     }
