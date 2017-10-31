@@ -5,8 +5,8 @@ class Minion{
         this.id = id;
         this.isAlive = true;
         this.activity = 'idle';
-        this.xCoordinate = x;
-        this.yCoordinate = y;
+        this.xCoordinate = x-1;
+        this.yCoordinate = y-1;
         this.health = 50;
         this.hunger = 50;
         this.inventory = {wood:0,food:0};
@@ -50,7 +50,7 @@ class Minion{
         this.activity = 'eating';
     }
 
-    gather(quantity)
+    gather( quantity)
     {
         this.inventory["food"] += quantity;
         this.activity = 'gathering';
@@ -59,8 +59,8 @@ class Minion{
     
     move()
     {
-        this.xCoordinate = this.randomIntInRange(this.mapLimits[0]+ 1) - 1;
-        this.yCoordinate = this.randomIntInRange(this.mapLimits[1] + 1) - 1;
+        this.xCoordinate = this.randomIntInRange(this.mapLimits[0]) - 1;
+        this.yCoordinate = this.randomIntInRange(this.mapLimits[1]) - 1;
     }
     
     //randomizes from 1 to maxRange

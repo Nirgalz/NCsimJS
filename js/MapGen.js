@@ -9,8 +9,8 @@ class MapGen {
     generate() {
         let landscape = [];
         let index = 0;
-        for (let i=0; i<= this.x; i++ ) {
-            for (let j=0; j<= this.y; j++) {
+        for (let i=0; i< this.x; i++ ) {
+            for (let j=0; j< this.y; j++) {
                 landscape[index] = {};
                 landscape[index].x = i;
                 landscape[index].y = j;

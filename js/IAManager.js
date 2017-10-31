@@ -42,7 +42,6 @@ class AIManager {
                         minion.move();
 
                     } else if (tileFood < 100) {
-                        minion.status = 'planting food';
                         tileFood += 1;
                     }
                     else if (tileFood >= 100) {
