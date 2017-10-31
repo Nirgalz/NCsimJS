@@ -3,8 +3,8 @@
 $(function () {
 
     //map and seed pop parameters
-    let mapSize = [3,3];
-    let seedPopParam = 1;
+    let mapSize = [10,12];
+    let seedPopParam = 5;
     
     let Display = new DisplayManager();
 

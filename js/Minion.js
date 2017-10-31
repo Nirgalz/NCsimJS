@@ -4,7 +4,7 @@ class Minion{
     {
         this.id = id;
         this.isAlive = true;
-        this.activity = 'idle';
+        this.status = 'idle';
         this.xCoordinate = x-1;
         this.yCoordinate = y-1;
         this.health = 50;
@@ -44,16 +44,16 @@ class Minion{
     
     eat(quantity)
     {
-        this.hunger = 0;
-        this.health = this.health + quantity;
+        this.hunger -= quantity;
+        this.health += quantity;
         if (this.health > 100) this.health = 100;
-        this.activity = 'eating';
+        this.status = 'eating';
     }
 
     gather( quantity)
     {
-        this.inventory["food"] += quantity;
-        this.activity = 'gathering';
+        this.inventory.food += quantity;
+        this.status = 'gathering';
     }
     
     

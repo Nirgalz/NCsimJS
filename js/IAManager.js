@@ -3,7 +3,7 @@ class AIManager {
     constructor(pop, map) {
         this.pop = pop;
         this.map = map;
-        this.tickRate = 10;
+        this.tickRate = 100;
     }
 
     checkData() {
@@ -16,7 +16,6 @@ class AIManager {
         let inter = setInterval(function () {
             for (let l = 0; l <= AIData.pop.length - 1; l++) {
                 let minion = AIData.pop[l];
-                let tileFood = AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food;
 
                 //When minions has more than 90 hunger
                 if (minion.hunger >= 90 && minion.isAlive === true) {
@@ -26,8 +25,8 @@ class AIManager {
                         minion.inventory.food -= 10;
                     }
                     else {
-                        if (tileFood > 10) {
-                            tileFood -= 20;
+                        if (AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food > 10) {
+                            AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food -= 10;
                             minion.gather(10);
                         }
                         else {
@@ -35,17 +34,20 @@ class AIManager {
                         }
                     }
                 }
+                //if minion is not too hungry and is alive
                 else if (minion.hunger < 90 && minion.isAlive === true) {
-                    if (minion.inventory.food < 100 && tileFood >20){
+                    // if minion has lees than 100 food in inventory and the tile has more than x resources, will gather food
+                    if (minion.inventory.food < 100 && AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food >10){
                         minion.inventory.food += 10;
-                        tileFood -= 10;
+                        AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food -= 10;
                         minion.move();
 
-                    } else if (tileFood < 100) {
-                        tileFood += 1;
+                        //if tile's foos is less than 100, minion plants food
+                    } else if (AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food < 100) {
+                        AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food +=1;
                     }
-                    else if (tileFood >= 100) {
-                        tileFood = 100;
+                    else if (AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food >= 100) {
+                        AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food = 100;
                         minion.move();
                     }
                 }
