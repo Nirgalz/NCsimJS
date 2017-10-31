@@ -5,6 +5,7 @@ $(function () {
     //map and seed pop parameters
     let mapSize = [10,12];
     let seedPopParam = 5;
+    let simSpeedParam = 10;
     
     let Display = new DisplayManager();
 
@@ -13,7 +14,7 @@ $(function () {
     let population = populate(seedPopParam, mapSize);
 
 
-    let AImgr = new AIManager(population,map);
+    let AImgr = new AIManager(population,map, simSpeedParam);
     AImgr.start();
 
     $('#test').on('click', function ()
@@ -27,7 +28,7 @@ $(function () {
     });
 
     $('#spawnMinion').on('click', function () {
-        population.push(new Minion(population.length, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y]))
+        population.push(new Minion(population.length, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y], simSpeedParam))
     });
 
     $('#killMinion').on('click', function () {
@@ -45,7 +46,7 @@ $(function () {
         let pop = [];
         for (let i = 0; i < num ; i++)
         {
-            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y]);
+            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y], simSpeedParam);
         }
         Display.minionViz(pop);
         

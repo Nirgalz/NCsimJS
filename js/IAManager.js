@@ -1,9 +1,9 @@
 class AIManager {
 
-    constructor(pop, map) {
+    constructor(pop, map, speed) {
         this.pop = pop;
         this.map = map;
-        this.tickRate = 100;
+        this.tickRate = speed;
     }
 
     checkData() {

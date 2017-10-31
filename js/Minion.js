@@ -1,6 +1,6 @@
 class Minion{
 
-    constructor(id, x, y, map)
+    constructor(id, x, y, map, speed)
     {
         this.id = id;
         this.isAlive = true;
@@ -13,6 +13,7 @@ class Minion{
         this.birthday = new Date().getTime();
         this.starve();
         this.mapLimits = map;
+        this.simSpeed = speed;
     }
 
     getAge()
