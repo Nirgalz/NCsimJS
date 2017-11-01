@@ -44,7 +44,7 @@ class AIManager {
 
                         //if tile's foos is less than 100, minion plants food
                     } else if (AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food < 100) {
-                        AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food +=1;
+                        AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food +=5;
                     }
                     else if (AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food >= 100) {
                         AIData.map.landscape[AIData.getMapTile(AIData.pop[l])].resources.food = 100;

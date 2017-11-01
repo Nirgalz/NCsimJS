@@ -40,7 +40,7 @@ class Minion{
                 if (minion.hunger > 100) minion.hunger = 100;
                 if (minion.hunger >= 100) minion.health -= 1 ;
             }
-        }, 100)
+        }, this.simSpeed)
     }
     
     eat(quantity)
