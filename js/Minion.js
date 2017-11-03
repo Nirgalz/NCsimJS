@@ -4,11 +4,12 @@ class Minion{
     {
         this.id = id;
         this.isAlive = true;
-        this.status = 'idle';
+        this.statusM = 'idle';
         this.xCoordinate = x-1;
         this.yCoordinate = y-1;
         this.health = 50;
         this.hunger = 50;
+        this.fatigue = 50;
         this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
         this.map = map;
@@ -46,13 +47,13 @@ class Minion{
         this.hunger -= quantity;
         this.health += quantity;
         if (this.health > 100) this.health = 100;
-        this.status = 'eating';
+        this.statusM = 'eating';
     }
 
     gather( quantity)
     {
         this.inventory.food += quantity/10;
-        this.status = 'gathering';
+        this.statusM = 'gathering';
     }
     
     
@@ -76,8 +77,13 @@ class Minion{
                 this.map.landscape[i].localPop.push(this);
             }
         }
-        
-        
+    }
+    
+    sleep(duration)
+    {
+        this.statusM = 'sleeping';
+        this.fatigue = 0; //got to be progressive (case of interrupted sleep ?)
+        // todo: time to wake = duration, wake function
     }
     
     //randomizes from 1 to maxRange
