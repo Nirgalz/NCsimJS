@@ -9,7 +9,7 @@ Actual features :
 
 doing:
 - implementing wood resource
-- implementing a proper time management system
+- tests with pixi.js
 
 in the possible future :
 - various constructions made of wood that require cooperation
