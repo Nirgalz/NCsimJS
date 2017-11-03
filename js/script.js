@@ -51,6 +51,27 @@ $(function () {
         
         initSim([x,y], seed, 10);
     })
+    
+    
+    $('#speedMinus').on('click', function() {
+        TimeMgr.speedFactor -=1;
+        $('#speedometer').html(TimeMgr.speedCalc()) ;
+    })
+    
+    $('#speedPlus').on('click', function() {
+        TimeMgr.speedFactor +=1;
+        $('#speedometer').html(TimeMgr.speedCalc()) ;
+    })
+    
+    $('#speedPause').on('click', function() {
+        if (TimeMgr.pause === true) {
+            TimeMgr.pause = false;
+            TimeMgr.play();
+        } else if (TimeMgr.pause === false){
+             TimeMgr.pause = true;
+        }
+       
+    })
 
     
 
