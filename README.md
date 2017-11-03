@@ -17,3 +17,4 @@ in the possible future :
 - various hazards
 - more parameters to play with
 - implementation of pixi.js or maybe moving to unity
+- interfaces with AI systems

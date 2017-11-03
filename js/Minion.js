@@ -11,7 +11,6 @@ class Minion{
         this.hunger = 50;
         this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
-        this.starve();
         this.map = map;
         this.simSpeed = speed;
     }
@@ -30,17 +29,16 @@ class Minion{
     starve()
     {
         let minion = this;
-        let inter = setInterval(function () {
+       
             if (minion.health <= 0) {
                 console.log(minion.id + " has died from starving after " + minion.getAge());
-                clearInterval(inter);
                 minion.isAlive = false;
             } else {
                 minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
                 if (minion.hunger >= 100) minion.health -= 1 ;
             }
-        }, this.simSpeed)
+     
     }
     
     eat(quantity)

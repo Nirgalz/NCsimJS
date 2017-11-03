@@ -6,7 +6,8 @@ $(function () {
     let map ={};
     let population = {};
     let AImgr = {};
-    let simSpeedParam = [];
+    let TimeMgr = {};
+    let simSpeedParam = [1];
     
     function initSim(mapSize, seedPopParam, simSpeedParam){
         
@@ -14,17 +15,19 @@ $(function () {
         Display = new DisplayManager();
         //generates map and pop
         map = new MapGen(mapSize);
-       population = populate(seedPopParam, map);
+        population = populate(seedPopParam, map);
 
 
         AImgr = new AIManager(population,map, simSpeedParam);
         AImgr.start();
+        
+        TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);
+        TimeMgr.play();
     }
     
     initSim([4,7] , 3 , 10 );
   
     
-
 
   
     $('#checkData').on('click', function ()
@@ -86,8 +89,6 @@ $(function () {
     function randomIntInRange(maxRange) {
             return Math.floor((Math.random() * maxRange)+1);
     }
-
-
 
 
 

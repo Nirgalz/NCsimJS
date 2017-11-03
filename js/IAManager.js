@@ -3,7 +3,6 @@ class AIManager {
     constructor(pop, map, speed) {
         this.pop = pop;
         this.map = map;
-        this.tickRate = speed;
     }
 
     checkData() {
@@ -13,7 +12,7 @@ class AIManager {
 
     start() {
         let AIData = this;
-        let inter = setInterval(function () {
+       
             for (let l = 0; l <= AIData.pop.length - 1; l++) {
                 let minion = AIData.pop[l];
                 let mapTileRef = AIData.getMapTile(AIData.pop[l]);
@@ -57,7 +56,7 @@ class AIManager {
                     }
                 }
             }
-        }, AIData.tickRate)
+    
     }
 
     getMapTile(minion) {
