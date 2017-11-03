@@ -4,6 +4,7 @@ class MapGen {
         this.x = mapSize[0];
         this.y = mapSize[1];
         this.landscape = this.generate();
+        this.resourcesRenewal();
     }
 
     generate() {
@@ -48,7 +49,7 @@ class MapGen {
         let resources = {};
         switch (type){
             case 'water':
-                resources.food = this.randomInt();
+                resources.food = 0;
                 resources.water = this.randomInt();
                 break;
             case 'dirt':
@@ -61,15 +62,26 @@ class MapGen {
                 break;
             case 'forest':
                 resources.wood = this.randomInt();
-                resources.food = this.randomInt();
+                resources.food = 0;
                 break;
         }
         return resources;
     }
     
     
-    ressourcesRenewal() {
-        
+    resourcesRenewal() {
+        let map = this;
+        let inter = setInterval(function () {
+           for (var i = 0 ; i< map.landscape.length; i++ ) {
+               if (map.landscape[i].type === 'forest' || map.landscape[i].type === 'water'){
+                   map.landscape[i].resources.food += 1;
+               }
+               if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
+           }
+            
+          
+               
+        }, 100);
     }
 
 }
