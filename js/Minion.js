@@ -53,7 +53,7 @@ class Minion{
 
     gather( quantity)
     {
-        this.inventory.food += quantity;
+        this.inventory.food += quantity/10;
         this.status = 'gathering';
     }
     

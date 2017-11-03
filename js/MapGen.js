@@ -49,7 +49,7 @@ class MapGen {
         let resources = {};
         switch (type){
             case 'water':
-                resources.food = 0;
+                resources.food = this.randomInt();
                 resources.water = this.randomInt();
                 break;
             case 'dirt':
@@ -62,7 +62,7 @@ class MapGen {
                 break;
             case 'forest':
                 resources.wood = this.randomInt();
-                resources.food = 0;
+                resources.food = this.randomInt();
                 break;
         }
         return resources;
@@ -73,15 +73,21 @@ class MapGen {
         let map = this;
         let inter = setInterval(function () {
            for (var i = 0 ; i< map.landscape.length; i++ ) {
-               if (map.landscape[i].type === 'forest' || map.landscape[i].type === 'water'){
+               if (map.landscape[i].type === 'water'){
                    map.landscape[i].resources.food += 1;
                }
+               if (map.landscape[i].type === 'forest'){
+                   map.landscape[i].resources.food += 1;
+                   map.landscape[i].resources.wood += 1;
+               }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
+                if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;
+
            }
             
           
                
-        }, 100);
+        }, 200);
     }
 
 }

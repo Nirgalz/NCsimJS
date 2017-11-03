@@ -46,7 +46,7 @@ $(function () {
         let y = $('#ymax').val();
         let seed = $('#seed').val();
         
-        console.log(x);
+        initSim([x,y], seed, 10);
     })
 
     
