@@ -1,6 +1,6 @@
 class AIManager {
 
-    constructor(pop, map, speed) {
+    constructor(pop, map) {
         this.pop = pop;
         this.map = map;
     }

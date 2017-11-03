@@ -19,11 +19,11 @@
 
 <div class="container">
     <div class="row">
-        <h4>generate new world</h><p>use at your own risk</p>
+        <h4>generate new world</h4><p>use at your own risk</p>
         <br>
-        <label for="x">X max</label>
+        <label for="xmax">X max</label>
         <input type="number" name="x" id="xmax"/>
-         <label for="y">Y max</label>
+         <label for="ymax">Y max</label>
         <input type="number" name="y" id="ymax"/>
          <label for="seed">Y max</label>
         <input type="number" name="seed" id="seed"/>
@@ -33,15 +33,15 @@
     
     <div class="row">
         <p>Speed (tickrate /ms)</p>
-        <p id="speedometer"></div>
+        <p id="speedometer">
         <button class="btn" id="speedMinus">Speed - </button>
         <button class="btn" id="speedPlus">Speed + </button>
         <button class="btn" id="speedPause"> || Pause </button>
-        
+
     </div>
     
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <button id="killMinion" class="btn">Kill minion - </button>
             <button id="spawnMinion" class="btn">Spawn minion + </button>
             <button class="btn" id="checkData">checkData</button>
@@ -49,7 +49,7 @@
             <table id="map" cellspacing="0" cellpadding="0"></table>
             
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6">
             <table class="table"  cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
@@ -58,6 +58,7 @@
                         <td>HP</td>
                         <td>hunger</td>
                         <td>food in inventory</td>
+                        <td>fatigue</td>
                     </tr>
                 </thead>
                 <tbody id="minionInfo"></tbody>
@@ -65,7 +66,6 @@
             
         </div>
     </div>
-    
 </div>
 
 

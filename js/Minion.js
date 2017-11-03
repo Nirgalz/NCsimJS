@@ -13,7 +13,6 @@ class Minion{
         this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
         this.map = map;
-        this.simSpeed = speed;
     }
 
     getAge()
@@ -59,9 +58,9 @@ class Minion{
     
     move()
     {
-        for (var i = 0; i < this.map.landscape.length; i++) {
+        for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
-                for (var j = 0; j < this.map.landscape[i].localPop.length; j++) {
+                for (let j = 0; j < this.map.landscape[i].localPop.length; j++) {
                     if (this.map.landscape[i].localPop[j].id === this.id){
                         this.map.landscape[i].localPop.splice(j,1);
                     }
@@ -72,10 +71,20 @@ class Minion{
         this.xCoordinate = this.randomIntInRange(this.map.x) - 1;
         this.yCoordinate = this.randomIntInRange(this.map.y) - 1;
         
-        for (var i = 0; i < this.map.landscape.length; i++) {
+        for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
                 this.map.landscape[i].localPop.push(this);
             }
+        }
+    }
+
+    fatigueGen()
+    {
+        this.fatigue++;
+        if (this.fatigue > 100)
+        {
+            this.fatigue = 100;
+            this.health -= 1 ;
         }
     }
     

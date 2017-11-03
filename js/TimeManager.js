@@ -1,6 +1,5 @@
 class TimeManager{
-    
-    
+
     
     constructor(speedFactor, map, population, AI)
     {
@@ -10,6 +9,7 @@ class TimeManager{
         this.map = map;
         this.population = population;
         this.AI = AI;
+        this.tick = 0;
     }
     
     speedCalc()
@@ -27,11 +27,12 @@ class TimeManager{
         
         let t = this;
         setTimeout(function(){
-            
+            t.tick++;
             //Starves all those minions
             for (let i = 0 ; i < t.population.length ; i++)
             {
                 t.population[i].starve();
+                t.population[i].fatigueGen();
             }
             
             //Resources renewal
@@ -46,9 +47,5 @@ class TimeManager{
                 t.play();
             }
         }, t.speedCalc())
-        
     }
-    
-    
-    
 }

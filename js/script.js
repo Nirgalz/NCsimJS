@@ -54,12 +54,12 @@ $(function () {
     
     
     $('#speedMinus').on('click', function() {
-        TimeMgr.speedFactor -=1;
+        TimeMgr.speedFactor +=1;
         $('#speedometer').html(TimeMgr.speedCalc()) ;
     })
     
     $('#speedPlus').on('click', function() {
-        TimeMgr.speedFactor +=1;
+        TimeMgr.speedFactor -=1;
         $('#speedometer').html(TimeMgr.speedCalc()) ;
     })
     

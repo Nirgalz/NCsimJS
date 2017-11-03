@@ -34,10 +34,7 @@ class DisplayManager
                 //$(coords).append('<i class="fa fa-plus-square" aria-hidden="true" id=minion-'+(k +1) +'></i>') ;
             }
 
-            $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].status+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td>')
+            $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].status+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td><td>'+pop[k].fatigue+'</td>')
         }
     }
-    
-    
-    
 }
