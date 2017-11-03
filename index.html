@@ -16,14 +16,25 @@
 <body>
     <div id="pixiMap"></div>
     
-<button class="btn" id="test">test</button>
-<button class="btn" id="checkData">checkData</button>
 
 <div class="container">
+    <div class="row">
+        <h4>generate new world</h>
+        <label for="x">X max</label>
+        <input type="number" name="x" id="xmax"/>
+         <label for="y">Y max</label>
+        <input type="number" name="y" id="ymax"/>
+         <label for="seed">Y max</label>
+        <input type="number" name="seed" id="seed"/>
+        <button class="btn" id="genBtn">Generate</button>
+        
+    </div>
+    
     <div class="row">
         <div class="col-md-4">
             <button id="killMinion" class="btn">Kill minion - </button>
             <button id="spawnMinion" class="btn">Spawn minion + </button>
+            <button class="btn" id="checkData">checkData</button>
 
             <table id="map" cellspacing="0" cellpadding="0"></table>
             
