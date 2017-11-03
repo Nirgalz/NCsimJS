@@ -12,7 +12,7 @@ class Minion{
         this.inventory = {wood:0,food:0};
         this.birthday = new Date().getTime();
         this.starve();
-        this.mapLimits = map;
+        this.map = map;
         this.simSpeed = speed;
     }
 
@@ -60,8 +60,26 @@ class Minion{
     
     move()
     {
-        this.xCoordinate = this.randomIntInRange(this.mapLimits[0]) - 1;
-        this.yCoordinate = this.randomIntInRange(this.mapLimits[1]) - 1;
+        for (var i = 0; i < this.map.landscape.length; i++) {
+            if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
+                for (var j = 0; j < this.map.landscape[i].localPop.length; j++) {
+                    if (this.map.landscape[i].localPop[j].id === this.id){
+                        this.map.landscape[i].localPop.splice(j,1);
+                    }
+                }
+            }
+        }
+        
+        this.xCoordinate = this.randomIntInRange(this.map.x) - 1;
+        this.yCoordinate = this.randomIntInRange(this.map.y) - 1;
+        
+        for (var i = 0; i < this.map.landscape.length; i++) {
+            if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
+                this.map.landscape[i].localPop.push(this);
+            }
+        }
+        
+        
     }
     
     //randomizes from 1 to maxRange

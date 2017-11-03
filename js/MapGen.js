@@ -16,6 +16,7 @@ class MapGen {
                 landscape[index].y = j;
                 landscape[index].type = this.randomTiles();
                 landscape[index].resources = this.resourcesGen(landscape[index].type);
+                landscape[index].localPop = [];
 
                 index++;
             }

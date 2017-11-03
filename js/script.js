@@ -3,15 +3,15 @@
 $(function () {
 
     //map and seed pop parameters
-    let mapSize = [10,12];
-    let seedPopParam = 5;
+    let mapSize = [4,7];
+    let seedPopParam = 3;
     let simSpeedParam = 10;
     
     let Display = new DisplayManager();
 
     //generates map and pop
     let map = new MapGen(mapSize);
-    let population = populate(seedPopParam, mapSize);
+    let population = populate(seedPopParam, map);
 
 
     let AImgr = new AIManager(population,map, simSpeedParam);
@@ -46,7 +46,7 @@ $(function () {
         let pop = [];
         for (let i = 0; i < num ; i++)
         {
-            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), [map.x,map.y], simSpeedParam);
+            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map, simSpeedParam);
         }
         Display.minionViz(pop);
         
