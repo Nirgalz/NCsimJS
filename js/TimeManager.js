@@ -33,7 +33,7 @@ class TimeManager{
             {
                 t.population[i].starve();
                 t.population[i].fatigueGen();
-                if (t.population[i].fatigue === 100){
+                if (t.population[i].fatigue === 100 && t.population[i].statusM !== 'sleeping'){
                     t.population[i].sleep(t.tick);
                 }
             }

@@ -26,7 +26,7 @@ class Minion{
         let minion = this;
        
             if (minion.health <= 0) {
-                console.log(minion.id + " has died from starving after " + minion.getAge());
+                console.log(minion.id + " has died from starving");
                 minion.isAlive = false;
             } else {
                 minion.hunger +=  1 ;
@@ -86,8 +86,13 @@ class Minion{
     sleep(startTick)
     {
         this.statusM = 'sleeping';
-        this.fatigue = 0; //got to be progressive (case of interrupted sleep ?)
-        this.wakeTick = startTick + 50;
+        this.wakeTick = startTick + 20;
+    }
+
+    wakeUp()
+    {
+        this.fatigue = 0;
+
     }
     
     //randomizes from 1 to maxRange

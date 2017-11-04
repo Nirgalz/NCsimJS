@@ -19,8 +19,10 @@ class AIManager {
 
             if (t !== undefined) {
                 if (minion.wakeTick > t) {
+                    //zZZZzzzzzZZZZZzzzzz
 
-
+                } else if (minion.wakeTick === t) {
+                    minion.wakeUp();
                 } else
                 //When minions has more than 90 hunger
                 if (minion.hunger >= 90 && minion.isAlive === true) {
