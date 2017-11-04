@@ -18,7 +18,7 @@ $(function () {
         population = populate(seedPopParam, map);
 
 
-        AImgr = new AIManager(population,map, simSpeedParam);
+        AImgr = new AIManager(population,map, simSpeedParam, TimeMgr);
         AImgr.start();
         
         TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);
@@ -77,14 +77,14 @@ $(function () {
 
 
     //generates the adequate number of minions in random coordinates
-    function populate(num, mapSize)
+    function populate(num)
     {
 
         Display.mapViz(map);
         let pop = [];
         for (let i = 0; i < num ; i++)
         {
-            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map, simSpeedParam);
+            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map, 1);
         }
         Display.minionViz(pop);
         

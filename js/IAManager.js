@@ -10,13 +10,18 @@ class AIManager {
         console.log(this.map);
     }
 
-    start() {
+    start(t) {
         let AIData = this;
-       
-            for (let l = 0; l <= AIData.pop.length - 1; l++) {
-                let minion = AIData.pop[l];
-                let mapTileRef = AIData.getMapTile(AIData.pop[l]);
 
+        for (let l = 0; l <= AIData.pop.length - 1; l++) {
+            let minion = AIData.pop[l];
+            let mapTileRef = AIData.getMapTile(AIData.pop[l]);
+
+            if (t !== undefined) {
+                if (minion.wakeTick > t) {
+
+
+                } else
                 //When minions has more than 90 hunger
                 if (minion.hunger >= 90 && minion.isAlive === true) {
 
@@ -37,17 +42,17 @@ class AIManager {
                 //if minion is not too hungry and is alive
                 else if (minion.hunger < 90 && minion.isAlive === true) {
                     // if minion has lees than 100 food in inventory and the tile has more than x resources, will gather food
-                    if (minion.inventory.food < 100 && AIData.map.landscape[mapTileRef].resources.food >10){
+                    if (minion.inventory.food < 100 && AIData.map.landscape[mapTileRef].resources.food > 10) {
                         minion.inventory.food += 10;
                         AIData.map.landscape[mapTileRef].resources.food -= 10;
                         minion.move();
 
                         //if tile's foos is less than 100, minion plants food
-                    } else if(AIData.map.landscape[mapTileRef].type === 'forest' || AIData.map.landscape[mapTileRef]=== 'water'){
+                    } else if (AIData.map.landscape[mapTileRef].type === 'forest' || AIData.map.landscape[mapTileRef] === 'water') {
                         minion.move();
                     }
                     else if (AIData.map.landscape[mapTileRef].resources.food < 100) {
-            
+
                         AIData.map.landscape[mapTileRef].resources.food += (5 * AIData.map.landscape[mapTileRef].localPop.length);
                     }
                     else if (AIData.map.landscape[mapTileRef].resources.food >= 100) {
@@ -56,7 +61,9 @@ class AIManager {
                     }
                 }
             }
-    
+
+        }
+
     }
 
     getMapTile(minion) {

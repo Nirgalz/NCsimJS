@@ -33,6 +33,9 @@ class TimeManager{
             {
                 t.population[i].starve();
                 t.population[i].fatigueGen();
+                if (t.population[i].fatigue === 100){
+                    t.population[i].sleep(t.tick);
+                }
             }
             
             //Resources renewal
@@ -40,7 +43,7 @@ class TimeManager{
           
         
             //AI tick
-            t.AI.start();
+            t.AI.start(t.tick);
             
             //if not paused, makes another tick
             if (t.pause === false) {
