@@ -74,12 +74,12 @@ $(function () {
     //generates the adequate number of minions in random coordinates
     function populate(num) {
 
-        Display.mapViz(map);
+        //Display.mapViz(map);
         let pop = [];
         for (let i = 0; i < num; i++) {
             pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map, 1);
         }
-        Display.minionViz(pop);
+        //Display.minionViz(pop);
 
         return pop;
 
@@ -90,11 +90,11 @@ $(function () {
 
 
 
-    let refreshDisplay = setInterval(function () {
-        Display.mapViz(map);
-        Display.minionViz(population);
-
-    }, 100);
+    // let refreshDisplay = setInterval(function () {
+    //     Display.mapViz(map);
+    //     Display.minionViz(population);
+    //
+    // }, 100);
 
 
     function showTile(x, y) {

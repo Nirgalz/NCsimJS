@@ -27,11 +27,15 @@ class DisplayManager {
         let resources = PIXI.loader.resources;
         let Sprite = PIXI.Sprite;
 
+        //timer stuff
+        let ticker = PIXI.ticker.shared;
+        ticker.autoStart = false;
 
-//Add the canvas to the HTML document
+        ticker.stop();
+
+
         $('#pixiMap').append(renderer.view);
 
-//Create a container object called the `stage`
 
         loader
             .add("media/face-3-1.png")
@@ -39,10 +43,14 @@ class DisplayManager {
             .add("media/terrain/dirt.png")
             .add("media/terrain/grass.png")
             .add("media/terrain/forest.png")
+            .add("media/terrain/progress-food.png")
             .load(setupPixi);
+
+
 
         function setupPixi() {
 
+            //generated once
             for (let i = 0; i < map.landscape.length; i++) {
 
                 let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
@@ -51,30 +59,58 @@ class DisplayManager {
                 stage.addChild(tile);
             }
 
-            //pop sprites
+            //every in there will be updated
+            ticker.add(function (time) {
 
 
-            for (let k = 0; k <= pop.length - 1; k++) {
 
-                if (pop[k].isAlive === true) {
-                    let face = new Sprite(
-                        resources["media/face-3-1.png"].texture
-                    );
-                    face.x = pop[k].xCoordinate * 100;
-                    face.y = pop[k].yCoordinate * 100;
 
-                    stage.addChild(face);
-
-                }
-                else if (pop[k].isAlive === false) {
-
+                //deletes minions from stage children so that this
+                if (map.landscape.length !== stage.children.length){
+                    stage.removeChildren(map.landscape.length , stage.children.length );
                 }
 
-                //$('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].status+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td><td>'+pop[k].fatigue+'</td>')
-            }
+                //food bars on tiles
+                for (let i = 0; i < map.landscape.length; i++) {
 
-//Tell the `renderer` to `render` the `stage`
-            renderer.render(stage);
+                    let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
+                    foodBar.x = map.landscape[i].x * 100;
+                    foodBar.y = map.landscape[i].y * 100;
+                    foodBar.width = map.landscape[i].resources.food;
+
+                    stage.addChild(foodBar);
+                }
+
+
+                //pop sprites
+
+                $('#minionInfo').empty();
+
+                for (let k = 0; k <= pop.length - 1; k++) {
+
+                    if (pop[k].isAlive === true) {
+                        let face = new Sprite(
+                            resources["media/face-3-1.png"].texture
+                        );
+                        face.x = (pop[k].xCoordinate * 100) + 50;
+                        face.y = (pop[k].yCoordinate * 100) + 50;
+
+                        stage.addChild(face);
+
+                    }
+                    else if (pop[k].isAlive === false) {
+
+                    }
+
+
+                    $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].status+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td><td>'+pop[k].fatigue+'</td>')
+                }
+
+                renderer.render(stage);
+            });
+
+
+            ticker.start();
         }
 
 
@@ -83,7 +119,7 @@ class DisplayManager {
 
 
 
-
+    //for if i manage to get the setup function into an object somehow...
     pixiLoad() {
         //terrain sprites
         for (let i = 0; i < this.map.landscape.length; i++) {
