@@ -39,8 +39,8 @@ class Minion{
     
     eat(quantity)
     {
-        this.hunger -= 20;
-        this.health += 20;
+        this.hunger = 0;
+        this.health = 100;
         if (this.health > 100) this.health = 100;
         this.statusM = 'eating';
     }
@@ -91,7 +91,7 @@ class Minion{
     sleep(startTick)
     {
         this.statusM = 'sleeping';
-        this.wakeTick = startTick + 20;
+        this.wakeTick = startTick + 10;
     }
 
     wakeUp()
