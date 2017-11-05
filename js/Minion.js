@@ -28,7 +28,8 @@ class Minion{
             if (minion.health <= 0) {
                 console.log(minion.id + " has died from starving");
                 minion.isAlive = false;
-            } else {
+            }
+            else if (minion.isAlive === true){
                 minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
                 if (minion.hunger >= 100) minion.health -= 1 ;
@@ -38,8 +39,8 @@ class Minion{
     
     eat(quantity)
     {
-        this.hunger -= quantity;
-        this.health += quantity;
+        this.hunger -= 20;
+        this.health += 20;
         if (this.health > 100) this.health = 100;
         this.statusM = 'eating';
     }
@@ -75,12 +76,16 @@ class Minion{
 
     fatigueGen()
     {
-        this.fatigue++;
-        if (this.fatigue > 100)
+        if (this.isAlive === true)
         {
-            this.fatigue = 100;
-            this.health -= 1 ;
+            this.fatigue++;
+            if (this.fatigue > 100)
+            {
+                this.fatigue = 100;
+                this.health -= 1 ;
+            }
         }
+
     }
     
     sleep(startTick)

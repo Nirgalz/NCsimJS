@@ -13,7 +13,6 @@ class DisplayManager {
     }
 
 
-
     pixiDisplay(map, pop) {
 
         //pixi.js tests
@@ -22,7 +21,7 @@ class DisplayManager {
         //Create the renderer
 
         let stage = new PIXI.Container();
-        let renderer = PIXI.autoDetectRenderer(512, 512);
+        let renderer = PIXI.autoDetectRenderer(500, 500);
         let loader = PIXI.loader;
         let resources = PIXI.loader.resources;
         let Sprite = PIXI.Sprite;
@@ -39,13 +38,14 @@ class DisplayManager {
 
         loader
             .add("media/face-3-1.png")
+            .add("media/face-3-4.png")
+            .add("media/face-1-1.png")
             .add("media/terrain/water.png")
             .add("media/terrain/dirt.png")
             .add("media/terrain/grass.png")
             .add("media/terrain/forest.png")
             .add("media/terrain/progress-food.png")
             .load(setupPixi);
-
 
 
         function setupPixi() {
@@ -66,8 +66,8 @@ class DisplayManager {
 
 
                 //deletes minions from stage children so that this
-                if (map.landscape.length !== stage.children.length){
-                    stage.removeChildren(map.landscape.length , stage.children.length );
+                if (map.landscape.length !== stage.children.length) {
+                    stage.removeChildren(map.landscape.length, stage.children.length);
                 }
 
                 //food bars on tiles
@@ -85,25 +85,34 @@ class DisplayManager {
                 //pop sprites
 
                 $('#minionInfo').empty();
-
+                let minionSprite = "";
                 for (let k = 0; k <= pop.length - 1; k++) {
 
-                    if (pop[k].isAlive === true) {
-                        let face = new Sprite(
-                            resources["media/face-3-1.png"].texture
-                        );
-                        face.x = (pop[k].xCoordinate * 100) + 50;
-                        face.y = (pop[k].yCoordinate * 100) + 50;
 
-                        stage.addChild(face);
+                    if (pop[k].isAlive === false) {
+                        minionSprite = "media/face-3-4.png";
 
                     }
-                    else if (pop[k].isAlive === false) {
+                    else if (pop[k].statusM === 'sleeping') {
+                        minionSprite = "media/face-1-1.png";
+
+                    }
+                    else if (pop[k].isAlive === true) {
+                        minionSprite = "media/face-3-1.png";
 
                     }
 
 
-                    $('#minionInfo').append('<tr><td>'+pop[k].id+'</td><td>'+pop[k].status+'</td><td>'+Math.floor(pop[k].health)+'</td><td>'+Math.floor(pop[k].hunger)+'</td><td>'+pop[k].inventory.food+'</td><td>'+pop[k].fatigue+'</td>')
+                    let face = new Sprite(
+                        resources[minionSprite].texture
+                    );
+                    face.x = (pop[k].xCoordinate * 100) + 50;
+                    face.y = (pop[k].yCoordinate * 100) + 50;
+
+                    stage.addChild(face);
+
+
+                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>' + pop[k].inventory.food + '</td><td>' + pop[k].fatigue + '</td>')
                 }
 
                 renderer.render(stage);
@@ -115,8 +124,6 @@ class DisplayManager {
 
 
     }
-
-
 
 
     //for if i manage to get the setup function into an object somehow...

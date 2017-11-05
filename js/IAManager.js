@@ -27,9 +27,9 @@ class AIManager {
                 //When minions has more than 90 hunger
                 if (minion.hunger >= 90 && minion.isAlive === true) {
 
-                    if (minion.inventory.food >= 10) {
-                        minion.eat(10);
-                        minion.inventory.food -= 10;
+                    if (minion.inventory.food === 100) {
+                        minion.eat(100);
+                        minion.inventory.food = 0;
                     }
                     else {
                         if (AIData.map.landscape[mapTileRef].resources.food > 10) {
@@ -55,6 +55,7 @@ class AIManager {
                     }
                     else if (AIData.map.landscape[mapTileRef].resources.food < 100) {
 
+                        //minions plant, the more the are the faster
                         AIData.map.landscape[mapTileRef].resources.food += (5 * AIData.map.landscape[mapTileRef].localPop.length);
                     }
                     else if (AIData.map.landscape[mapTileRef].resources.food >= 100) {
