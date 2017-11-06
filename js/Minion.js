@@ -37,18 +37,23 @@ class Minion{
      
     }
     
-    eat(quantity)
+    eat(quantity, tick)
     {
+        this.inventory.food -= quantity;
         this.hunger = 0;
         this.health = 100;
         if (this.health > 100) this.health = 100;
         this.statusM = 'eating';
+        this.wakeTick = tick + 2;
+
     }
 
-    gather(quantity, type)
+    gather(quantity, type, tick)
     {
         this.inventory[type] += quantity/10;
         this.statusM = 'gathering ' + type;
+        this.wakeTick = tick + 2;
+
     }
     
     
@@ -91,12 +96,13 @@ class Minion{
     sleep(startTick)
     {
         this.statusM = 'sleeping';
-        this.wakeTick = startTick + 10;
+        this.wakeTick = startTick + 5;
     }
 
     wakeUp()
     {
         this.fatigue = 0;
+        this.statusM = 'idle';
 
     }
     
