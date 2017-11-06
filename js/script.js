@@ -20,7 +20,7 @@ $(function () {
 
         Buildings = new Build(map, population);
         AImgr = new AIManager(population, map, Buildings);
-        AImgr.start();
+        AImgr.startRandomPossibleActions();
 
         TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);
         TimeMgr.play();

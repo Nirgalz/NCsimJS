@@ -32,7 +32,7 @@ class Minion{
             else if (minion.isAlive === true){
                 minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
-                if (minion.hunger >= 100) minion.health -= 0.1 ;
+                if (minion.hunger >= 100) minion.health -= 1 ;
             }
      
     }
@@ -44,7 +44,7 @@ class Minion{
         this.health = 100;
         if (this.health > 100) this.health = 100;
         this.statusM = 'eating';
-        this.wakeTick = tick + 2;
+        this.wakeTick = tick + 10;
 
     }
 
@@ -54,7 +54,7 @@ class Minion{
         this.map.landscape[mapTileRef].resources[type] -= 10;
 
         this.statusM = 'gathering ' + type;
-        this.wakeTick = tick + 2;
+        this.wakeTick = tick + 10;
 
     }
     
@@ -89,7 +89,6 @@ class Minion{
             if (this.fatigue > 100)
             {
                 this.fatigue = 100;
-                this.health -= 0.1 ;
             }
         }
 
@@ -98,12 +97,18 @@ class Minion{
     sleep(startTick)
     {
         this.statusM = 'sleeping';
-        this.wakeTick = startTick + 5;
+        this.wakeTick = startTick + 20;
+        this.fatigue = 0;
+
+    }
+
+    backToWork(){
+        this.statusM = 'idle';
+
     }
 
     wakeUp()
     {
-        this.fatigue = 0;
         this.statusM = 'idle';
 
     }

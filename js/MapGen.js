@@ -72,13 +72,13 @@ class MapGen {
     
     resourcesRenewal() {
         let map = this;
-           for (var i = 0 ; i< map.landscape.length; i++ ) {
+           for (let i = 0 ; i< map.landscape.length; i++ ) {
                if (map.landscape[i].type === 'water'){
-                   map.landscape[i].resources.food += 1;
+                   map.landscape[i].resources.food += 0.1;
                }
                if (map.landscape[i].type === 'forest'){
-                   map.landscape[i].resources.food += 1;
-                   map.landscape[i].resources.wood += 1;
+                   map.landscape[i].resources.food += 0.1;
+                   map.landscape[i].resources.wood += 0.1;
                }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
                 if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;
