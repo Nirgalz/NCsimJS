@@ -12,9 +12,11 @@ class Build{
         let timeToBuild = 10;
         let minionsToBuild = 1;
         this.map.landscape[tile].foodModifier * 0;
+        this.map.landscape[tile].localBuilding = "campFire";
         this.pop[minionIndex].statusM = "building";
         this.pop[minionIndex].wakeTick = startTick + 10;
-        
+        this.pop[minionIndex].inventory.wood -= 10;
+
     }
     
     tool()

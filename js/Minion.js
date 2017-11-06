@@ -11,7 +11,7 @@ class Minion{
         this.health = 50;
         this.hunger = 50;
         this.fatigue = 50;
-        this.inventory = {wood:0,food:0};
+        this.inventory = {wood:50,food:0};
         this.map = map;
         this.wakeTick = null;
     }

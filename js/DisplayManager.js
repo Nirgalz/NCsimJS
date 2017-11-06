@@ -51,33 +51,35 @@ class DisplayManager {
 
         function setupPixi() {
 
-            //generated once
+            
+
+            //every in there will be updated
+            ticker.add(function (time) {
+                
+                //resets the scene each frame
+                stage.removeChildren(0, stage.children.length);
+
+
+            //landscape
             for (let i = 0; i < map.landscape.length; i++) {
 
                 let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
                 tile.x = map.landscape[i].x * 100;
                 tile.y = map.landscape[i].y * 100;
-                
-                if (map.landscape[i].localBuilding != ""){
-                    let building = new Sprite(resources["media/buildings/campFire.png"])
-                    tile.x = (map.landscape[i].x * 100) + 20;
-                    tile.y = (map.landscape[i].y * 100) + 20;
-                }
-                
-                
                 stage.addChild(tile);
+
+                if (map.landscape[i].localBuilding === "campFire"){
+                    let building =  new Sprite(resources["media/buildings/campFire.png"].texture);
+                    building.x = (map.landscape[i].x * 100) + 20;
+                    building.y = (map.landscape[i].y * 100) + 20;
+                    stage.addChild(building)
+                }
             }
 
-            //every in there will be updated
-            ticker.add(function (time) {
-
-
-
-
                 //deletes minions from stage children so that this
-                if (map.landscape.length !== stage.children.length) {
-                    stage.removeChildren(map.landscape.length, stage.children.length);
-                }
+                // if (map.landscape.length !== stage.children.length) {
+                //     stage.removeChildren(map.landscape.length, stage.children.length);
+                // }
 
                 //food bars on tiles
                 for (let i = 0; i < map.landscape.length; i++) {
