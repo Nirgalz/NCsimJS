@@ -32,7 +32,7 @@ class Minion{
             else if (minion.isAlive === true){
                 minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
-                if (minion.hunger >= 100) minion.health -= 1 ;
+                if (minion.hunger >= 100) minion.health -= 0.1 ;
             }
      
     }
@@ -45,10 +45,10 @@ class Minion{
         this.statusM = 'eating';
     }
 
-    gather( quantity)
+    gather(quantity, type)
     {
-        this.inventory.food += quantity/10;
-        this.statusM = 'gathering';
+        this.inventory[type] += quantity/10;
+        this.statusM = 'gathering ' + type;
     }
     
     
@@ -82,7 +82,7 @@ class Minion{
             if (this.fatigue > 100)
             {
                 this.fatigue = 100;
-                this.health -= 1 ;
+                this.health -= 0.1 ;
             }
         }
 

@@ -8,6 +8,7 @@ $(function () {
     let AImgr = {};
     let TimeMgr = {};
     let simSpeedParam = [1];
+    let Buildings = {};
 
     function initSim(mapSize, seedPopParam, simSpeedParam) {
 
@@ -17,8 +18,8 @@ $(function () {
         map = new MapGen(mapSize);
         population = populate(seedPopParam, map);
 
-
-        AImgr = new AIManager(population, map, simSpeedParam, TimeMgr);
+        Buildings = new Build(map, population);
+        AImgr = new AIManager(population, map, Buildings);
         AImgr.start();
 
         TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);

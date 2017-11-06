@@ -18,6 +18,7 @@ class MapGen {
                 landscape[index].type = this.randomTiles();
                 landscape[index].resources = this.resourcesGen(landscape[index].type);
                 landscape[index].localPop = [];
+                landscape[index].localBuilding = "";
 
                 index++;
             }
@@ -50,14 +51,14 @@ class MapGen {
         switch (type){
             case 'water':
                 resources.food = this.randomInt();
-                resources.water = this.randomInt();
+                resources.wood = this.randomInt();
                 break;
             case 'dirt':
                 resources.food = this.randomInt();
-                resources.dirt = this.randomInt();
+                resources.wood = this.randomInt();
                 break;
             case 'grass':
-                resources.grass = this.randomInt();
+                resources.wood = this.randomInt();
                 resources.food = this.randomInt();
                 break;
             case 'forest':

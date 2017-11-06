@@ -1,8 +1,10 @@
 class AIManager {
 
-    constructor(pop, map) {
+    constructor(pop, map, bui) {
         this.pop = pop;
         this.map = map;
+        this.Buildings = bui;
+     
     }
 
     checkData() {
@@ -11,6 +13,8 @@ class AIManager {
     }
 
     start(t) {
+                
+
         let AIData = this;
 
         for (let l = 0; l <= AIData.pop.length - 1; l++) {
@@ -23,26 +27,32 @@ class AIManager {
 
                 } else if (minion.wakeTick === t) {
                     minion.wakeUp();
-                } else
+                } else if (minion.inventory.wood >= 10 && AIData.map.landscape[mapTileRef].localBuilding === ""){
+                            this.Buildings.campFire(mapTileRef, l, t.tick)
+                        }else
                 //When minions has more than 90 hunger
                 if (minion.hunger >= 90 && minion.isAlive === true) {
 
-                    if (minion.inventory.food === 100) {
-                        minion.eat(50);
-                        minion.inventory.food = 0;
+                    if (minion.inventory.food >= 10) {
+                        minion.eat(10);
+                        minion.inventory.food -= 10;
                     }
-                    else {
-                        if (AIData.map.landscape[mapTileRef].resources.food > 10) {
-                            AIData.map.landscape[mapTileRef].resources.food -= 10;
-                            minion.gather(10);
+                    else if (AIData.map.landscape[mapTileRef].resources.wood > 10) {
+                            AIData.map.landscape[mapTileRef].resources.wood -= 10;
+                            minion.gather(10, "wood");
                         }
+                         else if (AIData.map.landscape[mapTileRef].resources.food > 10) {
+                            AIData.map.landscape[mapTileRef].resources.food -= 10;
+                            minion.gather(10, "food");
+                        }
+                        
                         else {
                             minion.move();
                         }
                     }
                 }
                 //if minion is not too hungry and is alive
-                else if (minion.hunger < 90 && minion.isAlive === true && minion.statusM !== "sleeping") {
+                else if (minion.hunger < 90 && minion.isAlive === true && minion.statusM !== "sleeping" && minion.statusM !== 'building') {
                     // if minion has lees than 100 food in inventory and the tile has more than x resources, will gather food
                     if (minion.inventory.food < 100 && AIData.map.landscape[mapTileRef].resources.food > 10) {
                         minion.inventory.food += 10;
@@ -67,7 +77,7 @@ class AIManager {
 
         }
 
-    }
+    
 
     getMapTile(minion) {
         for (let tile = 0; tile <= this.map.landscape.length; tile++) {

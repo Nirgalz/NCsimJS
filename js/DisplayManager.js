@@ -45,6 +45,7 @@ class DisplayManager {
             .add("media/terrain/grass.png")
             .add("media/terrain/forest.png")
             .add("media/terrain/progress-food.png")
+            .add("media/buildings/campFire.png")
             .load(setupPixi);
 
 
@@ -56,6 +57,14 @@ class DisplayManager {
                 let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
                 tile.x = map.landscape[i].x * 100;
                 tile.y = map.landscape[i].y * 100;
+                
+                if (map.landscape[i].localBuilding != ""){
+                    let building = new Sprite(resources["media/buildings/campFire.png"])
+                    tile.x = (map.landscape[i].x * 100) + 20;
+                    tile.y = (map.landscape[i].y * 100) + 20;
+                }
+                
+                
                 stage.addChild(tile);
             }
 
@@ -112,7 +121,7 @@ class DisplayManager {
                     stage.addChild(face);
 
 
-                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>' + pop[k].inventory.food + '</td><td>' + pop[k].fatigue + '</td>')
+                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood +'</td><td>' + pop[k].fatigue + '</td>')
                 }
 
                 renderer.render(stage);

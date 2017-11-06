@@ -1,16 +1,20 @@
 class Build{
     
-    constructor(tile)
+    constructor(map,pop)
     {
-        this.tile = tile;
+        this.map = map;
+        this.pop = pop;
     }
     
-    campFire()
+    campFire(tile, minionIndex, startTick)
     {
-        let cost = [150, 'wood'];
+        let cost = [100, 'wood'];
         let timeToBuild = 10;
         let minionsToBuild = 1;
-        //todo: food *2 on tile
+        this.map.landscape[tile].foodModifier * 0;
+        this.pop[minionIndex].statusM = "building";
+        this.pop[minionIndex].wakeTick = startTick + 10;
+        
     }
     
     tool()
