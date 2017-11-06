@@ -11,7 +11,7 @@ class Minion{
         this.health = 50;
         this.hunger = 50;
         this.fatigue = 50;
-        this.inventory = {wood:50,food:0};
+        this.inventory = {wood:0,food:20};
         this.map = map;
         this.wakeTick = null;
     }
@@ -26,7 +26,7 @@ class Minion{
         let minion = this;
        
             if (minion.health <= 0) {
-                console.log(minion.id + " has died from starving");
+                minion.statusM = 'died starving';
                 minion.isAlive = false;
             }
             else if (minion.isAlive === true){
@@ -48,9 +48,11 @@ class Minion{
 
     }
 
-    gather(quantity, type, tick)
+    gather(mapTileRef, quantity, type, tick)
     {
-        this.inventory[type] += quantity/10;
+        this.inventory[type] += quantity;
+        this.map.landscape[mapTileRef].resources[type] -= 10;
+
         this.statusM = 'gathering ' + type;
         this.wakeTick = tick + 2;
 

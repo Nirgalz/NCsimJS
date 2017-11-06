@@ -12,6 +12,98 @@ class AIManager {
         console.log(this.map);
     }
 
+
+    startRandomPossibleActions(tick) {
+
+        for (let l = 0; l <= this.pop.length - 1; l++) {
+            let possibleActions = [];
+
+            let minion = this.pop[l];
+            let mapTileRef = this.getMapTile(this.pop[l]);
+            let mapTile = this.map.landscape[mapTileRef];
+            let buildings = this.Buildings;
+
+
+            if (tick !== undefined) {
+
+                //wakes up when action is done
+                if (minion.wakeTick > tick) {
+                    //zZZZzzzzzZZZZZzzzzz
+
+                } else if (minion.wakeTick === tick) {
+                    minion.wakeUp();
+                }
+
+                if (minion.isAlive === true) {
+
+                    //EAT
+                    if (minion.inventory.food >= 10) {
+                        possibleActions.push(function () {
+                            minion.eat(10, tick)
+                        });
+                    }
+
+                    //GATHER
+                    if (mapTile.resources.wood > 10) {
+                        possibleActions.push(function () {
+                            minion.gather(mapTileRef, 10, "wood", tick)
+                        });
+                    }
+
+
+                    if (mapTile.resources.food > 10) {
+                        possibleActions.push(function () {
+                            minion.gather(mapTileRef, 10, "food", tick)
+                        });
+                    }
+
+
+                    //BUILDS
+                    if (minion.inventory.wood >= 10
+                        && mapTile.localBuilding === ""
+                        && mapTile.type !== "forest"
+                        && mapTile.type !== 'water')
+                    {
+                        possibleActions.push(function () {
+                            buildings.campFire(mapTileRef, l, tick)
+                        });
+                    }
+
+
+                    //todo:plant function in minion class
+                     if (mapTile.resources.food < 100) {
+
+                        //minions plant, the more the are the faster
+                         possibleActions.push(function () {
+                             mapTile.resources.food += ( mapTile.localPop.length );
+                         });
+                    }
+                    //  if (t.population[i].fatigue === 100 && t.population[i].statusM !== 'sleeping') {
+                    //     t.population[i].sleep(t.tick);
+                    // }
+
+
+
+
+                    //randomly moves
+                    possibleActions.push(function () {
+                        minion.move()
+                    });
+
+
+                    //randomy choses an action between those possible
+                    let randomAction = Math.floor((Math.random() * possibleActions.length));
+                    possibleActions[randomAction]();
+                }
+
+
+            }
+
+        }
+
+    }
+
+
     start(tick) {
 
 
@@ -29,7 +121,10 @@ class AIManager {
                     minion.wakeUp();
                 } else
                 //When minions has more than 90 hunger
-                if (minion.hunger >= 90 && minion.isAlive === true) {
+                if (minion.hunger >= 90
+                    && minion.isAlive === true
+                    && minion.statusM !== "sleeping"
+                    && minion.statusM !== 'building') {
 
                     if (minion.inventory.food >= 10) {
                         minion.eat(10, tick);
@@ -63,7 +158,6 @@ class AIManager {
                     AIData.map.landscape[mapTileRef].resources.food -= 10;
                     minion.move();
 
-
                 }
                 // else if (AIData.map.landscape[mapTileRef].type === 'forest' || AIData.map.landscape[mapTileRef] === 'water') {
                 //     minion.move();
@@ -72,6 +166,9 @@ class AIManager {
 
                     //minions plant, the more the are the faster
                     AIData.map.landscape[mapTileRef].resources.food += ( AIData.map.landscape[mapTileRef].localPop.length );
+                }
+                else if (t.population[i].fatigue === 100 && t.population[i].statusM !== 'sleeping') {
+                    t.population[i].sleep(t.tick);
                 }
                 else if (AIData.map.landscape[mapTileRef].resources.food >= 100) {
                     AIData.map.landscape[mapTileRef].resources.food = 100;
