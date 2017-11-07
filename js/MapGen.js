@@ -80,6 +80,10 @@ class MapGen {
                    map.landscape[i].resources.food += 0.1;
                    map.landscape[i].resources.wood += 0.1;
                }
+               if (map.landscape[i].localBuilding === 'potatoField'){
+                   map.landscape[i].resources.food += 1;
+                   map.landscape[i].resources.wood += 1;
+               }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
                 if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;
            }

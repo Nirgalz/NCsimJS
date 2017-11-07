@@ -67,11 +67,14 @@ class AIManager {
                         possibleActions.push(function () {
                             buildings.campFire(mapTileRef, l, tick)
                         });
+                        possibleActions.push(function () {
+                            buildings.potatoField(mapTileRef, l, tick)
+                        });
                     }
 
 
                     //todo:plant function in minion class
-                     if (mapTile.resources.food < 100) {
+                     if (mapTile.resources.food < 100 && mapTile.localBuilding === "") {
 
                         //minions plant, the more the are the faster
                          possibleActions.push(function () {

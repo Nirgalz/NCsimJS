@@ -45,6 +45,7 @@ class DisplayManager {
             .add("media/terrain/grass.png")
             .add("media/terrain/forest.png")
             .add("media/terrain/progress-food.png")
+            .add("media/buildings/potatoField.png")
             .add("media/buildings/campFire.png")
             .load(setupPixi);
 
@@ -72,6 +73,12 @@ class DisplayManager {
                     let building =  new Sprite(resources["media/buildings/campFire.png"].texture);
                     building.x = (map.landscape[i].x * 100) + 20;
                     building.y = (map.landscape[i].y * 100) + 20;
+                    stage.addChild(building)
+                }
+                if (map.landscape[i].localBuilding === "potatoField"){
+                    let building =  new Sprite(resources["media/buildings/potatoField.png"].texture);
+                    building.x = (map.landscape[i].x * 100);
+                    building.y = (map.landscape[i].y * 100);
                     stage.addChild(building)
                 }
             }

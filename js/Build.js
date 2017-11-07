@@ -11,13 +11,24 @@ class Build{
         let cost = [100, 'wood'];
         let timeToBuild = 10;
         let minionsToBuild = 1;
-        this.map.landscape[tile].foodModifier * 0;
         this.map.landscape[tile].localBuilding = "campFire";
         this.pop[minionIndex].statusM = "building";
         this.pop[minionIndex].wakeTick = startTick + 10;
-        this.pop[minionIndex].inventory.wood -= 10;
+        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
 
     }
+    
+    potatoField(tile, minionIndex, startTick){
+        let cost = [100, 'wood'];
+        let timeToBuild = 10;
+        let minionsToBuild = 1;
+        this.map.landscape[tile].localBuilding = "potatoField";
+        this.pop[minionIndex].statusM = "building";
+        this.pop[minionIndex].wakeTick = startTick + 10;
+        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
+    }
+    
+    
     
     tool()
     {
