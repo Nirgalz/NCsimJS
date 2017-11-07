@@ -22,7 +22,7 @@ class Build{
         let cost = [100, 'wood'];
         let timeToBuild = 10;
         let minionsToBuild = 1;
-        this.map.landscape[tile].localBuilding = "potatoField";
+        this.map.landscape[tile].type = "potatoField";
         this.pop[minionIndex].statusM = "building";
         this.pop[minionIndex].wakeTick = startTick + 10;
         this.pop[minionIndex].inventory[cost[1]] -= cost[0];
@@ -30,12 +30,15 @@ class Build{
     
     
     
-    tool()
+    fishingPole(minionIndex, startTick)
     {
         let cost = [100, 'wood'];
         let timeToBuild = 5;
         let minionsToBuild = 1;
-        //todo: allows to plant dirt - plant on grass * 2
+        this.pop[minionIndex].statusM = "building a fishing pole";
+        this.pop[minionIndex].wakeTick = startTick + 10;
+        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
+        this.pop[minionIndex].inventory.fishingPole = 1;
     }
     
     shelter()

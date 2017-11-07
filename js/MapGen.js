@@ -51,14 +51,14 @@ class MapGen {
         switch (type){
             case 'water':
                 resources.food = this.randomInt();
-                resources.wood = this.randomInt();
+                resources.wood = 0;
                 break;
             case 'dirt':
-                resources.food = this.randomInt();
-                resources.wood = this.randomInt();
+                resources.food = 0;
+                resources.wood = 0;
                 break;
             case 'grass':
-                resources.wood = this.randomInt();
+                resources.wood = 0;
                 resources.food = this.randomInt();
                 break;
             case 'forest':
@@ -82,7 +82,6 @@ class MapGen {
                }
                if (map.landscape[i].localBuilding === 'potatoField'){
                    map.landscape[i].resources.food += 1;
-                   map.landscape[i].resources.wood += 1;
                }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
                 if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;

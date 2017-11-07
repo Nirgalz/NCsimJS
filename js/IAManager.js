@@ -50,16 +50,29 @@ class AIManager {
                         });
                     }
 
-
-                    if (mapTile.resources.food > 10) {
-                        possibleActions.push(function () {
-                            minion.gather(mapTileRef, 10, "food", tick)
+                    if (mapTile.resources.food > 10){
+                        if (mapTile.type === "water" 
+                        && minion.inventory.fishingPole != undefined )
+                        {
+                            possibleActions.push(function () {
+                                minion.gather(mapTileRef, 20, "food", tick)
                         });
                     }
+                    else if (mapTile.type === "potatoField") {
+                        possibleActions.push(function () {
+                                minion.gather(mapTileRef, 20, "food", tick)
+                    });
+                    }else if (mapTile.type === "grass" || mapTile.type === "dirt" || mapTile.type === "forest") {
+                        possibleActions.push(function () {
+                            minion.gather(mapTileRef, 5, "food", tick)
+                        });
+                    }
+                    }
+                    
 
 
                     //BUILDS
-                    if (minion.inventory.wood >= 10
+                    if (minion.inventory.wood >= 100
                         && mapTile.localBuilding === ""
                         && mapTile.type !== "forest"
                         && mapTile.type !== 'water')
@@ -69,6 +82,14 @@ class AIManager {
                         });
                         possibleActions.push(function () {
                             buildings.potatoField(mapTileRef, l, tick)
+                        });
+                       
+                    }
+                    
+                    if (minion.inventory.wood >= 100 
+                    && minion.inventory.fishingPole === undefined ){
+                         possibleActions.push(function () {
+                            buildings.fishingPole(l, tick)
                         });
                     }
 
