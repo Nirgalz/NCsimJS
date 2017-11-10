@@ -73,31 +73,34 @@ class Minion{
         
         let randomPossibleDirection = function(it){
             let randomNum = it.randomIntInRange(4);
-            let direction = ''
             switch (randomNum) {
                 case 1:
-                    if (it.xCoordinate + 1 <= it.map.x){
+                    if (it.xCoordinate + 1 < it.map.x){
                         it.xCoordinate++;
-                    } else randomPossibleDirection(it);
-                    console.log('1');
+                    } else {
+                        randomPossibleDirection(it);
+                    }
                     break;
                 case 2:
                     if (it.xCoordinate - 1 >= 0){
                         it.xCoordinate--;
-                    } else randomPossibleDirection(it);
-                    console.log('2');
+                    } else {
+                        randomPossibleDirection(it);
+                    }
                     break;
                 case 3:
-                    if (it.yCoordinate + 1 <= it.map.y){
+                    if (it.yCoordinate + 1 < it.map.y){
                         it.yCoordinate++;
-                    } else randomPossibleDirection(it);
-                    console.log('3');
+                    } else {
+                        randomPossibleDirection(it);
+                    }
                     break;
                 case 4:
                     if (it.yCoordinate - 1 >= 0){
                         it.yCoordinate--;
-                    } else randomPossibleDirection(it);
-                    console.log('4');
+                    } else {
+                        randomPossibleDirection(it);
+                    }
                     break;
                     
     
