@@ -12,7 +12,7 @@ class DisplayManager {
 
     }
 
-
+//http://pixijs.io/examples/#/display/zorder.js
     pixiDisplay(map, pop) {
 
         //pixi.js tests
@@ -26,11 +26,11 @@ class DisplayManager {
         let resources = PIXI.loader.resources;
         let Sprite = PIXI.Sprite;
 
+        let layer = new PIXI.display.Layer();
+
         //timer stuff
         let ticker = PIXI.ticker.shared;
         ticker.autoStart = false;
-
-        let firstTick = true;
 
         ticker.stop();
 
@@ -55,10 +55,21 @@ class DisplayManager {
         function setupPixi() {
 
 
-            let style = {
-                font: '15px Courier, monospace',
-                fill: '#ffffff'
-            };
+
+            //every in there will be updated
+            ticker.add(function (time) {
+
+                //resets the scene each frame
+                stage.removeChildren(0, stage.children.length);
+
+
+
+            //landscape and data
+
+                let style = {
+                    font: '15px Courier, monospace',
+                    fill: '#ffffff'
+                };
 
             for (let i = 0; i < map.landscape.length; i++) {
 
@@ -66,9 +77,15 @@ class DisplayManager {
                 let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
                 tile.x = map.landscape[i].x * 100;
                 tile.y = map.landscape[i].y * 100;
+                tile.zOrder = 1;
 
 
-                //makes tiles interactive and alpha- on hover
+                //data
+                let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
+                tileInfo.x = map.landscape[i].x * 100;
+                tileInfo.y = map.landscape[i].y * 100;
+                tileInfo.zOrder = 2;
+
                 tile.interactive = true;
 
 
@@ -79,67 +96,39 @@ class DisplayManager {
                 tile.on('mouseout', onOut);
 
                 function onOver(eventData) {
-                    this.alpha = 0.5;
+                    this.zOrder = -1;
                 }
 
                 function onOut(eventData) {
-                    this.alpha = 1;
+                    this.zOrder = 3;
                 }
+                layer.group.enableSort = true;
+
+                let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
+                foodBar.x = map.landscape[i].x * 100;
+                foodBar.y = map.landscape[i].y * 100;
+                foodBar.width = map.landscape[i].resources.food;
+
+                stage.addChild(tileInfo);
 
                 stage.addChild(tile);
+                stage.addChild(foodBar);
+
+                if (map.landscape[i].localBuilding === "campFire"){
+                    let building =  new Sprite(resources["media/buildings/campFire.png"].texture);
+                    building.x = (map.landscape[i].x * 100) + 20;
+                    building.y = (map.landscape[i].y * 100) + 20;
+                    stage.addChild(building)
+                }
 
             }
-
-
-
-            //every in there will be updated
-            ticker.add(function (time) {
-
-                //resets the scene each frame
-
-                if (firstTick === false){
-                    stage.removeChildren(map.landscape.length, stage.children.length);
-
-                }
-                firstTick = false;
-
-                //food bars on tiles and wood
-
-
-                //landscape and data
-
-                let style = {
-                    font: '15px Courier, monospace',
-                    fill: '#ffffff'
-                };
-
-                for (let i = 0; i < map.landscape.length; i++) {
-
-
-
-                    //data
-                    let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
-                    tileInfo.x = map.landscape[i].x * 100;
-                    tileInfo.y = map.landscape[i].y * 100;
-
-                    stage.addChild(tileInfo);
-
-
-                    if (map.landscape[i].localBuilding === "campFire") {
-                        let building = new Sprite(resources["media/buildings/campFire.png"].texture);
-                        building.x = (map.landscape[i].x * 100) + 20;
-                        building.y = (map.landscape[i].y * 100) + 20;
-                        stage.addChild(building)
-                    }
-
-                }
-
-
 
                 //deletes minions from stage children so that this
                 // if (map.landscape.length !== stage.children.length) {
                 //     stage.removeChildren(map.landscape.length, stage.children.length);
                 // }
+
+
 
 
                 //pop sprites
@@ -172,17 +161,12 @@ class DisplayManager {
                     stage.addChild(face);
 
                     // minion infos
-                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood + '</td><td>' + pop[k].fatigue + '</td>')
+                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood +'</td><td>' + pop[k].fatigue + '</td>')
                 }
 
-                // start animating
-                animate();
 
-                function animate() {
-                    requestAnimationFrame(animate);
-                    // render the root container
                     renderer.render(stage);
-                }
+
             });
 
 
