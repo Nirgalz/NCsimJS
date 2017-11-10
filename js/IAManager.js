@@ -37,20 +37,20 @@ class AIManager {
                 else if (minion.isAlive === true) {
 
                     //EAT
-                    if (minion.inventory.food >= 10) {
+                    if (minion.inventory.food >= 10 && minion.hunger > 90) {
                         possibleActions.push(function () {
                             minion.eat(10, tick)
                         });
                     }
 
                     //GATHER
-                    if (mapTile.resources.wood > 10) {
+                    if (mapTile.resources.wood > 10 && minion.inventory.wood < 100) {
                         possibleActions.push(function () {
                             minion.gather(mapTileRef, 10, "wood", tick)
                         });
                     }
 
-                    if (mapTile.resources.food > 10){
+                    if (mapTile.resources.food > 10 && minion.inventory.food < 100){
                         if (mapTile.type === "water" 
                         && minion.inventory.fishingPole != undefined )
                         {
@@ -58,11 +58,11 @@ class AIManager {
                                 minion.gather(mapTileRef, 20, "food", tick)
                         });
                     }
-                    else if (mapTile.type === "potatoField") {
+                    else if (mapTile.type === "potatoField" && minion.inventory.food < 100) {
                         possibleActions.push(function () {
                                 minion.gather(mapTileRef, 20, "food", tick)
                     });
-                    }else if (mapTile.type === "grass" || mapTile.type === "dirt" || mapTile.type === "forest") {
+                    }else if (mapTile.type === "grass" || mapTile.type === "dirt" || mapTile.type === "forest" && minion.inventory.food < 100) {
                         possibleActions.push(function () {
                             minion.gather(mapTileRef, 5, "food", tick)
                         });
@@ -75,7 +75,8 @@ class AIManager {
                     if (minion.inventory.wood >= 100
                         && mapTile.localBuilding === ""
                         && mapTile.type !== "forest"
-                        && mapTile.type !== 'water')
+                        && mapTile.type !== "water"
+                        && mapTile.type !== "potatoField")
                     {
                         possibleActions.push(function () {
                             buildings.campFire(mapTileRef, l, tick)
