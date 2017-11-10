@@ -71,8 +71,42 @@ class Minion{
             }
         }
         
-        this.xCoordinate = this.randomIntInRange(this.map.x) - 1;
-        this.yCoordinate = this.randomIntInRange(this.map.y) - 1;
+        let randomPossibleDirection = function(it){
+            let randomNum = it.randomIntInRange(4);
+            let direction = ''
+            switch (randomNum) {
+                case 1:
+                    if (it.xCoordinate + 1 <= it.map.x){
+                        it.xCoordinate++;
+                    } else randomPossibleDirection(it);
+                    console.log('1');
+                    break;
+                case 2:
+                    if (it.xCoordinate - 1 >= 0){
+                        it.xCoordinate--;
+                    } else randomPossibleDirection(it);
+                    console.log('2');
+                    break;
+                case 3:
+                    if (it.yCoordinate + 1 <= it.map.y){
+                        it.yCoordinate++;
+                    } else randomPossibleDirection(it);
+                    console.log('3');
+                    break;
+                case 4:
+                    if (it.yCoordinate - 1 >= 0){
+                        it.yCoordinate--;
+                    } else randomPossibleDirection(it);
+                    console.log('4');
+                    break;
+                    
+    
+            }
+        }
+        randomPossibleDirection(this);
+        
+        //this.xCoordinate = this.randomIntInRange(this.map.x) - 1;
+        //this.yCoordinate = this.randomIntInRange(this.map.y) - 1;
         
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){

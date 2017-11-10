@@ -102,9 +102,7 @@ class AIManager {
                              mapTile.resources.food += ( mapTile.localPop.length / 10);
                          });
                     }
-                    //  if (t.population[i].fatigue === 100 && t.population[i].statusM !== 'sleeping') {
-                    //     t.population[i].sleep(t.tick);
-                    // }
+              
 
 
                     //sleeps
@@ -213,7 +211,7 @@ class AIManager {
 
     getMapTile(minion) {
         for (let tile = 0; tile <= this.map.landscape.length; tile++) {
-
+            console.log(tile);
             if (minion.xCoordinate === this.map.landscape[tile].x && minion.yCoordinate === this.map.landscape[tile].y) {
                 return tile;
             }
