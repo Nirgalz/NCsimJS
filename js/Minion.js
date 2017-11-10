@@ -32,7 +32,7 @@ class Minion{
             else if (minion.isAlive === true){
                 minion.hunger +=  1 ;
                 if (minion.hunger > 100) minion.hunger = 100;
-                if (minion.hunger >= 100) minion.health -= 1 ;
+                if (minion.hunger >= 100) minion.health -= 0.1 ;
             }
      
     }
@@ -105,11 +105,9 @@ class Minion{
                     
     
             }
-        }
+        };
         randomPossibleDirection(this);
-        
-        //this.xCoordinate = this.randomIntInRange(this.map.x) - 1;
-        //this.yCoordinate = this.randomIntInRange(this.map.y) - 1;
+
         
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
@@ -144,12 +142,7 @@ class Minion{
 
     }
 
-    wakeUp()
-    {
-        this.statusM = 'idle';
 
-    }
-    
     //randomizes from 1 to maxRange
     randomIntInRange(maxRange) {
             return Math.floor((Math.random() * maxRange) + 1);

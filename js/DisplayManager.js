@@ -26,7 +26,6 @@ class DisplayManager {
         let resources = PIXI.loader.resources;
         let Sprite = PIXI.Sprite;
 
-        let layer = new PIXI.display.Layer();
 
         //timer stuff
         let ticker = PIXI.ticker.shared;
@@ -102,7 +101,6 @@ class DisplayManager {
                 function onOut(eventData) {
                     this.zOrder = 3;
                 }
-                layer.group.enableSort = true;
 
                 let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
                 foodBar.x = map.landscape[i].x * 100;
