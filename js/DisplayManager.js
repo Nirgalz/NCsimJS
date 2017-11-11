@@ -108,10 +108,24 @@ class DisplayManager {
                 foodBar.y = map.landscape[i].y * 100;
                 foodBar.width = map.landscape[i].resources.food;
 
+
+
+
+
                 //stage.addChild(tileInfo);
 
                 stage.addChild(tile);
                 stage.addChild(foodBar);
+
+
+                if (map.landscape[i].type === "forest"){
+                    let woodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
+                    woodBar.x = map.landscape[i].x * 100;
+                    woodBar.y = map.landscape[i].y * 100 + 10;
+                    woodBar.width = map.landscape[i].resources.wood;
+                    stage.addChild(woodBar);
+
+                }
 
                 if (map.landscape[i].localBuilding === "campFire"){
                     let building =  new Sprite(resources["media/buildings/campFire.png"].texture);

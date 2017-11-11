@@ -59,8 +59,10 @@ class Minion{
     }
     
     
-    move()
+    move(direction)
     {
+
+        //removes minion from tile
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
                 for (let j = 0; j < this.map.landscape[i].localPop.length; j++) {
@@ -70,7 +72,8 @@ class Minion{
                 }
             }
         }
-        
+
+        //random direction
         let randomPossibleDirection = function(it){
             let randomNum = it.randomIntInRange(4);
             switch (randomNum) {
@@ -106,9 +109,14 @@ class Minion{
     
             }
         };
-        randomPossibleDirection(this);
 
-        
+
+        if (direction === "random"){
+            randomPossibleDirection(this);
+
+        }
+
+        //add minion to tile
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
                 this.map.landscape[i].localPop.push(this);

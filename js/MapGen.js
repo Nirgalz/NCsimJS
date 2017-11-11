@@ -78,7 +78,7 @@ class MapGen {
                }
                if (map.landscape[i].type === 'forest'){
                    map.landscape[i].resources.food += 0.01;
-                   map.landscape[i].resources.wood += 0.01;
+                   map.landscape[i].resources.wood += 0.05;
                }
                if (map.landscape[i].type === 'potatoField'){
                    map.landscape[i].resources.food += 0.1;
