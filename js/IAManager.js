@@ -29,7 +29,6 @@ class AIManager {
             let mapTile = this.map.landscape[mapTileRef];
             let buildings = this.Buildings;
 
-            console.log(minion.id);
 
             if (tick !== undefined) {
 
@@ -53,7 +52,7 @@ class AIManager {
                     }
                     //survival sleep
                     if (minion.fatigue >= 100) {
-                        possibleActions.push(function () {
+                        possibleActions.survival.push(function () {
                             minion.sleep(tick)
                         });
                     }
@@ -74,13 +73,13 @@ class AIManager {
                         }
                         else if (mapTile.type === "potatoField" && minion.inventory.food < 100) {
                             possibleActions.gathering.push(function () {
-                                minion.building.gather(mapTileRef, 20, "food", tick)
+                                minion.gather(mapTileRef, 20, "food", tick)
                             });
                         }
                         else
-                            if (mapTile.type === "grass" || mapTile.type === "dirt" || mapTile.type === "forest" && minion.inventory.food < 100) {
+                            if (mapTile.type === "grass" ||  mapTile.type === "forest") {
                             possibleActions.gathering.push(function () {
-                                minion.building.gather(mapTileRef, 5, "food", tick)
+                                minion.gather(mapTileRef, 5, "food", tick)
                             });
                         }
                     }
@@ -110,13 +109,13 @@ class AIManager {
 
 
                     //todo:plant function in minion class
-                     if (mapTile.resources.food < 100 && mapTile.localBuilding === "") {
-
-                        //minions plant, the more the are the faster
-                         possibleActions.building.push(function () {
-                             mapTile.resources.food += ( mapTile.localPop.length / 10);
-                         });
-                    }
+                    //  if (mapTile.resources.food < 100 && mapTile.localBuilding === "") {
+                    //
+                    //     //minions plant, the more the are the faster
+                    //      possibleActions.building.push(function () {
+                    //          mapTile.resources.food += ( mapTile.localPop.length / 10);
+                    //      });
+                    // }
 
 
                     //sleeps comfort
@@ -136,43 +135,22 @@ class AIManager {
                     //randomy choses an action between those possible
                     function randomDumbness(actions) {
                         let randomAction = Math.floor((Math.random() * actions.length));
-                        console.log(possibleActions);
                         actions[randomAction]();
                     }
 
 
                     if (possibleActions.survival.length > 0) {
-                        console.log('survival')
                         randomDumbness(possibleActions.survival)
                     }
                     else if (possibleActions.building.length > 0) {
-                        console.log("build");
                         randomDumbness(possibleActions.building)
                     }
                     else if (possibleActions.gathering.length > 0) {
-                        console.log('gather');
                         randomDumbness(possibleActions.gathering)
                     }
                     else {
                         possibleActions.exploration[0]();
                     }
-// console.log(possibleActions);
-//                     if (possibleActions.survival.length > 0) {
-//                         console.log('survival')
-//                         possibleActions.survival[0]()
-//                     }
-//                     else if (possibleActions.building.length > 0) {
-//                         console.log("build");
-//                         possibleActions.building[0]()
-//                     }
-//                     else if (possibleActions.gathering.length > 0) {
-//                         console.log('gather');
-//                         possibleActions.gathering[0]()
-//                     }
-//                     else {
-//                         possibleActions.exploration[0]();
-//                     }
-
 
                 }
 
