@@ -16,7 +16,13 @@ class AIManager {
     startRandomPossibleActions(tick) {
 
         for (let l = 0; l <= this.pop.length - 1; l++) {
-            let possibleActions = [];
+            let possibleActions = {
+                survival: [],
+                gathering: [],
+                building: [], //planning ?
+                comfort: [],
+                exploration: []
+            };
 
             let minion = this.pop[l];
             let mapTileRef = this.getMapTile(this.pop[l]);
@@ -36,35 +42,43 @@ class AIManager {
                 }
                 else if (minion.isAlive === true) {
 
+
+                    //
                     //EAT
                     if (minion.inventory.food >= 10 && minion.hunger > 90) {
-                        possibleActions.push(function () {
+                        possibleActions.survival.push(function () {
                             minion.eat(10, tick)
+                        });
+                    }
+                    //survival sleep
+                    if (minion.fatigue >= 100){
+                        possibleActions.push(function () {
+                            minion.sleep(tick)
                         });
                     }
 
                     //GATHER
                     if (mapTile.resources.wood > 10 && minion.inventory.wood < 100) {
-                        possibleActions.push(function () {
+                        possibleActions.gathering.push(function () {
                             minion.gather(mapTileRef, 10, "wood", tick)
                         });
                     }
 
                     if (mapTile.resources.food > 10 && minion.inventory.food < 100){
                         if (mapTile.type === "water" 
-                        && minion.inventory.fishingPole != undefined )
+                        && minion.inventory.fishingPole !== undefined )
                         {
-                            possibleActions.push(function () {
+                            possibleActions.gathering.push(function () {
                                 minion.gather(mapTileRef, 20, "food", tick)
                         });
                     }
                     else if (mapTile.type === "potatoField" && minion.inventory.food < 100) {
-                        possibleActions.push(function () {
-                                minion.gather(mapTileRef, 20, "food", tick)
+                        possibleActions.gathering.push(function () {
+                                minion.building.gather(mapTileRef, 20, "food", tick)
                     });
                     }else if (mapTile.type === "grass" || mapTile.type === "dirt" || mapTile.type === "forest" && minion.inventory.food < 100) {
-                        possibleActions.push(function () {
-                            minion.gather(mapTileRef, 5, "food", tick)
+                        possibleActions.gathering.push(function () {
+                            minion.building.gather(mapTileRef, 5, "food", tick)
                         });
                     }
                     }
@@ -78,10 +92,10 @@ class AIManager {
                         && mapTile.type !== "water"
                         && mapTile.type !== "potatoField")
                     {
-                        possibleActions.push(function () {
+                        possibleActions.building.push(function () {
                             buildings.campFire(mapTileRef, l, tick)
                         });
-                        possibleActions.push(function () {
+                        possibleActions.building.push(function () {
                             buildings.potatoField(mapTileRef, l, tick)
                         });
                        
@@ -89,7 +103,7 @@ class AIManager {
                     
                     if (minion.inventory.wood >= 100 
                     && minion.inventory.fishingPole === undefined ){
-                         possibleActions.push(function () {
+                         possibleActions.building.push(function () {
                             buildings.fishingPole(l, tick)
                         });
                     }
@@ -99,16 +113,16 @@ class AIManager {
                      if (mapTile.resources.food < 100 && mapTile.localBuilding === "") {
 
                         //minions plant, the more the are the faster
-                         possibleActions.push(function () {
+                         possibleActions.building.push(function () {
                              mapTile.resources.food += ( mapTile.localPop.length / 10);
                          });
                     }
               
 
 
-                    //sleeps
-                    if (minion.fatigue >= 100){
-                        possibleActions.push(function () {
+                    //sleeps comfort
+                    if (minion.fatigue > 50){
+                        possibleActions.comfort.push(function () {
                             minion.sleep(tick)
                         });
                     }
@@ -116,14 +130,32 @@ class AIManager {
 
 
                     //randomly moves
-                    possibleActions.push(function () {
+                    possibleActions.exploration.push(function () {
                         minion.move()
                     });
 
 
                     //randomy choses an action between those possible
-                    let randomAction = Math.floor((Math.random() * possibleActions.length));
-                    possibleActions[randomAction]();
+                    function randomDumbness(actions) {
+                        let randomAction = Math.floor((Math.random() * actions.length));
+                        actions[randomAction]();
+                    }
+
+
+                    if (possibleActions.survival !== []){
+                        randomDumbness(possibleActions.survival)
+                    }
+                    else if (possibleActions.building !== []){
+                        randomDumbness(possibleActions.survival)
+                    }
+                    else if (possibleActions.gathering !== []){
+                        randomDumbness(possibleActions.gathering)
+                    }
+                    else {
+                        possibleActions.exploration[0]();
+                    }
+
+
                 }
 
 

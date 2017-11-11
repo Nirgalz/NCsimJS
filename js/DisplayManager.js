@@ -30,6 +30,7 @@ class DisplayManager {
         //timer stuff
         let ticker = PIXI.ticker.shared;
         ticker.autoStart = false;
+        ticker.speed = 0.1;
 
         ticker.stop();
 
@@ -80,34 +81,34 @@ class DisplayManager {
 
 
                 //data
-                let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
-                tileInfo.x = map.landscape[i].x * 100;
-                tileInfo.y = map.landscape[i].y * 100;
-                tileInfo.zOrder = 2;
+                // let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
+                // tileInfo.x = map.landscape[i].x * 100;
+                // tileInfo.y = map.landscape[i].y * 100;
+                // tileInfo.zOrder = 2;
 
-                tile.interactive = true;
+                //tile.interactive = true;
 
 
                 //tile.hitArea = new PIXI.Rectangle(map.landscape[i].x * 100, map.landscape[i].y * 100, 100, 100);
                 // make circle non-transparent when mouse is over it
 
-                tile.on('mouseover', onOver);
-                tile.on('mouseout', onOut);
-
-                function onOver(eventData) {
-                    this.zOrder = -1;
-                }
-
-                function onOut(eventData) {
-                    this.zOrder = 3;
-                }
+                // tile.on('mouseover', onOver);
+                // tile.on('mouseout', onOut);
+                //
+                // function onOver(eventData) {
+                //     this.zOrder = -1;
+                // }
+                //
+                // function onOut(eventData) {
+                //     this.zOrder = 3;
+                // }
 
                 let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
                 foodBar.x = map.landscape[i].x * 100;
                 foodBar.y = map.landscape[i].y * 100;
                 foodBar.width = map.landscape[i].resources.food;
 
-                stage.addChild(tileInfo);
+                //stage.addChild(tileInfo);
 
                 stage.addChild(tile);
                 stage.addChild(foodBar);
@@ -161,7 +162,6 @@ class DisplayManager {
                     // minion infos
                     $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood +'</td><td>' + pop[k].fatigue + '</td>')
                 }
-
 
                     renderer.render(stage);
 
