@@ -8,9 +8,9 @@ class Minion{
         this.statusM = 'idle';
         this.xCoordinate = x-1;
         this.yCoordinate = y-1;
-        this.health = 50;
-        this.hunger = 50;
-        this.fatigue = 50;
+        this.health = 100;
+        this.hunger = 0;
+        this.fatigue = 0;
         this.inventory = {wood:0,food:20};
         this.map = map;
         this.wakeTick = null;
@@ -37,9 +37,10 @@ class Minion{
      
     }
     
-    eat(quantity, tick)
+    eat(mapTileRef, quantity, tick)
     {
-        this.inventory.food -= quantity;
+        let modifier = this.map.landscape[mapTileRef].modifiers.eat;
+        this.inventory.food -= quantity * modifier;
         this.hunger = 0;
         this.health = 100;
         if (this.health > 100) this.health = 100;
@@ -137,10 +138,11 @@ class Minion{
 
     }
     
-    sleep(startTick)
+    sleep(mapTileRef, startTick)
     {
+        let modifier = this.map.landscape[mapTileRef].modifiers.eat;
         this.statusM = 'sleeping';
-        this.wakeTick = startTick + 20;
+        this.wakeTick = startTick + (20 / modifier);
         this.fatigue = 0;
 
     }

@@ -47,13 +47,13 @@ class AIManager {
                     //EAT
                     if (minion.inventory.food >= 10 && minion.hunger > 90) {
                         possibleActions.survival.push(function () {
-                            minion.eat(10, tick)
+                            minion.eat(mapTileRef, 10, tick)
                         });
                     }
                     //survival sleep
                     if (minion.fatigue >= 100) {
                         possibleActions.survival.push(function () {
-                            minion.sleep(tick)
+                            minion.sleep(mapTileRef, tick)
                         });
                     }
 
@@ -90,20 +90,24 @@ class AIManager {
                         && mapTile.localBuilding === ""
                         && mapTile.type !== "forest"
                         && mapTile.type !== "water"
-                        && mapTile.type !== "potatoField") {
+                        && mapTile.type !== "potatoField"
+                        && mapTile.type !== "shelter") {
                         possibleActions.building.push(function () {
                             buildings.construction("campFire",mapTileRef, l, tick)
                         });
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField",mapTileRef, l, tick)
                         });
+                        possibleActions.building.push(function () {
+                            buildings.construction("shelter",mapTileRef, l, tick)
+                        });
 
                     }
 
-                    if (minion.inventory.wood >= 100
+                    if (minion.inventory.wood >= 50
                         && minion.inventory.fishingPole === undefined) {
                         possibleActions.building.push(function () {
-                            buildings.construction("fishingPole",l, tick)
+                            buildings.construction("fishingPole",mapTileRef,l, tick)
                         });
                     }
 
@@ -121,7 +125,7 @@ class AIManager {
                     //sleeps comfort
                     if (minion.fatigue > 50) {
                         possibleActions.comfort.push(function () {
-                            minion.sleep(tick)
+                            minion.sleep(mapTileRef, tick)
                         });
                     }
 
@@ -134,10 +138,9 @@ class AIManager {
 
                     //randomy choses an action between those possible
                     function randomDumbness(actions) {
-                        let randomAction = Math.floor((Math.random() * actions.length));
+                        let randomAction = Math.floor((Math.random() * (actions.length )));
                         actions[randomAction]();
                     }
-
 
                     if (possibleActions.survival.length > 0) {
                         randomDumbness(possibleActions.survival)
@@ -151,6 +154,7 @@ class AIManager {
                     else {
                         possibleActions.exploration[0]();
                     }
+                    
 
                 }
 

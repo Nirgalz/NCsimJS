@@ -19,7 +19,11 @@ class MapGen {
                 landscape[index].resources = this.resourcesGen(landscape[index].type);
                 landscape[index].localPop = [];
                 landscape[index].localBuilding = "";
-
+                landscape[index].modifiers = {
+                    eat: 1,
+                    sleep: 1
+                };
+                
                 index++;
             }
         }
@@ -74,14 +78,14 @@ class MapGen {
         let map = this;
            for (let i = 0 ; i< map.landscape.length; i++ ) {
                if (map.landscape[i].type === 'water'){
-                   map.landscape[i].resources.food += 0.02;
+                   map.landscape[i].resources.food += 0.2;
                }
                if (map.landscape[i].type === 'forest'){
-                   map.landscape[i].resources.food += 0.01;
-                   map.landscape[i].resources.wood += 0.05;
+                   map.landscape[i].resources.food += 0.2;
+                   map.landscape[i].resources.wood += 0.5;
                }
                if (map.landscape[i].type === 'potatoField'){
-                   map.landscape[i].resources.food += 0.5;
+                   map.landscape[i].resources.food += 1;
                }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
                 if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;

@@ -48,6 +48,7 @@ class DisplayManager {
             .add("media/terrain/forest.png")
             .add("media/terrain/progress-food.png")
             .add("media/terrain/potatoField.png")
+            .add("media/terrain/shelter.png")
             .add("media/buildings/campFire.png")
             .load(setupPixi);
 
