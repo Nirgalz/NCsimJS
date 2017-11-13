@@ -132,7 +132,7 @@ class AIManager {
 
                     //randomly moves
                     possibleActions.exploration.push(function () {
-                        minion.move("random")
+                        minion.move("random", tick)
                     });
 
 

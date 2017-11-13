@@ -14,6 +14,15 @@ class Minion{
         this.inventory = {wood:0,food:20};
         this.map = map;
         this.wakeTick = null;
+        this.personalMap = [];
+
+        for (let tile = 0 ; tile < map.landscape.length ; tile++)
+        {
+            if (map.landscape[tile].x === x && map.landscape[tile].y === y)
+            {
+                this.personalMap[tile] = map.landscape[tile];
+            }
+        }
     }
 
     getAge(presentTick)
@@ -60,7 +69,7 @@ class Minion{
     }
     
     
-    move(direction)
+    move(direction, tick)
     {
 
         //removes minion from tile
@@ -109,6 +118,7 @@ class Minion{
                     
     
             }
+
         };
 
 
@@ -121,8 +131,11 @@ class Minion{
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
                 this.map.landscape[i].localPop.push(this);
+                this.personalMap[i] = this.map.landscape[i];
             }
         }
+        this.statusM = 'moving';
+        this.wakeTick = tick + 5;
     }
 
     fatigueGen()
