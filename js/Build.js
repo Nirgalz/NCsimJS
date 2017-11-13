@@ -21,6 +21,8 @@ class Build{
                 timeToBuild = 10;
                 minionsToBuild = 1;
                 this.map.landscape[tile].modifiers.eat = 5;
+                this.map.landscape[tile].localBuilding = constructionType;
+
                 break;
             case "potatoField":
                 cost = 100;
@@ -41,14 +43,19 @@ class Build{
                 timeToBuild = 20;
                 minionsToBuild = 2;
                 this.map.landscape[tile].modifiers.sleep = 5;
-
                 break;
                 
         }
         
-        this.map.landscape[tile].localBuilding = constructionType;
+        if (constructionType !== "fishingPole"){
+            if (constructionType !== "campFire"){
+                this.map.landscape[tile].type = constructionType;
+            }
+            
+        }
         
-        this.pop[minionIndex].statusM = "building " + constructionType;
+        
+        this.pop[minionIndex].statusM = "building " + constructionType + "";
         this.pop[minionIndex].wakeTick = startTick + timeToBuild;
         this.pop[minionIndex].inventory[resType] -= cost;
     }
