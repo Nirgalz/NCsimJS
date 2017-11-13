@@ -92,10 +92,10 @@ class AIManager {
                         && mapTile.type !== "water"
                         && mapTile.type !== "potatoField") {
                         possibleActions.building.push(function () {
-                            buildings.campFire(mapTileRef, l, tick)
+                            buildings.construction("campFire",mapTileRef, l, tick)
                         });
                         possibleActions.building.push(function () {
-                            buildings.potatoField(mapTileRef, l, tick)
+                            buildings.construction("potatoField",mapTileRef, l, tick)
                         });
 
                     }
@@ -103,7 +103,7 @@ class AIManager {
                     if (minion.inventory.wood >= 100
                         && minion.inventory.fishingPole === undefined) {
                         possibleActions.building.push(function () {
-                            buildings.fishingPole(l, tick)
+                            buildings.construction("fishingPole",l, tick)
                         });
                     }
 

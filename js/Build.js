@@ -6,40 +6,48 @@ class Build{
         this.pop = pop;
     }
     
-    campFire(tile, minionIndex, startTick)
+    construction(constructionType, tile, minionIndex, startTick)
     {
-        let cost = [100, 'wood'];
-        let timeToBuild = 10;
-        let minionsToBuild = 1;
-        this.map.landscape[tile].localBuilding = "campFire";
-        this.pop[minionIndex].statusM = "building";
-        this.pop[minionIndex].wakeTick = startTick + 10;
-        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
+            let cost = 0;
+            let resType = "";
+            let timeToBuild = 0;
+            let minionsToBuild = 0;
+        
+        
+        switch (constructionType){
+            case "campFire":
+                cost = 100;
+                resType = "wood";
+                timeToBuild = 10;
+                minionsToBuild = 1;
+                break;
+            case "potatoField":
+                cost = 100;
+                resType = "wood"
+                timeToBuild = 10;
+                minionsToBuild = 2;
+                break;
+            case "fishingPole":
+                cost = 50;
+                resType = "wood"
+                timeToBuild = 5;
+                minionsToBuild = 1;
+                this.pop[minionIndex].inventory.fishingPole = 1;
+                break;
+                
+        }
+        
+        if (constructionType !== "fishingPole")
+        {
+            this.map.landscape[tile].localBuilding = constructionType;
 
-    }
-    
-    potatoField(tile, minionIndex, startTick){
-        let cost = [100, 'wood'];
-        let timeToBuild = 10;
-        let minionsToBuild = 1;
-        this.map.landscape[tile].type = "potatoField";
-        this.pop[minionIndex].statusM = "building";
-        this.pop[minionIndex].wakeTick = startTick + 10;
-        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
+        }
+        this.pop[minionIndex].statusM = "building " + constructionType;
+        this.pop[minionIndex].wakeTick = startTick + timeToBuild;
+        this.pop[minionIndex].inventory[resType] -= cost;
     }
     
     
-    
-    fishingPole(minionIndex, startTick)
-    {
-        let cost = [100, 'wood'];
-        let timeToBuild = 5;
-        let minionsToBuild = 1;
-        this.pop[minionIndex].statusM = "building a fishing pole";
-        this.pop[minionIndex].wakeTick = startTick + 10;
-        this.pop[minionIndex].inventory[cost[1]] -= cost[0];
-        this.pop[minionIndex].inventory.fishingPole = 1;
-    }
     
     shelter()
     {
