@@ -64,82 +64,107 @@ class DisplayManager {
                 stage.removeChildren(0, stage.children.length);
 
 
-
-            //landscape and data
+                //landscape and data
 
                 let style = {
                     font: '15px Courier, monospace',
                     fill: '#ffffff'
                 };
 
-            for (let i = 0; i < map.landscape.length; i++) {
+                for (let i = 0; i < map.landscape.length; i++) {
 
-                //tiles
-                let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
-                tile.x = map.landscape[i].x * 50;
-                tile.y = map.landscape[i].y * 50;
-                tile.width= 50;
-                tile.height=50;
-                tile.zOrder = 1;
-
-
-                //data
-                // let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
-                // tileInfo.x = map.landscape[i].x * 100;
-                // tileInfo.y = map.landscape[i].y * 100;
-                // tileInfo.zOrder = 2;
-
-                //tile.interactive = true;
+                    //tiles
+                    let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
+                    tile.x = map.landscape[i].x * 50;
+                    tile.y = map.landscape[i].y * 50;
+                    tile.width = 50;
+                    tile.height = 50;
+                    tile.zOrder = 1;
 
 
-                //tile.hitArea = new PIXI.Rectangle(map.landscape[i].x * 100, map.landscape[i].y * 100, 100, 100);
-                // make circle non-transparent when mouse is over it
+                    //data
+                    // let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
+                    // tileInfo.x = map.landscape[i].x * 100;
+                    // tileInfo.y = map.landscape[i].y * 100;
+                    // tileInfo.zOrder = 2;
 
-                // tile.on('mouseover', onOver);
-                // tile.on('mouseout', onOut);
-                //
-                // function onOver(eventData) {
-                //     this.zOrder = -1;
-                // }
-                //
-                // function onOut(eventData) {
-                //     this.zOrder = 3;
-                // }
-
-                let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
-                foodBar.x = map.landscape[i].x * 50;
-                foodBar.y = map.landscape[i].y * 50;
-                foodBar.width = map.landscape[i].resources.food /2;
-                foodBar.height = 2;
+                    //tile.interactive = true;
 
 
+                    //tile.hitArea = new PIXI.Rectangle(map.landscape[i].x * 100, map.landscape[i].y * 100, 100, 100);
+                    // make circle non-transparent when mouse is over it
+
+                    // tile.on('mouseover', onOver);
+                    // tile.on('mouseout', onOut);
+                    //
+                    // function onOver(eventData) {
+                    //     this.zOrder = -1;
+                    // }
+                    //
+                    // function onOut(eventData) {
+                    //     this.zOrder = 3;
+                    // }
+
+                    let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
+                    foodBar.x = map.landscape[i].x * 50;
+                    foodBar.y = map.landscape[i].y * 50;
+                    foodBar.width = map.landscape[i].resources.food / 2;
+                    foodBar.height = 2;
 
 
+                    //stage.addChild(tileInfo);
 
-                //stage.addChild(tileInfo);
-
-                stage.addChild(tile);
-                stage.addChild(foodBar);
+                    stage.addChild(tile);
+                    stage.addChild(foodBar);
 
 
-                if (map.landscape[i].type === "forest"){
-                    let woodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
-                    woodBar.x = map.landscape[i].x * 50;
-                    woodBar.y = map.landscape[i].y * 50 + 2;
-                    woodBar.width = map.landscape[i].resources.wood /2;
-                    woodBar.height = 2;
-                    stage.addChild(woodBar);
+                    if (map.landscape[i].type === "forest") {
+                        let woodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
+                        woodBar.x = map.landscape[i].x * 50;
+                        woodBar.y = map.landscape[i].y * 50 + 2;
+                        woodBar.width = map.landscape[i].resources.wood / 2;
+                        woodBar.height = 2;
+                        stage.addChild(woodBar);
 
+                    }
+
+                    if (map.landscape[i].localBuilding === "campFire") {
+                        let building = new Sprite(resources["media/buildings/campFire.png"].texture);
+                        building.x = (map.landscape[i].x * 50) + 10;
+                        building.y = (map.landscape[i].y * 50) + 10;
+                        stage.addChild(building)
+                    }
+
+                    let minionSprite = "";
+                    if (map.landscape[i].localPop.length > 0) {
+                        let localPop = map.landscape[i].localPop;
+                        for (let n = 0; n < localPop.length; n++) {
+                            if (localPop[n].isAlive === false) {
+                                minionSprite = "media/face-3-4.png";
+
+                            }
+                            else if (localPop[n].statusM === 'sleeping') {
+                                minionSprite = "media/face-1-1.png";
+
+                            }
+                            else if (localPop[n].isAlive === true) {
+                                minionSprite = "media/face-3-1.png";
+
+                            }
+
+
+                            let face = new Sprite(
+                                resources[minionSprite].texture
+                            );
+                            face.x = (localPop[n].xCoordinate * 50) + (n * 15);
+                            face.y = (localPop[n].yCoordinate * 50) + 20;
+                            face.width = 15;
+                            face.height = 28;
+
+                            stage.addChild(face);
+                        }
+                    }
                 }
-
-                if (map.landscape[i].localBuilding === "campFire"){
-                    let building =  new Sprite(resources["media/buildings/campFire.png"].texture);
-                    building.x = (map.landscape[i].x * 50) + 10;
-                    building.y = (map.landscape[i].y * 50) + 10;
-                    stage.addChild(building)
-                }
-
-            }
 
                 //deletes minions from stage children so that this
                 // if (map.landscape.length !== stage.children.length) {
@@ -147,42 +172,18 @@ class DisplayManager {
                 // }
 
 
-
-
                 //pop sprites
 
                 $('#minionInfo').empty();
-                let minionSprite = "";
+
                 for (let k = 0; k <= pop.length - 1; k++) {
 
 
-                    if (pop[k].isAlive === false) {
-                        minionSprite = "media/face-3-4.png";
-
-                    }
-                    else if (pop[k].statusM === 'sleeping') {
-                        minionSprite = "media/face-1-1.png";
-
-                    }
-                    else if (pop[k].isAlive === true) {
-                        minionSprite = "media/face-3-1.png";
-
-                    }
-
-
-                    let face = new Sprite(
-                        resources[minionSprite].texture
-                    );
-                    face.x = (pop[k].xCoordinate * 50) + 10;
-                    face.y = (pop[k].yCoordinate * 50) + 10;
-
-                    stage.addChild(face);
-
                     // minion infos
-                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood +'</td><td>' + pop[k].fatigue + '</td>')
+                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood + '</td><td>' + pop[k].fatigue + '</td>')
                 }
 
-                    renderer.render(stage);
+                renderer.render(stage);
 
             });
 
@@ -194,4 +195,4 @@ class DisplayManager {
     }
 
 
-}
+    }
