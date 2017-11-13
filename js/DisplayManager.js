@@ -76,8 +76,10 @@ class DisplayManager {
 
                 //tiles
                 let tile = new Sprite(resources["media/terrain/" + map.landscape[i].type + ".png"].texture);
-                tile.x = map.landscape[i].x * 100;
-                tile.y = map.landscape[i].y * 100;
+                tile.x = map.landscape[i].x * 50;
+                tile.y = map.landscape[i].y * 50;
+                tile.width= 50;
+                tile.height=50;
                 tile.zOrder = 1;
 
 
@@ -105,9 +107,10 @@ class DisplayManager {
                 // }
 
                 let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
-                foodBar.x = map.landscape[i].x * 100;
-                foodBar.y = map.landscape[i].y * 100;
-                foodBar.width = map.landscape[i].resources.food;
+                foodBar.x = map.landscape[i].x * 50;
+                foodBar.y = map.landscape[i].y * 50;
+                foodBar.width = map.landscape[i].resources.food /2;
+                foodBar.height = 2;
 
 
 
@@ -121,17 +124,18 @@ class DisplayManager {
 
                 if (map.landscape[i].type === "forest"){
                     let woodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
-                    woodBar.x = map.landscape[i].x * 100;
-                    woodBar.y = map.landscape[i].y * 100 + 10;
-                    woodBar.width = map.landscape[i].resources.wood;
+                    woodBar.x = map.landscape[i].x * 50;
+                    woodBar.y = map.landscape[i].y * 50 + 2;
+                    woodBar.width = map.landscape[i].resources.wood /2;
+                    woodBar.height = 2;
                     stage.addChild(woodBar);
 
                 }
 
                 if (map.landscape[i].localBuilding === "campFire"){
                     let building =  new Sprite(resources["media/buildings/campFire.png"].texture);
-                    building.x = (map.landscape[i].x * 100) + 20;
-                    building.y = (map.landscape[i].y * 100) + 20;
+                    building.x = (map.landscape[i].x * 50) + 10;
+                    building.y = (map.landscape[i].y * 50) + 10;
                     stage.addChild(building)
                 }
 
@@ -169,8 +173,8 @@ class DisplayManager {
                     let face = new Sprite(
                         resources[minionSprite].texture
                     );
-                    face.x = (pop[k].xCoordinate * 100) + 50;
-                    face.y = (pop[k].yCoordinate * 100) + 50;
+                    face.x = (pop[k].xCoordinate * 50) + 10;
+                    face.y = (pop[k].yCoordinate * 50) + 10;
 
                     stage.addChild(face);
 

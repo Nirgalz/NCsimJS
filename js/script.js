@@ -26,7 +26,8 @@ $(function () {
         TimeMgr.play();
     }
 
-    initSim([5, 5], 3, 10);
+    //params mapSize, seedPopParam, simSpeedParam
+    initSim([10, 10], 6, 10);
 
 
     $('#checkData').on('click', function () {
