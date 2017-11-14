@@ -69,8 +69,35 @@ $(function () {
         } else if (TimeMgr.pause === false) {
             TimeMgr.pause = true;
         }
-
     })
+    
+    $('#checkIY').on('click', function() {
+        let IYC = filtrateIY(population[0].IY.CANS);
+        let IYN = filtrateIY(population[0].IY.NEEDS);
+        let speech = "I need: ";
+        
+        for (let j = 0 ; j < IYN.length ; j++) {
+            speech += IYN[j] + " ";
+        }
+        speech += "- can: "
+        for (let k = 0 ; k < IYC.length ; k++) {
+            speech += IYC[k] + " ";
+        }
+        speech += "Y";
+        $('#IY').empty()
+        $('#IY').append(speech)
+    })
+    
+    function filtrateIY(IY){
+        let result = [];
+        let keys = Object.keys(IY)
+        for (let i = 0 ; i < keys.length; i++ ) {
+            if (IY[keys[i]] === true){
+                result.push(keys[i]);
+            }
+        }
+        return result;
+    }
 
 
     //generates the adequate number of minions in random coordinates

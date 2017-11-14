@@ -60,15 +60,7 @@ class Build{
         this.pop[minionIndex].inventory[resType] -= cost;
     }
     
-    
-    
-    shelter()
-    {
-        let cost = [300, 'wood'];
-        let timeToBuild = 25;
-        let minionsToBuild = 2;
-        //todo: sleep recovery * 4
-    }
+
     
     granary()
     {

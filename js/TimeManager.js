@@ -33,6 +33,7 @@ class TimeManager{
             {
                 t.population[i].starve();
                 t.population[i].fatigueGen();
+                t.population[i].updateIY();
             }
             
             //Resources renewal

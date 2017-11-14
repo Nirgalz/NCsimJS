@@ -14,22 +14,61 @@ class Minion{
         this.inventory = {wood:0,food:20};
         this.map = map;
         this.wakeTick = null;
-        this.personalMap = [];
-
+        //IY is the 'dialogue interface' of minions as well as their 'consciousness' of their environment
+        this.IY = {
+            map: [],
+            socialCircle: [],
+            NEEDS: {},
+            CANS: {}
+        };
+        this.updateIY();
+        
+        //first tile a minion is aware of
         for (let tile = 0 ; tile < map.landscape.length ; tile++)
         {
             if (map.landscape[tile].x === x && map.landscape[tile].y === y)
             {
-                this.personalMap[tile] = map.landscape[tile];
+                this.IY.map[tile] = map.landscape[tile];
             }
         }
+    }
+    
+    
+    updateIY(){
+        //NEEDS
+        //food
+        if (this.inventory.food < 10 && this.hunger > 90){
+            this.IY.NEEDS.food = true;
+        } 
+        else this.IY.NEEDS.food = false;
+        
+        //sleep/shelter
+        if (this.fatigue > 100){
+            this.IY.NEEDS.sleep = true;
+        }
+        else this.IY.NEEDS.sleep = false;
+        
+        
+        //CANS
+        //food
+        if (this.inventory.food > 50){
+            this.IY.CANS.food = true;
+        } 
+        else this.IY.CANS.food = false;
+        
+        //wood
+        if (this.inventory.wood === 100){
+            this.IY.CANS.wood = true;
+        }
+        else this.IY.CANS.wood = true;
+        
     }
 
     getAge(presentTick)
     {
         return  presentTick - this.birthday ;
     }
-
+    
     starve()
     {
         let minion = this;
@@ -131,7 +170,8 @@ class Minion{
         for (let i = 0; i < this.map.landscape.length; i++) {
             if (this.xCoordinate === this.map.landscape[i].x && this.yCoordinate === this.map.landscape[i].y){
                 this.map.landscape[i].localPop.push(this);
-                this.personalMap[i] = this.map.landscape[i];
+                //adds new tile to personal map
+                this.IY.map[i] = this.map.landscape[i];
             }
         }
         this.statusM = 'moving';
