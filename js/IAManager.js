@@ -21,7 +21,8 @@ class AIManager {
                 gathering: [],
                 building: [], //planning ?
                 comfort: [],
-                exploration: []
+                exploration: [],
+                social: []
             };
 
             let minion = this.pop[l];
@@ -110,6 +111,14 @@ class AIManager {
                             buildings.construction("fishingPole",mapTileRef,l, tick)
                         });
                     }
+                    
+                    
+                    //social actions
+                    if (mapTile.localPop.length>2){
+                        possibleActions.social.push(function () {
+                            minion.speak(mapTile.localPop)
+                        })
+                    }
 
 
                     //todo:plant function in minion class
@@ -142,7 +151,10 @@ class AIManager {
                         actions[randomAction]();
                     }
 
-                    if (possibleActions.survival.length > 0) {
+                    if (possibleActions.social.length > 0) {
+                        randomDumbness(possibleActions.social)
+                    }
+                    else if (possibleActions.survival.length > 0) {
                         randomDumbness(possibleActions.survival)
                     }
                     else if (possibleActions.building.length > 0) {

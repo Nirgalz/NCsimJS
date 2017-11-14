@@ -63,6 +63,41 @@ class Minion{
         else this.IY.CANS.wood = true;
         
     }
+    
+    speak(minions){
+        let IYC = this.filtrateIY(this.IY.CANS);
+        let IYN = this.filtrateIY(this.IY.NEEDS);
+        let speech = "I"+ this.id + "~N:";
+        
+        for (let j = 0 ; j < IYN.length ; j++) {
+            speech += IYN[j] + " ";
+        }
+        speech += "~C:"
+        for (let k = 0 ; k < IYC.length ; k++) {
+            speech += IYC[k] + " ";
+        }
+        speech += "~Y";
+        for (let l = 0 ; l < minions.length ; l++){
+            if (minions[l].id !== this.id){
+                this.IY.socialCircle[minions[l].id] = minions[l];
+                
+            }
+            
+        }
+        
+        //console.log(speech);
+    }
+
+    filtrateIY(IY){
+        let result = [];
+        let keys = Object.keys(IY)
+        for (let i = 0 ; i < keys.length; i++ ) {
+            if (IY[keys[i]] === true){
+                result.push(keys[i]);
+            }
+        }
+        return result;
+    }
 
     getAge(presentTick)
     {
