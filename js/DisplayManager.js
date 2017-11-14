@@ -39,9 +39,15 @@ class DisplayManager {
 
 
         loader
-            .add("media/face-3-1.png")
-            .add("media/face-3-4.png")
-            .add("media/face-1-1.png")
+            .add("media/faces/building.png")
+            .add("media/faces/dead.png")
+            .add("media/faces/gatherfood.png")
+            .add("media/faces/gatherwood.png")
+            .add("media/faces/idle.png")
+            .add("media/faces/moving.png")
+            .add("media/faces/sleeping.png")
+            .add("media/faces/speak.png")
+            .add("media/faces/eating.png")
             .add("media/terrain/water.png")
             .add("media/terrain/dirt.png")
             .add("media/terrain/grass.png")
@@ -139,27 +145,17 @@ class DisplayManager {
                     if (map.landscape[i].localPop.length > 0) {
                         let localPop = map.landscape[i].localPop;
                         for (let n = 0; n < localPop.length; n++) {
-                            if (localPop[n].isAlive === false) {
-                                minionSprite = "media/face-3-4.png";
+                            let status = localPop[n].statusM.split(" ");
 
-                            }
-                            else if (localPop[n].statusM === 'sleeping') {
-                                minionSprite = "media/face-1-1.png";
-
-                            }
-                            else if (localPop[n].isAlive === true) {
-                                minionSprite = "media/face-3-1.png";
-
-                            }
-
+                            minionSprite = "media/faces/" + status[0] + ".png";
 
                             let face = new Sprite(
                                 resources[minionSprite].texture
                             );
                             face.x = (localPop[n].xCoordinate * 50) + (n * 15);
-                            face.y = (localPop[n].yCoordinate * 50) + 20;
-                            face.width = 15;
-                            face.height = 28;
+                            face.y = (localPop[n].yCoordinate * 50) + 5;
+                            face.width = 24;
+                            face.height = 45;
 
                             stage.addChild(face);
                         }

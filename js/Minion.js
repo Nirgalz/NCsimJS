@@ -109,7 +109,7 @@ class Minion{
         let minion = this;
        
             if (minion.health <= 0) {
-                minion.statusM = 'died starving';
+                minion.statusM = 'dead';
                 minion.isAlive = false;
             }
             else if (minion.isAlive === true){
@@ -137,7 +137,7 @@ class Minion{
         this.inventory[type] += quantity;
         this.map.landscape[mapTileRef].resources[type] -= 10;
 
-        this.statusM = 'gathering ' + type;
+        this.statusM = 'gather' + type;
         this.wakeTick = tick + 10;
 
     }

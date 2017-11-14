@@ -151,10 +151,11 @@ class AIManager {
                         actions[randomAction]();
                     }
 
-                    if (possibleActions.social.length > 0) {
-                        randomDumbness(possibleActions.social)
-                    }
-                    else if (possibleActions.survival.length > 0) {
+                    // if (possibleActions.social.length > 0) {
+                    //     randomDumbness(possibleActions.social)
+                    // }
+                    // else
+                        if (possibleActions.survival.length > 0) {
                         randomDumbness(possibleActions.survival)
                     }
                     else if (possibleActions.building.length > 0) {
