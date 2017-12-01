@@ -20,8 +20,8 @@ class Minion {
             NEEDS: {},
             CANS: {},
             objective: {
-                destination: {x:5,y:5},
-                action: null
+                destination: {isTrue: false, x:null,y:null},
+                action: 'random'
             }
         };
         this.updateIY();
@@ -185,6 +185,9 @@ class Minion {
             it.xCoordinate += Math.sign(distance.xDist);
             it.yCoordinate += Math.sign(distance.yDist);
             it.wakeTick = tick + 5;
+            if (it.xCoordinate === it.IY.objective.destination.x && it.yCoordinate === it.IY.objective.destination.y){
+                it.IY.objective.destination.isTrue = false;
+            }
 
         };
 
@@ -228,7 +231,7 @@ class Minion {
 
     backToWork() {
         this.statusM = 'idle';
-
+        this.wakeTick = null;
     }
 
 

@@ -30,7 +30,6 @@ class AIManager {
             let mapTile = this.map.landscape[mapTileRef];
             let buildings = this.Buildings;
 
-
             if (tick !== undefined) {
 
                 //wakes up when action is done
@@ -54,10 +53,9 @@ class AIManager {
                     //survival sleep
                     //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
-                        possibleActions.survival.push(function () {
-                            let possibleDestinations = [];
-                            let dist = [];
-                            for (let j = 0 ; j < minion.IY.map.length ; j++) {
+                        let possibleDestinations = [];
+                        for (let j = 0; j < minion.IY.map.length; j++) {
+                            if (minion.IY.map[j] !== undefined) {
                                 if (minion.IY.map[j].type === 'shelter') {
                                     possibleDestinations.push({
                                         x: minion.IY.map[j].x,
@@ -65,14 +63,24 @@ class AIManager {
                                     });
                                 }
                             }
-                            for (let j = 0 ; j < possibleDestinations.length ; j++) {
-                                dist += Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y);
-                            }
-                            for (let j = 0 ; j < possibleDestinations.length ; j++) {
+                        }
+                        if (possibleDestinations && possibleDestinations.length) {
 
-                            }
-                            minion.sleep(mapTileRef, tick)
-                        });
+                            possibleActions.survival.push(function () {
+                                let dist = [];
+
+                                for (let j = 0; j < possibleDestinations.length; j++) {
+                                    dist.push(Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y));
+                                }
+                                minion.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.max(...dist))].x;
+                                minion.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.max(...dist))].y;
+                                minion.IY.objective.destination.isTrue = true;
+                                minion.IY.objective.action = 'sleep';
+
+
+                                //minion.sleep(mapTileRef, tick)
+                            });
+                        }
                     }
 
                     //GATHER
@@ -94,8 +102,7 @@ class AIManager {
                                 minion.gather(mapTileRef, 20, "food", tick)
                             });
                         }
-                        else
-                            if (mapTile.type === "grass" ||  mapTile.type === "forest") {
+                        else if (mapTile.type === "grass" || mapTile.type === "forest") {
                             possibleActions.gathering.push(function () {
                                 minion.gather(mapTileRef, 5, "food", tick)
                             });
@@ -111,13 +118,13 @@ class AIManager {
                         && mapTile.type !== "potatoField"
                         && mapTile.type !== "shelter") {
                         possibleActions.building.push(function () {
-                            buildings.construction("campFire",mapTileRef, l, tick)
+                            buildings.construction("campFire", mapTileRef, l, tick)
                         });
                         possibleActions.building.push(function () {
-                            buildings.construction("potatoField",mapTileRef, l, tick)
+                            buildings.construction("potatoField", mapTileRef, l, tick)
                         });
                         possibleActions.building.push(function () {
-                            buildings.construction("shelter",mapTileRef, l, tick)
+                            buildings.construction("shelter", mapTileRef, l, tick)
                         });
 
                     }
@@ -125,13 +132,13 @@ class AIManager {
                     if (minion.inventory.wood >= 50
                         && minion.inventory.fishingPole === undefined) {
                         possibleActions.building.push(function () {
-                            buildings.construction("fishingPole",mapTileRef,l, tick)
+                            buildings.construction("fishingPole", mapTileRef, l, tick)
                         });
                     }
-                    
-                    
+
+
                     //social actions
-                    if (mapTile.localPop.length>2){
+                    if (mapTile.localPop.length > 2) {
                         possibleActions.social.push(function () {
                             minion.speak(mapTile.localPop)
                         })
@@ -149,11 +156,11 @@ class AIManager {
 
 
                     //sleeps comfort
-                    if (minion.fatigue > 50) {
-                        possibleActions.comfort.push(function () {
-                            minion.sleep(mapTileRef, tick)
-                        });
-                    }
+                    // if (minion.fatigue > 50) {
+                    //     possibleActions.comfort.push(function () {
+                    //         minion.sleep(mapTileRef, tick)
+                    //     });
+                    // }
 
 
                     //randomly moves
@@ -164,7 +171,7 @@ class AIManager {
 
                     //randomy choses an action between those possible
                     function randomDumbness(actions) {
-                        let randomAction = Math.floor((Math.random() * (actions.length )));
+                        let randomAction = Math.floor((Math.random() * (actions.length)));
                         actions[randomAction]();
                     }
 
@@ -173,12 +180,12 @@ class AIManager {
                     // }
                     // else
 
-                    if (minion.IY.objective.destination !== null){
+                    if (minion.IY.objective.destination.isTrue === true) {
                         minion.move('objective', tick);
-                    }else
-
-
-                        if (possibleActions.survival.length > 0) {
+                    } else if (minion.IY.objective.action == 'sleep') {
+                        minion.sleep(mapTileRef, tick);
+                        minion.IY.objective.action = 'random';
+                    } else if (possibleActions.survival.length > 0) {
                         randomDumbness(possibleActions.survival)
                     }
                     else if (possibleActions.building.length > 0) {
@@ -198,11 +205,10 @@ class AIManager {
 
 
     getMapTile(minion) {
-        for (let tile = 0; tile <= this.map.landscape.length; tile++) {
+        for (let tile = 0; tile < this.map.landscape.length; tile++) {
 
             if (minion.xCoordinate === this.map.landscape[tile].x && minion.yCoordinate === this.map.landscape[tile].y) {
-                //console.log(tile);
-                //console.log(minion);
+
                 return tile;
             }
         }
