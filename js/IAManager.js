@@ -52,8 +52,25 @@ class AIManager {
                         });
                     }
                     //survival sleep
+                    //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
                         possibleActions.survival.push(function () {
+                            let possibleDestinations = [];
+                            let dist = [];
+                            for (let j = 0 ; j < minion.IY.map.length ; j++) {
+                                if (minion.IY.map[j].type === 'shelter') {
+                                    possibleDestinations.push({
+                                        x: minion.IY.map[j].x,
+                                        y: minion.IY.map[j].y,
+                                    });
+                                }
+                            }
+                            for (let j = 0 ; j < possibleDestinations.length ; j++) {
+                                dist += Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y);
+                            }
+                            for (let j = 0 ; j < possibleDestinations.length ; j++) {
+
+                            }
                             minion.sleep(mapTileRef, tick)
                         });
                     }
@@ -155,6 +172,12 @@ class AIManager {
                     //     randomDumbness(possibleActions.social)
                     // }
                     // else
+
+                    if (minion.IY.objective.destination !== null){
+                        minion.move('objective', tick);
+                    }else
+
+
                         if (possibleActions.survival.length > 0) {
                         randomDumbness(possibleActions.survival)
                     }
@@ -167,15 +190,10 @@ class AIManager {
                     else {
                         possibleActions.exploration[0]();
                     }
-                    
 
                 }
-
-
             }
-
         }
-
     }
 
 

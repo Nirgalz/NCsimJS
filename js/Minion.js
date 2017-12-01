@@ -18,7 +18,11 @@ class Minion {
             map: [],
             socialCircle: [],
             NEEDS: {},
-            CANS: {}
+            CANS: {},
+            objective: {
+                destination: {x:5,y:5},
+                action: null
+            }
         };
         this.updateIY();
 
@@ -34,31 +38,17 @@ class Minion {
     updateIY() {
         //NEEDS
         //food
-        if (this.inventory.food < 10 && this.hunger > 90) {
-            this.IY.NEEDS.food = true;
-        }
-        else this.IY.NEEDS.food = false;
+        this.IY.NEEDS.food = (this.inventory.food < 10 && this.hunger > 90);
 
         //sleep/shelter
-        if (this.fatigue > 100) {
-            this.IY.NEEDS.sleep = true;
-        }
-        else this.IY.NEEDS.sleep = false;
-
+        this.IY.NEEDS.sleep = (this.fatigue > 100);
 
         //CANS
         //food
-        if (this.inventory.food > 50) {
-            this.IY.CANS.food = true;
-        }
-        else this.IY.CANS.food = false;
+        this.IY.CANS.food = (this.inventory.food > 50);
 
         //wood
-        if (this.inventory.wood === 100) {
-            this.IY.CANS.wood = true;
-        }
-        else this.IY.CANS.wood = true;
-
+        this.IY.CANS.wood = (this.inventory.wood === 100);
     }
 
     speak(minions) {
@@ -138,7 +128,7 @@ class Minion {
     }
 
 
-    move(direction, tick) {
+    move(destination, tick) {
 
         //removes minion from tile
         for (let i = 0; i < this.map.landscape.length; i++) {
@@ -187,28 +177,23 @@ class Minion {
         };
         
         //basic pathfinder
-        let getToDestination = function (direction, it) {
-            let road = [];
-            let compass = {
-                N: {x:0,y:-1},
-                S: {x:0,y:1},
-                E: {x:1,y:0},
-                W: {x:-1,y:0},
-                NE: {x:1,y:-1},
-                NW: {x:-1,y:-1},
-                SE: {x:1,y:1},
-                SW: {x:-1,y:1}
-            } 
-            
-            
+        let getToDestination = function ( it) {
+            let distance = {
+                xDist: it.IY.objective.destination.x - it.xCoordinate ,
+                yDist: it.IY.objective.destination.y - it.yCoordinate
+            };
+            it.xCoordinate += Math.sign(distance.xDist);
+            it.yCoordinate += Math.sign(distance.yDist);
+            it.wakeTick = tick + 5;
+
         };
 
 
-        if (direction === "random") {
+        if (destination === "random") {
             randomPossibleDirection(this);
         }
         else {
-            getToDestination(direction, this);
+            getToDestination(this);
         }
 
         //add minion to tile
