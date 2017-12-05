@@ -42,6 +42,7 @@ class AIManager {
                 }
                 else if (minion.isAlive === true) {
 
+                    let possibleDestinations = [];
 
                     //
                     //EAT
@@ -50,35 +51,19 @@ class AIManager {
                             minion.eat(mapTileRef, 10, tick)
                         });
                     }
-                    //survival sleep
+                    //sleep
                     //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
-                        let possibleDestinations = [];
-                        for (let j = 0; j < minion.IY.map.length; j++) {
-                            if (minion.IY.map[j] !== undefined) {
-                                if (minion.IY.map[j].type === 'shelter') {
-                                    possibleDestinations.push({
-                                        x: minion.IY.map[j].x,
-                                        y: minion.IY.map[j].y,
-                                    });
-                                }
-                            }
-                        }
+                        // will get all possible destinations
+                        possibleDestinations = this.getPossibleDestinations('shelter', minion);
+
+                        //if there is a possible destination, will set it as the minion's destination
                         if (possibleDestinations && possibleDestinations.length) {
-
+                            this.setDestination(possibleDestinations, possibleActions, 'sleep', minion);
+                        }
+                        else {
                             possibleActions.survival.push(function () {
-                                let dist = [];
-
-                                for (let j = 0; j < possibleDestinations.length; j++) {
-                                    dist.push(Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y));
-                                }
-                                minion.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.max(...dist))].x;
-                                minion.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.max(...dist))].y;
-                                minion.IY.objective.destination.isTrue = true;
-                                minion.IY.objective.action = 'sleep';
-
-
-                                //minion.sleep(mapTileRef, tick)
+                                minion.sleep(mapTileRef, tick)
                             });
                         }
                     }
@@ -155,14 +140,6 @@ class AIManager {
                     // }
 
 
-                    //sleeps comfort
-                    // if (minion.fatigue > 50) {
-                    //     possibleActions.comfort.push(function () {
-                    //         minion.sleep(mapTileRef, tick)
-                    //     });
-                    // }
-
-
                     //randomly moves
                     possibleActions.exploration.push(function () {
                         minion.move("random", tick)
@@ -203,7 +180,7 @@ class AIManager {
         }
     }
 
-
+    // get the actual tile of a minion
     getMapTile(minion) {
         for (let tile = 0; tile < this.map.landscape.length; tile++) {
 
@@ -213,4 +190,42 @@ class AIManager {
             }
         }
     }
+
+    // returns all known tiles of a minion having the terrain type passed in parameter
+    getPossibleDestinations(terrainType, minion) {
+        let possibleDestinations = [];
+        for (let j = 0; j < minion.IY.map.length; j++) {
+            if (minion.IY.map[j] !== undefined) {
+                if (minion.IY.map[j].type === 'shelter') {
+                    possibleDestinations.push({
+                        x: minion.IY.map[j].x,
+                        y: minion.IY.map[j].y,
+                    });
+                }
+            }
+        }
+        return possibleDestinations;
+    }
+
+    // will set the destination to the nearest tile having the right type of terrain
+    setDestination(possibleDestinations, possibleActions, actionType, minion) {
+        let dist = [];
+
+        for (let j = 0; j < possibleDestinations.length; j++) {
+            dist.push(Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y));
+        }
+
+        possibleActions.survival.push(function () {
+
+            minion.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
+            minion.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
+            minion.IY.objective.destination.isTrue = true;
+            minion.IY.objective.action = actionType;
+
+
+        });
+
+    }
+
+
 }
