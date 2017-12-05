@@ -41,7 +41,7 @@ class Minion {
         this.IY.NEEDS.food = (this.inventory.food < 10 && this.hunger > 90);
 
         //sleep/shelter
-        this.IY.NEEDS.sleep = (this.fatigue > 100);
+        this.IY.NEEDS.sleep = (this.fatigue === 100);
 
         //CANS
         //food
@@ -64,14 +64,12 @@ class Minion {
             speech += IYC[k] + " ";
         }
         speech += "~Y";
-
+        console.log(speech);
         //list of already met minions
         for (let l = 0; l < minions.length; l++) {
             if (minions[l].id !== this.id) {
                 this.IY.socialCircle[minions[l].id] = minions[l];
-
             }
-
         }
 
         //console.log(speech);
@@ -92,6 +90,7 @@ class Minion {
         return presentTick - this.birthday;
     }
 
+    //starving mechanism
     starve() {
         let minion = this;
 
@@ -127,7 +126,9 @@ class Minion {
 
     }
 
-
+    //manages minions movements :
+    //if destination is set to 'random', will move randomly
+    //else it will look at IY.objective of the minion and move one tile to the objective
     move(destination, tick) {
 
         //removes minion from tile

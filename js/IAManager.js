@@ -128,9 +128,6 @@ class AIManager {
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField", mapTileRef, l, tick)
                         });
-
-
-
                     }
 
                     if (minion.inventory.wood >= 50
@@ -229,9 +226,7 @@ class AIManager {
         if (possibleDestinations && possibleDestinations.length){
             return possibleDestinations;
         }
-        else{
-            return false;
-        }
+        else{ return false; }
 
     }
 
