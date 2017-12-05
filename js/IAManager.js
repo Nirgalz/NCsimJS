@@ -48,10 +48,10 @@ class AIManager {
                     //EAT
                     if (minion.inventory.food >= 10 && minion.hunger > 90) {
 
-                        possibleDestinations = this.getPossibleDestinations('campFire', minion);
+                        possibleDestinations = this.getTilesFromType('campFire', minion);
 
                         //if there is a possible destination, will set it as the minion's destination
-                        if (possibleDestinations && possibleDestinations.length) {
+                        if (this.getTilesFromType('campFire', minion)) {
                             this.setDestination(possibleDestinations, possibleActions, 'eat', minion);
                         }
                         else {
@@ -64,7 +64,7 @@ class AIManager {
                     //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
                         // will get all possible destinations
-                        possibleDestinations = this.getPossibleDestinations('shelter', minion);
+                        possibleDestinations = this.getTilesFromType('shelter', minion);
 
                         //if there is a possible destination, will set it as the minion's destination
                         if (possibleDestinations && possibleDestinations.length) {
@@ -112,18 +112,24 @@ class AIManager {
                         && mapTile.type !== "potatoField"
                         && mapTile.type !== "shelter"
                         && mapTile.type !== "campFire") {
-                        possibleActions.building.push(function () {
-                            buildings.construction("campFire", mapTileRef, l, tick)
-                        });
+                        console.log(this.getTilesFromType('campFire', minion));
+                        //if the minion knows a campFire or a shelter, it will not build a second one
+                        if (!this.getTilesFromType('campFire', minion)){
+                            possibleActions.building.push(function () {
+                                buildings.construction("campFire", mapTileRef, l, tick)
+                            });
+                        }
+                        if (!this.getTilesFromType('shelter', minion)){
+                            possibleActions.building.push(function () {
+                                buildings.construction("shelter", mapTileRef, l, tick)
+                            });
+                        }
+                        // but it will build potatofields when it can
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField", mapTileRef, l, tick)
                         });
-                        possibleActions.building.push(function () {
-                            buildings.construction("shelter", mapTileRef, l, tick)
-                        });
-                        possibleActions.building.push(function () {
-                            buildings.construction("campFire", mapTileRef, l, tick)
-                        });
+
+
 
                     }
 
@@ -208,7 +214,7 @@ class AIManager {
     }
 
     // returns all known tiles of a minion having the terrain type passed in parameter
-    getPossibleDestinations(terrainType, minion) {
+    getTilesFromType(terrainType, minion) {
         let possibleDestinations = [];
         for (let j = 0; j < minion.IY.map.length; j++) {
             if (minion.IY.map[j] !== undefined) {
@@ -220,7 +226,13 @@ class AIManager {
                 }
             }
         }
-        return possibleDestinations;
+        if (possibleDestinations && possibleDestinations.length){
+            return possibleDestinations;
+        }
+        else{
+            return false;
+        }
+
     }
 
     // will set the destination to the nearest tile having the right type of terrain
