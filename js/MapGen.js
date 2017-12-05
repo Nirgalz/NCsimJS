@@ -78,14 +78,14 @@ class MapGen {
         let map = this;
            for (let i = 0 ; i< map.landscape.length; i++ ) {
                if (map.landscape[i].type === 'water'){
-                   map.landscape[i].resources.food += 0.2;
+                   map.landscape[i].resources.food += 0.05;
                }
                if (map.landscape[i].type === 'forest'){
                    map.landscape[i].resources.food += 0.01;
                    map.landscape[i].resources.wood += 0.05;
                }
                if (map.landscape[i].type === 'potatoField'){
-                   map.landscape[i].resources.food += 1;
+                   map.landscape[i].resources.food += 0.1;
                }
                if (map.landscape[i].resources.food > 100) map.landscape[i].food = 100;
                 if (map.landscape[i].resources.wood > 100) map.landscape[i].wood = 100;

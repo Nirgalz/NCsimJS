@@ -107,10 +107,10 @@ class Minion {
 
     }
 
-    eat(mapTileRef, quantity, tick) {
+    eat(mapTileRef, tick) {
         let modifier = this.map.landscape[mapTileRef].modifiers.eat;
-        this.inventory.food -= quantity * modifier;
-        this.hunger = 0;
+        this.inventory.food -= 10 ;
+        this.hunger -= 20 * modifier;
         this.health = 100;
         if (this.health > 100) this.health = 100;
         this.statusM = 'eating';

@@ -55,7 +55,7 @@ class DisplayManager {
             .add("media/terrain/progress-food.png")
             .add("media/terrain/potatoField.png")
             .add("media/terrain/shelter.png")
-            .add("media/buildings/campFire.png")
+            .add("media/terrain/campFire.png")
             .load(setupPixi);
 
 
@@ -134,12 +134,12 @@ class DisplayManager {
 
                     }
 
-                    if (map.landscape[i].localBuilding === "campFire") {
-                        let building = new Sprite(resources["media/buildings/campFire.png"].texture);
-                        building.x = (map.landscape[i].x * 50) + 10;
-                        building.y = (map.landscape[i].y * 50) + 10;
-                        stage.addChild(building)
-                    }
+                    // if (map.landscape[i].localBuilding === "campFire") {
+                    //     let building = new Sprite(resources["media/buildings/campFire.png"].texture);
+                    //     building.x = (map.landscape[i].x * 50) + 10;
+                    //     building.y = (map.landscape[i].y * 50) + 10;
+                    //     stage.addChild(building)
+                    // }
 
                     let minionSprite = "";
                     if (map.landscape[i].localPop.length > 0) {
