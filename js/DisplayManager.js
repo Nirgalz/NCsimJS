@@ -3,23 +3,11 @@ class DisplayManager {
     constructor(map, pop) {
         this.map = map;
         this.pop = pop;
-        // this.stage = new PIXI.Container();
-        // this.renderer = PIXI.autoDetectRenderer(512, 512);
-        // this.loader = PIXI.loader;
-        // this.resources = PIXI.loader.resources;
-        // this.Sprite = PIXI.Sprite;
-        //this.pixiDisplay(this.map, this.pop);
-
     }
 
-//http://pixijs.io/examples/#/display/zorder.js
     pixiDisplay(map, pop) {
 
-        //pixi.js tests
-
-
         //Create the renderer
-
         let stage = new PIXI.Container();
         let renderer = PIXI.autoDetectRenderer(500, 500);
         let loader = PIXI.loader;
@@ -88,38 +76,13 @@ class DisplayManager {
                     tile.zOrder = 1;
 
 
-                    //data
-                    // let tileInfo = new PIXI.Text('food: ' + Math.floor(map.landscape[i].resources.food) + '\nwood: ' + Math.floor(map.landscape[i].resources.wood), style);
-                    // tileInfo.x = map.landscape[i].x * 100;
-                    // tileInfo.y = map.landscape[i].y * 100;
-                    // tileInfo.zOrder = 2;
-
-                    //tile.interactive = true;
-
-
-                    //tile.hitArea = new PIXI.Rectangle(map.landscape[i].x * 100, map.landscape[i].y * 100, 100, 100);
-                    // make circle non-transparent when mouse is over it
-
-                    // tile.on('mouseover', onOver);
-                    // tile.on('mouseout', onOut);
-                    //
-                    // function onOver(eventData) {
-                    //     this.zOrder = -1;
-                    // }
-                    //
-                    // function onOut(eventData) {
-                    //     this.zOrder = 3;
-                    // }
-
                     let foodBar = new Sprite(resources["media/terrain/progress-food.png"].texture);
                     foodBar.x = map.landscape[i].x * 50;
                     foodBar.y = map.landscape[i].y * 50;
                     foodBar.width = map.landscape[i].resources.food / 2;
                     foodBar.height = 2;
 
-
                     //stage.addChild(tileInfo);
-
                     stage.addChild(tile);
                     stage.addChild(foodBar);
 
@@ -133,13 +96,6 @@ class DisplayManager {
                         stage.addChild(woodBar);
 
                     }
-
-                    // if (map.landscape[i].localBuilding === "campFire") {
-                    //     let building = new Sprite(resources["media/buildings/campFire.png"].texture);
-                    //     building.x = (map.landscape[i].x * 50) + 10;
-                    //     building.y = (map.landscape[i].y * 50) + 10;
-                    //     stage.addChild(building)
-                    // }
 
                     let minionSprite = "";
                     if (map.landscape[i].localPop.length > 0) {
@@ -162,33 +118,18 @@ class DisplayManager {
                     }
                 }
 
-                //deletes minions from stage children so that this
-                // if (map.landscape.length !== stage.children.length) {
-                //     stage.removeChildren(map.landscape.length, stage.children.length);
-                // }
-
-
                 //pop sprites
-
                 $('#minionInfo').empty();
 
                 for (let k = 0; k <= pop.length - 1; k++) {
 
-
                     // minion infos
                     $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood + '</td><td>' + pop[k].fatigue + '</td>')
                 }
-
                 renderer.render(stage);
-
             });
-
 
             ticker.start();
         }
-
-
     }
-
-
-    }
+}

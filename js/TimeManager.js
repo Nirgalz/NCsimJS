@@ -16,6 +16,11 @@ class TimeManager{
     {
         return this.baseSpeed * this.speedFactor;
     }
+
+    getTick()
+    {
+        return this.tick;
+    }
     
     pause()
     {
@@ -34,6 +39,7 @@ class TimeManager{
                 t.population[i].starve();
                 t.population[i].fatigueGen();
                 t.population[i].updateIY();
+                t.population[i].tick = t.tick;
             }
             
             //Resources renewal

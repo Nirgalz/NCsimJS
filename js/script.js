@@ -119,19 +119,6 @@ $(function () {
 
 
 
-    // let refreshDisplay = setInterval(function () {
-    //     Display.mapViz(map);
-    //     Display.minionViz(population);
-    //
-    // }, 100);
-
-
-    function showTile(x, y) {
-
-        $('#tileInfo').text()
-    }
-
-
     //randomizes from 1 to maxRange
     function randomIntInRange(maxRange) {
         return Math.floor((Math.random() * maxRange) + 1);

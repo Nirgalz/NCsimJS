@@ -12,6 +12,7 @@ class Minion {
         this.fatigue = 0;
         this.inventory = {wood: 0, food: 20};
         this.map = map;
+        this.tick = 0;
         this.wakeTick = null;
         //IY is the 'dialogue interface' of minions as well as their 'consciousness' of their environment
         this.IY = {
@@ -19,11 +20,11 @@ class Minion {
             socialCircle: [],
             NEEDS: {
                 shelter: true,
-                campFire:true
+                campFire: true
             },
             CANS: {},
             objective: {
-                destination: {isTrue: false, x:null,y:null},
+                destination: {isTrue: false, x: null, y: null},
                 action: 'random'
             }
         };
@@ -43,8 +44,8 @@ class Minion {
         //food
         this.IY.NEEDS.food = (this.inventory.food < 10 && this.hunger > 90);
         //campfire
-        if (this.IY.NEEDS.campFire === true){
-            if (this.getTilesFromType('campFire')){
+        if (this.IY.NEEDS.campFire === true) {
+            if (this.getTilesFromType('campFire')) {
                 this.IY.NEEDS.campFire = false;
             }
         }
@@ -52,8 +53,8 @@ class Minion {
         //sleep
         this.IY.NEEDS.sleep = (this.fatigue === 100);
         //shelter
-        if (this.IY.NEEDS.shelter === true){
-            if (this.getTilesFromType('shelter')){
+        if (this.IY.NEEDS.shelter === true) {
+            if (this.getTilesFromType('shelter')) {
                 this.IY.NEEDS.shelter = false;
             }
         }
@@ -79,15 +80,20 @@ class Minion {
             speech += IYC[k] + " ";
         }
         speech += "~Y";
-        console.log(speech);
+
         //list of already met minions
         for (let l = 0; l < minions.length; l++) {
-            if (minions[l].id !== this.id) {
-                this.IY.socialCircle[minions[l].id] = minions[l];
-            }
+            this.IY.socialCircle[minions[l].id] = {
+                id: minions[l].id,
+                lastMet: this.tick};
+            //todo: incrementing trust
+            // if (!this.IY.socialCircle[minions[l].id].lastMet){
+            //     this.IY.socialCircle[minions[l].id].trust = 0;
+            // }else this.IY.socialCircle[minions[l].id].trust++;
         }
+        this.statusM = 'speak';
+        this.wakeTick = this.tick + 10;
 
-        //console.log(speech);
     }
 
     filtrateIY(IY) {
@@ -123,7 +129,7 @@ class Minion {
 
     eat(mapTileRef, tick) {
         let modifier = this.map.landscape[mapTileRef].modifiers.eat;
-        this.inventory.food -= 10 ;
+        this.inventory.food -= 10;
         this.hunger -= 20 * modifier;
         this.health = 100;
         if (this.health > 100) this.health = 100;
@@ -191,17 +197,17 @@ class Minion {
                     break;
             }
         };
-        
+
         //basic pathfinder
-        let getToDestination = function ( it) {
+        let getToDestination = function (it) {
             let distance = {
-                xDist: it.IY.objective.destination.x - it.xCoordinate ,
+                xDist: it.IY.objective.destination.x - it.xCoordinate,
                 yDist: it.IY.objective.destination.y - it.yCoordinate
             };
             it.xCoordinate += Math.sign(distance.xDist);
             it.yCoordinate += Math.sign(distance.yDist);
             it.wakeTick = tick + 5;
-            if (it.xCoordinate === it.IY.objective.destination.x && it.yCoordinate === it.IY.objective.destination.y){
+            if (it.xCoordinate === it.IY.objective.destination.x && it.yCoordinate === it.IY.objective.destination.y) {
                 it.IY.objective.destination.isTrue = false;
             }
 
@@ -264,7 +270,7 @@ class Minion {
                 }
             }
         }
-        if (possibleDestinations && possibleDestinations.length){
+        if (possibleDestinations && possibleDestinations.length) {
             return possibleDestinations;
         }
         else return false;

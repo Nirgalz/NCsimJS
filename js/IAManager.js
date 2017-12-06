@@ -138,20 +138,23 @@ class AIManager {
 
                     //social actions
                     if (mapTile.localPop.length > 2) {
-                        possibleActions.social.push(function () {
-                            minion.speak(mapTile.localPop)
-                        })
+
+                        let minions = [];
+                        for (let j = 0 ; j < mapTile.localPop.length ; j++){
+                            if (mapTile.localPop[j].id !== minion.id ){
+                                if (minion.IY.socialCircle[mapTile.localPop[j].id]){
+                                    if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 50){
+                                        minions.push(mapTile.localPop[j]);
+                                    }
+                                } else minions.push(mapTile.localPop[j]);
+                            }
+                        }
+                        if (minions.length > 1){
+                            possibleActions.social.push(function () {
+                                minion.speak(minions)
+                            })
+                        }
                     }
-
-
-                    //todo:plant function in minion class
-                    //  if (mapTile.resources.food < 100 && mapTile.localBuilding === "") {
-                    //
-                    //     //minions plant, the more the are the faster
-                    //      possibleActions.building.push(function () {
-                    //          mapTile.resources.food += ( mapTile.localPop.length / 10);
-                    //      });
-                    // }
 
 
                     //randomly moves
@@ -166,10 +169,10 @@ class AIManager {
                         actions[randomAction]();
                     }
 
-                    // if (possibleActions.social.length > 0) {
-                    //     randomDumbness(possibleActions.social)
-                    // }
-                    // else
+                    if (possibleActions.social.length > 0) {
+                        randomDumbness(possibleActions.social)
+                    }
+                    else
 
                     if (minion.IY.objective.destination.isTrue === true) {
                         minion.move('objective', tick);
