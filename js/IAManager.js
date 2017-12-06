@@ -15,6 +15,7 @@ class AIManager {
 
     startRandomPossibleActions(tick) {
 
+        let teams = [];
         for (let l = 0; l < this.pop.length ; l++) {
             let possibleActions = {
                 survival: [],
@@ -145,23 +146,26 @@ class AIManager {
                                 if (minion.IY.socialCircle[mapTile.localPop[j].id]){
                                     if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100){
                                         minions.push(mapTile.localPop[j]);
-                                    }
-                                    else if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) === 10) {
-                                        //will build together a shelter
-                                        if (minion.IY.CANS.wood === true
-                                            && minion.IY.NEEDS.shelter === true
-                                            && mapTile.localPop[j].IY.CANS.wood === true
-                                            && mapTile.localPop[j].IY.NEEDS.shelter === true) {
 
-
-                                            // possibleActions.building.push(function () {
-                                            //             buildings.construction("shelter", mapTileRef, l, tick)
-                                            //          });
-
-                                        }
                                     }
 
                                 } else minions.push(mapTile.localPop[j]);
+                                if (minion.IY.CANS.wood === true
+                                    && minion.IY.NEEDS.shelter === true
+                                    && mapTile.localPop[j].IY.CANS.wood === true
+                                    && mapTile.localPop[j].IY.NEEDS.shelter === true) {
+                                    let teamId = parseInt("" + minion.xCoordinate + minion.yCoordinate);
+                                    if (teams[teamId] === undefined) {
+                                        teams[teamId] = [];
+                                    }
+                                    teams[teamId].push(minion) ;
+                                    console.log(teams);
+
+                                    // possibleActions.building.push(function () {
+                                    //             buildings.construction("shelter", mapTileRef, l, tick)
+                                    //          });
+
+                                }
                             }
                         }
                         if (minions.length > 1){
