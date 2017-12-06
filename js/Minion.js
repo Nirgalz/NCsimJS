@@ -17,7 +17,10 @@ class Minion {
         this.IY = {
             map: [],
             socialCircle: [],
-            NEEDS: {},
+            NEEDS: {
+                shelter: true,
+                campFire:true
+            },
             CANS: {},
             objective: {
                 destination: {isTrue: false, x:null,y:null},
@@ -39,9 +42,21 @@ class Minion {
         //NEEDS
         //food
         this.IY.NEEDS.food = (this.inventory.food < 10 && this.hunger > 90);
+        //campfire
+        if (this.IY.NEEDS.campFire === true){
+            if (this.getTilesFromType('campFire')){
+                this.IY.NEEDS.campFire = false;
+            }
+        }
 
-        //sleep/shelter
+        //sleep
         this.IY.NEEDS.sleep = (this.fatigue === 100);
+        //shelter
+        if (this.IY.NEEDS.shelter === true){
+            if (this.getTilesFromType('shelter')){
+                this.IY.NEEDS.shelter = false;
+            }
+        }
 
         //CANS
         //food

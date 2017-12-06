@@ -48,10 +48,10 @@ class AIManager {
                     //EAT
                     if (minion.inventory.food >= 10 && minion.hunger > 90) {
 
-                        possibleDestinations = minion.getTilesFromType('campFire', minion);
-
-                        //if there is a possible destination, will set it as the minion's destination
-                        if (minion.getTilesFromType('campFire')) {
+                        //if there is a known destination, will set it as the minion's destination
+                        if (minion.IY.NEEDS.campFire === false) {
+                            // will get all possible destinations and get to the closest
+                            possibleDestinations = minion.getTilesFromType('campFire');
                             minion.setDestination(possibleDestinations, possibleActions, 'eat');
                         }
                         else {
@@ -63,11 +63,10 @@ class AIManager {
                     //sleep
                     //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
-                        // will get all possible destinations
-                        possibleDestinations = minion.getTilesFromType('shelter', minion);
 
-                        //if there is a possible destination, will set it as the minion's destination
-                        if (possibleDestinations && possibleDestinations.length) {
+                        //if there is a known destination, will set it as the minion's destination
+                        if (minion.IY.NEEDS.shelter === false) {
+                            possibleDestinations = minion.getTilesFromType('shelter');
                             minion.setDestination(possibleDestinations, possibleActions, 'sleep');
                         }
                         else {
