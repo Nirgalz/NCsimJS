@@ -2,7 +2,6 @@
 
 $(function () {
 
-    let Display = {};
     let map = {};
     let population = {};
     let AImgr = {};
@@ -12,11 +11,9 @@ $(function () {
 
     function initSim(mapSize, seedPopParam, simSpeedParam) {
 
-        //map and seed pop parameters
-        Display = new DisplayManager();
         //generates map and pop
         map = new MapGen(mapSize);
-        population = populate(seedPopParam, map);
+        population = populate(seedPopParam);
 
         Buildings = new Build(map, population);
         AImgr = new AIManager(population, map, Buildings);

@@ -15,7 +15,7 @@ class AIManager {
 
     startRandomPossibleActions(tick) {
 
-        for (let l = 0; l <= this.pop.length - 1; l++) {
+        for (let l = 0; l < this.pop.length ; l++) {
             let possibleActions = {
                 survival: [],
                 gathering: [],
@@ -117,11 +117,11 @@ class AIManager {
                                 buildings.construction("campFire", mapTileRef, l, tick)
                             });
                         }
-                        if (!minion.getTilesFromType('shelter', minion)){
-                            possibleActions.building.push(function () {
-                                buildings.construction("shelter", mapTileRef, l, tick)
-                            });
-                        }
+                        // if (!minion.getTilesFromType('shelter', minion)){
+                        //     possibleActions.building.push(function () {
+                        //         buildings.construction("shelter", mapTileRef, l, tick)
+                        //     });
+                        // }
                         // but it will build potatofields when it can
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField", mapTileRef, l, tick)
@@ -143,9 +143,24 @@ class AIManager {
                         for (let j = 0 ; j < mapTile.localPop.length ; j++){
                             if (mapTile.localPop[j].id !== minion.id ){
                                 if (minion.IY.socialCircle[mapTile.localPop[j].id]){
-                                    if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 50){
+                                    if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100){
                                         minions.push(mapTile.localPop[j]);
                                     }
+                                    else if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) === 10) {
+                                        //will build together a shelter
+                                        if (minion.IY.CANS.wood === true
+                                            && minion.IY.NEEDS.shelter === true
+                                            && mapTile.localPop[j].IY.CANS.wood === true
+                                            && mapTile.localPop[j].IY.NEEDS.shelter === true) {
+
+
+                                            // possibleActions.building.push(function () {
+                                            //             buildings.construction("shelter", mapTileRef, l, tick)
+                                            //          });
+
+                                        }
+                                    }
+
                                 } else minions.push(mapTile.localPop[j]);
                             }
                         }

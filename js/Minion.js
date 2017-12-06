@@ -85,7 +85,10 @@ class Minion {
         for (let l = 0; l < minions.length; l++) {
             this.IY.socialCircle[minions[l].id] = {
                 id: minions[l].id,
-                lastMet: this.tick};
+                lastMet: this.tick,
+                NEEDS: minions[l].IY.NEEDS,
+                CANS: minions[l].IY.CANS
+            };
             //todo: incrementing trust
             // if (!this.IY.socialCircle[minions[l].id].lastMet){
             //     this.IY.socialCircle[minions[l].id].trust = 0;

@@ -60,11 +60,6 @@ class DisplayManager {
 
                 //landscape and data
 
-                let style = {
-                    font: '15px Courier, monospace',
-                    fill: '#ffffff'
-                };
-
                 for (let i = 0; i < map.landscape.length; i++) {
 
                     //tiles
