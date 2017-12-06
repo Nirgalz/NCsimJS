@@ -236,6 +236,48 @@ class Minion {
     }
 
 
+    // returns all known tiles of a minion having the terrain type passed in parameter
+    getTilesFromType(terrainType) {
+        let possibleDestinations = [];
+        for (let j = 0; j < this.IY.map.length; j++) {
+            if (this.IY.map[j] !== undefined) {
+                if (this.IY.map[j].type === terrainType) {
+                    possibleDestinations.push({
+                        x: this.IY.map[j].x,
+                        y: this.IY.map[j].y,
+                    });
+                }
+            }
+        }
+        if (possibleDestinations && possibleDestinations.length){
+            return possibleDestinations;
+        }
+        else return false;
+    }
+
+
+    // will set the destination to the nearest tile having the right type of terrain
+    setDestination(possibleDestinations, possibleActions, actionType) {
+        let dist = [];
+
+        for (let j = 0; j < possibleDestinations.length; j++) {
+            dist.push(Math.abs(this.xCoordinate - possibleDestinations[j].x) + Math.abs(this.yCoordinate - possibleDestinations[j].y));
+        }
+        let it = this;
+
+        possibleActions.survival.push(function () {
+
+            it.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
+            it.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
+            it.IY.objective.destination.isTrue = true;
+            it.IY.objective.action = actionType;
+
+
+        });
+
+    }
+
+
     //randomizes from 1 to maxRange
     randomIntInRange(maxRange) {
         return Math.floor((Math.random() * maxRange) + 1);

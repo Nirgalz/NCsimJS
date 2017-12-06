@@ -48,11 +48,11 @@ class AIManager {
                     //EAT
                     if (minion.inventory.food >= 10 && minion.hunger > 90) {
 
-                        possibleDestinations = this.getTilesFromType('campFire', minion);
+                        possibleDestinations = minion.getTilesFromType('campFire', minion);
 
                         //if there is a possible destination, will set it as the minion's destination
-                        if (this.getTilesFromType('campFire', minion)) {
-                            this.setDestination(possibleDestinations, possibleActions, 'eat', minion);
+                        if (minion.getTilesFromType('campFire')) {
+                            minion.setDestination(possibleDestinations, possibleActions, 'eat');
                         }
                         else {
                             possibleActions.survival.push(function () {
@@ -64,11 +64,11 @@ class AIManager {
                     //gets to the nearest shelter, else sleeps in its tile
                     if (minion.fatigue >= 100) {
                         // will get all possible destinations
-                        possibleDestinations = this.getTilesFromType('shelter', minion);
+                        possibleDestinations = minion.getTilesFromType('shelter', minion);
 
                         //if there is a possible destination, will set it as the minion's destination
                         if (possibleDestinations && possibleDestinations.length) {
-                            this.setDestination(possibleDestinations, possibleActions, 'sleep', minion);
+                            minion.setDestination(possibleDestinations, possibleActions, 'sleep');
                         }
                         else {
                             possibleActions.survival.push(function () {
@@ -112,14 +112,13 @@ class AIManager {
                         && mapTile.type !== "potatoField"
                         && mapTile.type !== "shelter"
                         && mapTile.type !== "campFire") {
-                        console.log(this.getTilesFromType('campFire', minion));
                         //if the minion knows a campFire or a shelter, it will not build a second one
-                        if (!this.getTilesFromType('campFire', minion)){
+                        if (!minion.getTilesFromType('campFire', minion)){
                             possibleActions.building.push(function () {
                                 buildings.construction("campFire", mapTileRef, l, tick)
                             });
                         }
-                        if (!this.getTilesFromType('shelter', minion)){
+                        if (!minion.getTilesFromType('shelter', minion)){
                             possibleActions.building.push(function () {
                                 buildings.construction("shelter", mapTileRef, l, tick)
                             });
@@ -210,45 +209,9 @@ class AIManager {
         }
     }
 
-    // returns all known tiles of a minion having the terrain type passed in parameter
-    getTilesFromType(terrainType, minion) {
-        let possibleDestinations = [];
-        for (let j = 0; j < minion.IY.map.length; j++) {
-            if (minion.IY.map[j] !== undefined) {
-                if (minion.IY.map[j].type === terrainType) {
-                    possibleDestinations.push({
-                        x: minion.IY.map[j].x,
-                        y: minion.IY.map[j].y,
-                    });
-                }
-            }
-        }
-        if (possibleDestinations && possibleDestinations.length){
-            return possibleDestinations;
-        }
-        else{ return false; }
-
-    }
-
-    // will set the destination to the nearest tile having the right type of terrain
-    setDestination(possibleDestinations, possibleActions, actionType, minion) {
-        let dist = [];
-
-        for (let j = 0; j < possibleDestinations.length; j++) {
-            dist.push(Math.abs(minion.xCoordinate - possibleDestinations[j].x) + Math.abs(minion.yCoordinate - possibleDestinations[j].y));
-        }
-
-        possibleActions.survival.push(function () {
-
-            minion.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
-            minion.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
-            minion.IY.objective.destination.isTrue = true;
-            minion.IY.objective.action = actionType;
 
 
-        });
 
-    }
 
 
 }
