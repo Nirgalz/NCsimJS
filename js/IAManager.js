@@ -120,11 +120,7 @@ class AIManager {
                                 buildings.construction("campFire", mapTileRef, l, tick)
                             });
                         }
-                        if (!minion.getTilesFromType('shelter', minion)){
-                            possibleActions.building.push(function () {
-                                buildings.construction("shelter", mapTileRef, l, tick)
-                            });
-                        }
+
                         // but it will build potatofields when it can
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField", mapTileRef, l, tick)
@@ -140,50 +136,47 @@ class AIManager {
 
 
                     //social actions
-                    // if (mapTile.localPop.length > 2) {
-                    //
-                    //     let minions = [];
-                    //     for (let j = 0; j < mapTile.localPop.length; j++) {
-                    //         if (mapTile.localPop[j].id !== minion.id) {
-                    //             if (minion.IY.socialCircle[mapTile.localPop[j].id]) {
-                    //                 if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100) {
-                    //                     minions.push(mapTile.localPop[j]);
-                    //
-                    //                 }
-                    //
-                    //             } else minions.push(mapTile.localPop[j]);
-                    //             if (minion.IY.CANS.wood === true
-                    //                 && minion.IY.NEEDS.shelter === true
-                    //                 && mapTile.localPop[j].IY.CANS.wood === true
-                    //                 && mapTile.localPop[j].IY.NEEDS.shelter === true
-                    //                 && mapTile.localPop[j].IY.objective.destination.isTrue === false) {
-                    //                 let teamId = parseInt("" + minion.xCoordinate + "" + minion.yCoordinate);
-                    //                 if (teams[teamId] === undefined) {
-                    //                     teams[teamId] = [];
-                    //                 }
-                    //                 // console.log(teamId);
-                    //                 // console.log(minion.xCoordinate);
-                    //                 // console.log(minion.yCoordinate);
-                    //                 console.log(mapTile.localPop);
-                    //                 teams[teamId].push(mapTile.localPop[j]);
-                    //                 minion.IY.objective.action = 'shelter';
-                    //                 possibleActions.team = true;
-                    //
-                    //
-                    //                 // possibleActions.building.push(function () {
-                    //                 //             buildings.construction("shelter", mapTileRef, l, tick)
-                    //                 //          });
-                    //
-                    //             }
-                    //         }
-                    //     }
-                    //     if (minions.length > 1) {
-                    //         console.log(minions);
-                    //         // possibleActions.social.push(function () {
-                    //         //     minion.speak(minions)
-                    //         // })
-                    //     }
-                    // }
+                    if (mapTile.localPop.length > 2) {
+
+                        let minions = [];
+                        for (let j = 0; j < mapTile.localPop.length; j++) {
+                            if (mapTile.localPop[j].id !== minion.id) {
+                                if (minion.IY.socialCircle[mapTile.localPop[j].id]) {
+                                    if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100) {
+                                        minions.push(mapTile.localPop[j]);
+                                    }
+                                } else minions.push(mapTile.localPop[j]);
+                            }
+                        }
+                        if (minions.length > 0) {
+
+                            //creates a team to build a shelter if needs and cans are appropriate
+                            for (let j = 0 ; j <minions.length ; j++) {
+                                if (minion.IY.CANS.wood === true
+                                    && minion.IY.NEEDS.shelter === true
+                                    && minions[j].IY.CANS.wood === true
+                                    && minions[j].IY.NEEDS.shelter === true
+                                    && minions[j].IY.objective.destination.isTrue === false) {
+                                    let teamId = parseInt("" + minion.xCoordinate + "" + minion.yCoordinate);
+                                    if (teams[teamId] === undefined) {
+                                        teams[teamId] = [];
+                                    }
+
+                                    teams[teamId].push(minion);
+                                    minion.IY.objective.action = 'shelter';
+                                    possibleActions.team = true;
+
+                                }
+                            }
+
+                            if (possibleActions.team === false){
+                                possibleActions.social.push(function () {
+                                    minion.speak(minions)
+                                })
+                            }
+
+                        }
+                    }
 
 
                     //randomly moves
@@ -198,13 +191,13 @@ class AIManager {
                         actions[randomAction]();
                     }
 
-                    // if (possibleActions.team === true) {
-                    //
-                    // }
-                    // else if (possibleActions.social.length > 0) {
-                    //     randomDumbness(possibleActions.social)
-                    // }
-                    //else
+                    if (possibleActions.team === true) {
+
+                    }
+                    else if (possibleActions.social.length > 0) {
+                        randomDumbness(possibleActions.social)
+                    }
+                    else
                         if (minion.IY.objective.destination.isTrue === true) {
                         minion.move('objective', tick);
                     }
@@ -235,20 +228,15 @@ class AIManager {
 
                 }
             }
-
-            // if (l === this.pop.length -1){
-            //     // sets objective destinations of teams
-            //     if (teams && teams.length) {
-            //         console.log(teams);
-            //         for (let i = 0; i < teams.length; i++) {
-            //             if (teams[i] !== undefined) {
-            //                 this.Team.setClosestPossibleDestination(teams[i]);
-            //             }
-            //         }
-            //     }
-            // }
         }
-
+        // sets teams
+        if (teams && teams.length) {
+            for (let i = 0; i < teams.length; i++) {
+                if (teams[i] !== undefined) {
+                    this.Team.setClosestPossibleDestination(teams[i]);
+                }
+            }
+        }
 
 
     }
