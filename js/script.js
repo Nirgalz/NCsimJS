@@ -9,9 +9,10 @@ $(function () {
     let simSpeedParam = [1];
     let Buildings = {};
     let Teams = {};
+    let mapSize = [];
 
-    function initSim(mapSize, seedPopParam, simSpeedParam) {
-
+    function initSim(mapSiz, seedPopParam, simSpeedParam) {
+        mapSize = mapSiz;
         //generates map and pop
         map = new MapGen(mapSize);
         population = populate(seedPopParam);
@@ -26,7 +27,7 @@ $(function () {
     }
 
     //params mapSize, seedPopParam, simSpeedParam
-    initSim([10, 10], 15, 10);
+    initSim([20, 15], 50, 10);
 
 
     $('#checkData').on('click', function () {
@@ -69,12 +70,12 @@ $(function () {
             TimeMgr.pause = true;
         }
     })
-    
+
     $('#checkIY').on('click', function() {
         let IYC = filtrateIY(population[0].IY.CANS);
         let IYN = filtrateIY(population[0].IY.NEEDS);
         let speech = "I need: ";
-        
+
         for (let j = 0 ; j < IYN.length ; j++) {
             speech += IYN[j] + " ";
         }
@@ -113,7 +114,7 @@ $(function () {
 
     }
 
-    let pixiDis = new DisplayManager(map, population);
+    let pixiDis = new DisplayManager(map, population, mapSize);
     pixiDis.pixiDisplay(map,population);
 
 
