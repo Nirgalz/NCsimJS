@@ -164,7 +164,6 @@ class AIManager {
 
                                     teams[teamId].push(minions[j]);
                                     teams[teamId].push(minion);
-                                    console.log(teams);
                                     minion.IY.objective.action = 'shelter';
                                     possibleActions.team = true;
 

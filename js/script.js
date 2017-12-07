@@ -18,7 +18,7 @@ $(function () {
         population = populate(seedPopParam);
 
         Buildings = new Build(map, population);
-        Teams = new Team(population);
+        Teams = new Team(population, map);
         AImgr = new AIManager(population, map, Buildings, Teams);
         AImgr.startRandomPossibleActions();
 
