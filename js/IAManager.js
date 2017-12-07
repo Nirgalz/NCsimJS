@@ -120,11 +120,7 @@ class AIManager {
                                 buildings.construction("campFire", mapTileRef, l, tick)
                             });
                         }
-                        // if (!minion.getTilesFromType('shelter', minion)){
-                        //     possibleActions.building.push(function () {
-                        //         buildings.construction("shelter", mapTileRef, l, tick)
-                        //     });
-                        // }
+
                         // but it will build potatofields when it can
                         possibleActions.building.push(function () {
                             buildings.construction("potatoField", mapTileRef, l, tick)
@@ -150,12 +146,11 @@ class AIManager {
                                         minions.push(mapTile.localPop[j]);
                                     }
                                 } else minions.push(mapTile.localPop[j]);
-
                             }
-                            minions.push(minion);
                         }
-                        if (minions.length > 1) {
+                        if (minions.length > 0) {
 
+                            //creates a team to build a shelter if needs and cans are appropriate
                             for (let j = 0 ; j <minions.length ; j++) {
                                 if (minion.IY.CANS.wood === true
                                     && minion.IY.NEEDS.shelter === true
@@ -166,23 +161,20 @@ class AIManager {
                                     if (teams[teamId] === undefined) {
                                         teams[teamId] = [];
                                     }
-                                    // console.log(teamId);
-                                    // console.log(minion.xCoordinate);
-                                    // console.log(minion.yCoordinate);
+
                                     teams[teamId].push(minion);
                                     minion.IY.objective.action = 'shelter';
                                     possibleActions.team = true;
 
-
-                                    // possibleActions.building.push(function () {
-                                    //             buildings.construction("shelter", mapTileRef, l, tick)
-                                    //          });
-
                                 }
                             }
-                            // possibleActions.social.push(function () {
-                            //     minion.speak(minions)
-                            // })
+
+                            if (possibleActions.team === false){
+                                possibleActions.social.push(function () {
+                                    minion.speak(minions)
+                                })
+                            }
+
                         }
                     }
 
@@ -237,7 +229,7 @@ class AIManager {
                 }
             }
         }
-
+        // sets teams
         if (teams && teams.length) {
             for (let i = 0; i < teams.length; i++) {
                 if (teams[i] !== undefined) {

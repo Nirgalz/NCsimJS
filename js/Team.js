@@ -7,11 +7,13 @@ class Team {
         this.destination = {};
     }
 
+    //will set destinations for each minion of a team
     setClosestPossibleDestination(minions) {
         console.log(minions);
         this.x = minions[0].xCoordinate;
         this.y = minions[0].yCoordinate;
 
+        //finds the closest buildable tile
         let possibleDestinations = minions[0].getTilesFromType("grass");
         if (possibleDestinations === false){
             possibleDestinations = minions[0].getTilesFromType("dirt");
@@ -20,6 +22,7 @@ class Team {
 
         let dist = [];
 
+        //sets destination for every minion
         for (let j = 0; j < possibleDestinations.length; j++) {
             dist.push(Math.abs(this.x - possibleDestinations[j].x) + Math.abs(this.y - possibleDestinations[j].y));
         }
