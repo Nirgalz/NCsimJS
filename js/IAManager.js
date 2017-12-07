@@ -148,15 +148,20 @@ class AIManager {
                                 if (minion.IY.socialCircle[mapTile.localPop[j].id]) {
                                     if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100) {
                                         minions.push(mapTile.localPop[j]);
-
                                     }
-
                                 } else minions.push(mapTile.localPop[j]);
+
+                            }
+                            minions.push(minion);
+                        }
+                        if (minions.length > 1) {
+
+                            for (let j = 0 ; j <minions.length ; j++) {
                                 if (minion.IY.CANS.wood === true
                                     && minion.IY.NEEDS.shelter === true
-                                    && mapTile.localPop[j].IY.CANS.wood === true
-                                    && mapTile.localPop[j].IY.NEEDS.shelter === true
-                                    && mapTile.localPop[j].IY.objective.destination.isTrue === false) {
+                                    && minions[j].IY.CANS.wood === true
+                                    && minions[j].IY.NEEDS.shelter === true
+                                    && minions[j].IY.objective.destination.isTrue === false) {
                                     let teamId = parseInt("" + minion.xCoordinate + "" + minion.yCoordinate);
                                     if (teams[teamId] === undefined) {
                                         teams[teamId] = [];
@@ -164,8 +169,7 @@ class AIManager {
                                     // console.log(teamId);
                                     // console.log(minion.xCoordinate);
                                     // console.log(minion.yCoordinate);
-                                    console.log(mapTile.localPop);
-                                    teams[teamId].push(mapTile.localPop[j]);
+                                    teams[teamId].push(minion);
                                     minion.IY.objective.action = 'shelter';
                                     possibleActions.team = true;
 
@@ -176,9 +180,6 @@ class AIManager {
 
                                 }
                             }
-                        }
-                        if (minions.length > 1) {
-                            console.log(minions);
                             // possibleActions.social.push(function () {
                             //     minion.speak(minions)
                             // })
@@ -238,7 +239,6 @@ class AIManager {
         }
 
         if (teams && teams.length) {
-            console.log(teams);
             for (let i = 0; i < teams.length; i++) {
                 if (teams[i] !== undefined) {
                     this.Team.setClosestPossibleDestination(teams[i]);
