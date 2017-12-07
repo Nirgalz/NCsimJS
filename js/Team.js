@@ -26,8 +26,6 @@ class Team {
         for (let j = 0; j < possibleDestinations.length; j++) {
             dist.push(Math.abs(this.x - possibleDestinations[j].x) + Math.abs(this.y - possibleDestinations[j].y));
         }
-        console.log(possibleDestinations);
-        console.log(dist);
         this.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
         this.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
 
