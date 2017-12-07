@@ -148,7 +148,7 @@ class AIManager {
                                 } else minions.push(mapTile.localPop[j]);
                             }
                         }
-                        if (minions.length > 0) {
+                        if (minions.length > 1) {
 
                             //creates a team to build a shelter if needs and cans are appropriate
                             for (let j = 0 ; j <minions.length ; j++) {
@@ -162,7 +162,9 @@ class AIManager {
                                         teams[teamId] = [];
                                     }
 
+                                    teams[teamId].push(minions[j]);
                                     teams[teamId].push(minion);
+                                    console.log(teams);
                                     minion.IY.objective.action = 'shelter';
                                     possibleActions.team = true;
 

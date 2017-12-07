@@ -1,15 +1,17 @@
 class DisplayManager {
 
-    constructor(map, pop) {
+    constructor(map, pop, mapSize) {
         this.map = map;
         this.pop = pop;
+        this.mapSizeX = mapSize[0] * 50;
+        this.mapSizeY = mapSize[1] * 50;
     }
 
     pixiDisplay(map, pop) {
 
         //Create the renderer
         let stage = new PIXI.Container();
-        let renderer = PIXI.autoDetectRenderer(500, 500);
+        let renderer = PIXI.autoDetectRenderer(this.mapSizeX, this.mapSizeY);
         let loader = PIXI.loader;
         let resources = PIXI.loader.resources;
         let Sprite = PIXI.Sprite;
@@ -114,13 +116,13 @@ class DisplayManager {
                 }
 
                 //pop sprites
-                $('#minionInfo').empty();
-
-                for (let k = 0; k <= pop.length - 1; k++) {
-
-                    // minion infos
-                    $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood + '</td><td>' + pop[k].fatigue + '</td>')
-                }
+                // $('#minionInfo').empty();
+                //
+                // for (let k = 0; k <= pop.length - 1; k++) {
+                //
+                //     // minion infos
+                //     $('#minionInfo').append('<tr><td>' + pop[k].id + '</td><td>' + pop[k].statusM + '</td><td>' + Math.floor(pop[k].health) + '</td><td>' + Math.floor(pop[k].hunger) + '</td><td>food: ' + pop[k].inventory.food + ' wood: ' + pop[k].inventory.wood + '</td><td>' + pop[k].fatigue + '</td>')
+                // }
                 renderer.render(stage);
             });
 
