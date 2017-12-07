@@ -8,6 +8,7 @@ $(function () {
     let TimeMgr = {};
     let simSpeedParam = [1];
     let Buildings = {};
+    let Teams = {};
 
     function initSim(mapSize, seedPopParam, simSpeedParam) {
 
@@ -16,7 +17,8 @@ $(function () {
         population = populate(seedPopParam);
 
         Buildings = new Build(map, population);
-        AImgr = new AIManager(population, map, Buildings);
+        Teams = new Team(population);
+        AImgr = new AIManager(population, map, Buildings, Teams);
         AImgr.startRandomPossibleActions();
 
         TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);
