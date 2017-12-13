@@ -241,6 +241,9 @@ class Minion {
                 this.map.landscape[i].localPop.push(this);
                 //adds new tile to personal map
                 this.IY.map[i] = this.map.landscape[i];
+                //updates maptile & maptileref
+                this.mapTile = this.map.landscape[i];
+                this.mapTileRef = i;
             }
         }
         this.statusM = 'moving';
@@ -313,7 +316,13 @@ class Minion {
     }
 
     //AI : actions every tick
-    IYActions(tick) {
+    IYUpdate(tick) {
+        this.tick = tick;
+        this.starve();
+        this.fatigueGen();
+        this.updateIY();
+
+
         let minion = this;
 
         this.IY.possibleActions = {

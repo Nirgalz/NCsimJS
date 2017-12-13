@@ -7,7 +7,7 @@ class DisplayManager {
         this.mapSizeY = mapSize[1] * 50;
     }
 
-    pixiDisplay(map, pop) {
+    pixiDisplay(map) {
 
         //Create the renderer
         let stage = new PIXI.Container();
