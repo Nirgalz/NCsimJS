@@ -23,7 +23,7 @@ $(function () {
     }
 
     //params mapSize, seedPopParam, simSpeedParam
-    initSim([20, 15], 50, 10);
+    initSim([10, 10], 20, 1);
 
 
     $('#checkData').on('click', function () {
