@@ -8,7 +8,6 @@ class TimeManager{
         this.pause = false;
         this.map = map;
         this.population = population;
-        this.AI = AI;
         this.tick = 0;
     }
     
@@ -40,15 +39,14 @@ class TimeManager{
                 t.population[i].fatigueGen();
                 t.population[i].updateIY();
                 t.population[i].tick = t.tick;
+                t.population[i].IYActions(t.tick);
             }
             
             //Resources renewal
             t.map.resourcesRenewal();
           
-        
-            //AI tick
-            t.AI.startRandomPossibleActions(t.tick);
-            
+
+
             //if not paused, makes another tick
             if (t.pause === false) {
                 t.play();

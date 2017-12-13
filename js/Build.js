@@ -11,7 +11,6 @@ class Build {
         let timeToBuild = 0;
         let minionsToBuild = 0;
 
-
         switch (constructionType) {
             case "campFire":
                 cost = 100;
