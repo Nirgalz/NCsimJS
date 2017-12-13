@@ -1,14 +1,13 @@
 class TimeManager{
 
     
-    constructor(speedFactor, map, population, AI)
+    constructor(speedFactor, map, population)
     {
         this.baseSpeed = 10;
         this.speedFactor = speedFactor;
         this.pause = false;
         this.map = map;
         this.population = population;
-        this.AI = AI;
         this.tick = 0;
     }
     
@@ -17,11 +16,6 @@ class TimeManager{
         return this.baseSpeed * this.speedFactor;
     }
 
-    getTick()
-    {
-        return this.tick;
-    }
-    
     pause()
     {
         this.pause = true;
@@ -36,19 +30,14 @@ class TimeManager{
             //Starves all those minions
             for (let i = 0 ; i < t.population.length ; i++)
             {
-                t.population[i].starve();
-                t.population[i].fatigueGen();
-                t.population[i].updateIY();
-                t.population[i].tick = t.tick;
+                t.population[i].IYUpdate(t.tick);
             }
             
             //Resources renewal
             t.map.resourcesRenewal();
           
-        
-            //AI tick
-            t.AI.startRandomPossibleActions(t.tick);
-            
+
+
             //if not paused, makes another tick
             if (t.pause === false) {
                 t.play();

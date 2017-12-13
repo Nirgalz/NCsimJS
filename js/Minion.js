@@ -1,12 +1,15 @@
 class Minion {
 
-    constructor(id, x, y, map, birthTick) {
+    constructor(id, x, y, map, birthTick, buildings, mapTileRef) {
         this.id = id;
         this.isAlive = true;
         this.birthday = birthTick;
         this.statusM = 'idle';
-        this.xCoordinate = x - 1;
-        this.yCoordinate = y - 1;
+        this.xCoordinate = x;
+        this.yCoordinate = y;
+        this.mapTileRef = mapTileRef;
+        this.mapTile = map.landscape[mapTileRef];
+        this.buildings = buildings;
         this.health = 100;
         this.hunger = 0;
         this.fatigue = 0;
@@ -26,6 +29,14 @@ class Minion {
             objective: {
                 destination: {isTrue: false, x: null, y: null},
                 action: 'random'
+            },
+            possibleActions: {
+                survival: [],
+                gathering: [],
+                building: [], //planning ?
+                comfort: [],
+                exploration: [],
+                social: []
             }
         };
         this.updateIY();
@@ -83,16 +94,25 @@ class Minion {
 
         //list of already met minions
         for (let l = 0; l < minions.length; l++) {
-            this.IY.socialCircle[minions[l].id] = {
-                id: minions[l].id,
-                lastMet: this.tick,
-                NEEDS: minions[l].IY.NEEDS,
-                CANS: minions[l].IY.CANS
-            };
-            //todo: incrementing trust
-            // if (!this.IY.socialCircle[minions[l].id].lastMet){
-            //     this.IY.socialCircle[minions[l].id].trust = 0;
-            // }else this.IY.socialCircle[minions[l].id].trust++;
+
+
+            if (this.IY.socialCircle[minions[l].id] === undefined) {
+                this.IY.socialCircle[minions[l].id] = {
+                    id: minions[l].id,
+                    lastMet: this.tick,
+                    NEEDS: minions[l].IY.NEEDS,
+                    CANS: minions[l].IY.CANS,
+                    trust: 0
+                };
+            }
+            else {
+                this.IY.socialCircle[minions[l].id].trust++;
+                this.IY.socialCircle[minions[l].id].lastMet = this.tick;
+                this.IY.socialCircle[minions[l].id].NEEDS = minions[l].IY.NEEDS;
+                this.IY.socialCircle[minions[l].id].CANS = minions[l].IY.CANS;
+            }
+
+
         }
         this.statusM = 'speak';
         this.wakeTick = this.tick + 10;
@@ -230,6 +250,9 @@ class Minion {
                 this.map.landscape[i].localPop.push(this);
                 //adds new tile to personal map
                 this.IY.map[i] = this.map.landscape[i];
+                //updates maptile & maptileref
+                this.mapTile = this.map.landscape[i];
+                this.mapTileRef = i;
             }
         }
         this.statusM = 'moving';
@@ -247,7 +270,7 @@ class Minion {
     }
 
     sleep(mapTileRef, startTick) {
-        let modifier = this.map.landscape[mapTileRef].modifiers.eat;
+        let modifier = this.map.landscape[this.mapTileRef].modifiers.eat;
         this.statusM = 'sleeping';
         this.wakeTick = startTick + (20 / modifier);
         this.fatigue = 0;
@@ -301,10 +324,265 @@ class Minion {
 
     }
 
+    //AI : actions every tick
+    IYUpdate(tick) {
+        this.tick = tick;
+        this.starve();
+        this.fatigueGen();
+        this.updateIY();
+
+
+        let minion = this;
+
+        this.IY.possibleActions = {
+            survival: [],
+            gathering: [],
+            building: [], //planning ?
+            comfort: [],
+            exploration: [],
+            social: []
+        };
+
+        let possibleActions = this.IY.possibleActions;
+        let mapTileRef = this.mapTileRef;
+        let mapTile = this.mapTile;
+        let buildings = this.buildings;
+
+        this.updateIY();
+
+
+        //wakes up when action is done
+        if (minion.wakeTick > tick) {
+            //zZZZzzzzzZZZZZzzzzz
+
+        }
+        else if (minion.wakeTick === tick) {
+            minion.backToWork();
+        }
+        else if (minion.isAlive === true) {
+
+            let possibleDestinations = [];
+
+            //
+            //EAT
+            if (minion.inventory.food >= 10 && minion.hunger > 90) {
+
+                //if there is a known destination, will set it as the minion's destination
+                if (minion.getTilesFromType('campFire')) {
+                    // will get all possible destinations and get to the closest
+                    possibleDestinations = minion.getTilesFromType('campFire');
+                    minion.setDestination(possibleDestinations, possibleActions, 'eat');
+                }
+                else {
+                    possibleActions.survival.push(function () {
+                        minion.eat(mapTileRef, tick)
+                    });
+                }
+            }
+            //sleep
+            //gets to the nearest shelter, else sleeps in its tile
+            if (minion.fatigue >= 100) {
+
+                //if there is a known destination, will set it as the minion's destination
+                if (minion.getTilesFromType('shelter')) {
+                    possibleDestinations = minion.getTilesFromType('shelter');
+                    minion.setDestination(possibleDestinations, possibleActions, 'sleep');
+                }
+                else {
+                    this.IY.possibleActions.survival.push(function () {
+                        minion.sleep(this.mapTileRef, tick)
+                    });
+                }
+            }
+
+            //GATHER
+            if (this.mapTile.resources.wood > 10 && minion.inventory.wood < 100) {
+                possibleActions.gathering.push(function () {
+                    minion.gather(mapTileRef, 10, "wood", tick)
+                });
+            }
+
+            if (mapTile.resources.food > 10 && minion.inventory.food < 100) {
+                if (mapTile.type === "water"
+                    && minion.inventory.fishingPole !== undefined) {
+                    possibleActions.gathering.push(function () {
+                        minion.gather(mapTileRef, 20, "food", tick)
+                    });
+                }
+                else if (mapTile.type === "potatoField" && minion.inventory.food < 100) {
+                    possibleActions.gathering.push(function () {
+                        minion.gather(mapTileRef, 20, "food", tick)
+                    });
+                }
+                else if (mapTile.type === "grass" || mapTile.type === "forest") {
+                    possibleActions.gathering.push(function () {
+                        minion.gather(mapTileRef, 5, "food", tick)
+                    });
+                }
+            }
+
+
+            if (minion.inventory.wood >= 50
+                && minion.inventory.fishingPole === undefined) {
+                possibleActions.building.push(function () {
+                    buildings.construction("fishingPole", mapTileRef, minion.id, tick)
+                });
+            }
+
+
+            //social actions
+            if (mapTile.localPop.length > 2) {
+
+                let minions = [];
+                for (let j = 0; j < mapTile.localPop.length; j++) {
+                    if (mapTile.localPop[j].id !== minion.id) {
+                        if (minion.IY.socialCircle[mapTile.localPop[j].id]) {
+                            if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100 && this.hunger < 100) {
+                                minions.push(mapTile.localPop[j]);
+                            }
+                        } else minions.push(mapTile.localPop[j]);
+                    }
+                }
+                if (minions.length > 0) {
+
+                    //creates a team to build a shelter if needs and cans are appropriate
+                    for (let j = 0; j < minions.length; j++) {
+                        if (minion.IY.CANS.wood === true
+                            && minion.IY.NEEDS.shelter === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.NEEDS.shelter === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions, "shelter");
+                        }
+                        else if (minion.IY.CANS.wood === true
+                            && minion.IY.NEEDS.campFire === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.NEEDS.campFire === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions, "campFire");
+                        }
+                        else if (minion.IY.CANS.wood === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions, "potatoField");
+                        }
+                    }
+
+                    possibleActions.social.push(function () {
+                        minion.speak(minions)
+                    })
+
+
+                }
+            }
+
+
+            //randomly moves
+            possibleActions.exploration.push(function () {
+                minion.move("random", tick)
+            });
+
+
+            //randomy choses an action between those possible
+            function randomDumbness(actions) {
+                let randomAction = Math.floor((Math.random() * (actions.length)));
+                actions[randomAction]();
+            }
+
+
+            if (possibleActions.social.length > 0) {
+                randomDumbness(possibleActions.social)
+            }
+            else if (minion.IY.objective.destination.isTrue === true) {
+                minion.move('objective', tick);
+            }
+            else if (minion.IY.objective.action == 'shelter') {
+                buildings.construction("shelter", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'campFire') {
+                buildings.construction("campFire", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'potatoField') {
+                buildings.construction("potatoField", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'sleep') {
+                minion.sleep(this.mapTileRef, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'eat') {
+                minion.eat(mapTileRef, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (possibleActions.survival.length > 0) {
+                randomDumbness(possibleActions.survival)
+            }
+            else if (possibleActions.building.length > 0) {
+                randomDumbness(possibleActions.building)
+            }
+            else if (possibleActions.gathering.length > 0) {
+                randomDumbness(possibleActions.gathering)
+            }
+            else {
+                possibleActions.exploration[0]();
+            }
+
+        }
+    }
+
 
     //randomizes from 1 to maxRange
     randomIntInRange(maxRange) {
         return Math.floor((Math.random() * maxRange) + 1);
+    }
+
+    //will set destinations for each minion of a team
+    setClosestPossibleDestination(minions, action) {
+
+        //finds the closest buildable tile
+        let possibleDestinations = false;
+
+        let n = 0;
+        while (possibleDestinations === false) {
+            if (minions[n] !== undefined) {
+                possibleDestinations = minions[n].getTilesFromType("grass");
+                possibleDestinations = minions[n].getTilesFromType("dirt");
+                n++;
+            }
+            else {
+                possibleDestinations = false;
+            }
+            if (possibleDestinations === false) {
+                break;
+            }
+        }
+
+        if (possibleDestinations !== false) {
+            let dist = [];
+
+            //sets destination for every minion
+            for (let j = 0; j < possibleDestinations.length; j++) {
+                dist.push(Math.abs(this.xCoordinate - possibleDestinations[j].x) + Math.abs(this.yCoordinate - possibleDestinations[j].y));
+            }
+            this.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
+            this.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
+
+            for (let l = 0; l < minions.length; l++) {
+                minions[l].IY.objective.destination.x = this.IY.objective.destination.x;
+                minions[l].IY.objective.destination.y = this.IY.objective.destination.y;
+                minions[l].IY.objective.destination.isTrue = true;
+                minions[l].IY.objective.action = action;
+
+            }
+        }
+        else {
+            for (let l = 0; l < minions.length; l++) {
+                minions[l].IY.objective.action = "random";
+            }
+        }
+
     }
 
 

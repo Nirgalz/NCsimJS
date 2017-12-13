@@ -4,34 +4,31 @@ $(function () {
 
     let map = {};
     let population = {};
-    let AImgr = {};
     let TimeMgr = {};
     let simSpeedParam = [1];
     let Buildings = {};
-    let Teams = {};
     let mapSize = [];
 
     function initSim(mapSiz, seedPopParam, simSpeedParam) {
         mapSize = mapSiz;
         //generates map and pop
         map = new MapGen(mapSize);
-        population = populate(seedPopParam);
-
         Buildings = new Build(map, population);
-        Teams = new Team(population, map);
-        AImgr = new AIManager(population, map, Buildings, Teams);
-        AImgr.startRandomPossibleActions();
+        population = populate(seedPopParam);
+        Buildings.pop = population;
 
-        TimeMgr = new TimeManager(simSpeedParam, map, population, AImgr);
+
+        TimeMgr = new TimeManager(simSpeedParam, map, population);
         TimeMgr.play();
     }
 
     //params mapSize, seedPopParam, simSpeedParam
-    initSim([20, 15], 50, 10);
+    initSim([10, 10], 20, 1);
 
 
     $('#checkData').on('click', function () {
-        AImgr.checkData();
+        console.log(map);
+        console.log(population);
     });
 
     $('#spawnMinion').on('click', function () {
@@ -105,13 +102,29 @@ $(function () {
 
         //Display.mapViz(map);
         let pop = [];
+
+
         for (let i = 0; i < num; i++) {
-            pop[i] = new Minion(i, randomIntInRange(map.x), randomIntInRange(map.y), map, 1);
+            let x = randomIntInRange(map.x) -1;
+            let y = randomIntInRange(map.y) -1;
+
+            pop[i] = new Minion(i, x, y, map, 1, Buildings, getMapTileRef(map, x, y));
         }
         //Display.minionViz(pop);
 
         return pop;
 
+    }
+
+    function getMapTileRef(map, x, y) {
+
+        for (let tile = 0; tile < map.landscape.length; tile++) {
+
+            if (x === map.landscape[tile].x && y === map.landscape[tile].y) {
+
+                return tile;
+            }
+        }
     }
 
     let pixiDis = new DisplayManager(map, population, mapSize);
