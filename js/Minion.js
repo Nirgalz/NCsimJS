@@ -437,7 +437,7 @@ class Minion {
                 for (let j = 0; j < mapTile.localPop.length; j++) {
                     if (mapTile.localPop[j].id !== minion.id) {
                         if (minion.IY.socialCircle[mapTile.localPop[j].id]) {
-                            if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100) {
+                            if ((tick - minion.IY.socialCircle[mapTile.localPop[j].id].lastMet) > 100 && this.hunger < 100) {
                                 minions.push(mapTile.localPop[j]);
                             }
                         } else minions.push(mapTile.localPop[j]);
@@ -452,31 +452,19 @@ class Minion {
                             && minions[j].IY.CANS.wood === true
                             && minions[j].IY.NEEDS.shelter === true
                             && minions[j].IY.objective.destination.isTrue === false) {
-                            this.setClosestPossibleDestination(minions);
-
-                            minion.IY.objective.action = 'shelter';
-                            possibleActions.team = true;
-
+                            this.setClosestPossibleDestination(minions, "shelter");
                         }
                         else if (minion.IY.CANS.wood === true
                             && minion.IY.NEEDS.campFire === true
                             && minions[j].IY.CANS.wood === true
                             && minions[j].IY.NEEDS.campFire === true
                             && minions[j].IY.objective.destination.isTrue === false) {
-                            this.setClosestPossibleDestination(minions);
-
-                            minion.IY.objective.action = 'campFire';
-                            possibleActions.team = true;
-
+                            this.setClosestPossibleDestination(minions, "campFire");
                         }
                         else if (minion.IY.CANS.wood === true
                             && minions[j].IY.CANS.wood === true
                             && minions[j].IY.objective.destination.isTrue === false) {
-                            this.setClosestPossibleDestination(minions);
-
-                            minion.IY.objective.action = 'potatoField';
-                            possibleActions.team = true;
-
+                            this.setClosestPossibleDestination(minions, "potatoField");
                         }
                     }
 
@@ -551,7 +539,7 @@ class Minion {
     }
 
     //will set destinations for each minion of a team
-    setClosestPossibleDestination(minions) {
+    setClosestPossibleDestination(minions, action) {
 
         //finds the closest buildable tile
         let possibleDestinations = false;
@@ -564,11 +552,7 @@ class Minion {
                 n++;
             }
             else {
-                for (let j = 0; j < this.map.landscape.length; j++) {
-                    if (this.map.landscape[j].type === "grass" || this.map.landscape[j].type === "dirt") {
-                        possibleDestinations = this.map.landscape[j];
-                    }
-                }
+                possibleDestinations = false;
             }
             if (possibleDestinations === false) {
                 break;
@@ -589,6 +573,8 @@ class Minion {
                 minions[l].IY.objective.destination.x = this.IY.objective.destination.x;
                 minions[l].IY.objective.destination.y = this.IY.objective.destination.y;
                 minions[l].IY.objective.destination.isTrue = true;
+                minions[l].IY.objective.action = action;
+
             }
         }
         else {
