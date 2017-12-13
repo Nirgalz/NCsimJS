@@ -96,13 +96,13 @@ class Minion {
         for (let l = 0; l < minions.length; l++) {
 
 
-            if (this.IY.socialCircle[minions[l].id] === undefined){
+            if (this.IY.socialCircle[minions[l].id] === undefined) {
                 this.IY.socialCircle[minions[l].id] = {
                     id: minions[l].id,
                     lastMet: this.tick,
                     NEEDS: minions[l].IY.NEEDS,
                     CANS: minions[l].IY.CANS,
-                    trust : 0
+                    trust: 0
                 };
             }
             else {
@@ -368,7 +368,7 @@ class Minion {
             if (minion.inventory.food >= 10 && minion.hunger > 90) {
 
                 //if there is a known destination, will set it as the minion's destination
-                if (minion.IY.NEEDS.campFire === false) {
+                if (minion.getTilesFromType('campFire')) {
                     // will get all possible destinations and get to the closest
                     possibleDestinations = minion.getTilesFromType('campFire');
                     minion.setDestination(possibleDestinations, possibleActions, 'eat');
@@ -384,7 +384,7 @@ class Minion {
             if (minion.fatigue >= 100) {
 
                 //if there is a known destination, will set it as the minion's destination
-                if (minion.IY.NEEDS.shelter === false) {
+                if (minion.getTilesFromType('shelter')) {
                     possibleDestinations = minion.getTilesFromType('shelter');
                     minion.setDestination(possibleDestinations, possibleActions, 'sleep');
                 }
@@ -422,30 +422,6 @@ class Minion {
             }
 
 
-            //BUILDS
-            if (minion.inventory.wood >= 100
-                && mapTile.type === "dirt"
-                || mapTile.type === "grass") {
-                //if the minion knows a campFire or a shelter, it will not build a second one
-                if (!minion.getTilesFromType('campFire', minion)) {
-                    possibleActions.building.push(function () {
-                        buildings.construction("campFire", mapTileRef, minion.id, tick)
-                    });
-                }
-
-                if (!minion.getTilesFromType('shelter', minion)) {
-                    possibleActions.building.push(function () {
-                        buildings.construction("shelter", mapTileRef, minion.id, tick)
-                    });
-                }
-
-
-                // but it will build potatofields when it can
-                possibleActions.building.push(function () {
-                    buildings.construction("potatoField", mapTileRef, minion.id, tick)
-                });
-            }
-
             if (minion.inventory.wood >= 50
                 && minion.inventory.fishingPole === undefined) {
                 possibleActions.building.push(function () {
@@ -470,29 +446,43 @@ class Minion {
                 if (minions.length > 0) {
 
                     //creates a team to build a shelter if needs and cans are appropriate
-                    // for (let j = 0; j < minions.length; j++) {
-                    //     if (minion.IY.CANS.wood === true
-                    //         && minion.IY.NEEDS.shelter === true
-                    //         && minions[j].IY.CANS.wood === true
-                    //         && minions[j].IY.NEEDS.shelter === true
-                    //         && minions[j].IY.objective.destination.isTrue === false) {
-                    //         let teamId = parseInt("" + minion.xCoordinate + "" + minion.yCoordinate);
-                    //         if (teams[teamId] === undefined) {
-                    //             teams[teamId] = [];
-                    //         }
-                    //
-                    //         teams[teamId].push(minions[j]);
-                    //         teams[teamId].push(minion);
-                    //         minion.IY.objective.action = 'shelter';
-                    //         possibleActions.team = true;
-                    //
-                    //     }
-                    // }
+                    for (let j = 0; j < minions.length; j++) {
+                        if (minion.IY.CANS.wood === true
+                            && minion.IY.NEEDS.shelter === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.NEEDS.shelter === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions);
 
+                            minion.IY.objective.action = 'shelter';
+                            possibleActions.team = true;
 
-                        possibleActions.social.push(function () {
-                            minion.speak(minions)
-                        })
+                        }
+                        else if (minion.IY.CANS.wood === true
+                            && minion.IY.NEEDS.campFire === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.NEEDS.campFire === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions);
+
+                            minion.IY.objective.action = 'campFire';
+                            possibleActions.team = true;
+
+                        }
+                        else if (minion.IY.CANS.wood === true
+                            && minions[j].IY.CANS.wood === true
+                            && minions[j].IY.objective.destination.isTrue === false) {
+                            this.setClosestPossibleDestination(minions);
+
+                            minion.IY.objective.action = 'potatoField';
+                            possibleActions.team = true;
+
+                        }
+                    }
+
+                    possibleActions.social.push(function () {
+                        minion.speak(minions)
+                    })
 
 
                 }
@@ -511,23 +501,25 @@ class Minion {
                 actions[randomAction]();
             }
 
-            // if (possibleActions.team === true) {
-            //
-            // }
-
 
             if (possibleActions.social.length > 0) {
                 randomDumbness(possibleActions.social)
             }
-            else
-
-            if (minion.IY.objective.destination.isTrue === true) {
+            else if (minion.IY.objective.destination.isTrue === true) {
                 minion.move('objective', tick);
             }
-            // else if (minion.IY.objective.action == 'shelter') {
-            //     buildings.construction("shelter", mapTileRef, minion.id, tick);
-            //     minion.IY.objective.action = 'random';
-            // }
+            else if (minion.IY.objective.action == 'shelter') {
+                buildings.construction("shelter", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'campFire') {
+                buildings.construction("campFire", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
+            else if (minion.IY.objective.action == 'potatoField') {
+                buildings.construction("potatoField", mapTileRef, minion.id, tick);
+                minion.IY.objective.action = 'random';
+            }
             else if (minion.IY.objective.action == 'sleep') {
                 minion.sleep(this.mapTileRef, tick);
                 minion.IY.objective.action = 'random';
@@ -556,6 +548,55 @@ class Minion {
     //randomizes from 1 to maxRange
     randomIntInRange(maxRange) {
         return Math.floor((Math.random() * maxRange) + 1);
+    }
+
+    //will set destinations for each minion of a team
+    setClosestPossibleDestination(minions) {
+
+        //finds the closest buildable tile
+        let possibleDestinations = false;
+
+        let n = 0;
+        while (possibleDestinations === false) {
+            if (minions[n] !== undefined) {
+                possibleDestinations = minions[n].getTilesFromType("grass");
+                possibleDestinations = minions[n].getTilesFromType("dirt");
+                n++;
+            }
+            else {
+                for (let j = 0; j < this.map.landscape.length; j++) {
+                    if (this.map.landscape[j].type === "grass" || this.map.landscape[j].type === "dirt") {
+                        possibleDestinations = this.map.landscape[j];
+                    }
+                }
+            }
+            if (possibleDestinations === false) {
+                break;
+            }
+        }
+
+        if (possibleDestinations !== false) {
+            let dist = [];
+
+            //sets destination for every minion
+            for (let j = 0; j < possibleDestinations.length; j++) {
+                dist.push(Math.abs(this.xCoordinate - possibleDestinations[j].x) + Math.abs(this.yCoordinate - possibleDestinations[j].y));
+            }
+            this.IY.objective.destination.x = possibleDestinations[dist.indexOf(Math.min(...dist))].x;
+            this.IY.objective.destination.y = possibleDestinations[dist.indexOf(Math.min(...dist))].y;
+
+            for (let l = 0; l < minions.length; l++) {
+                minions[l].IY.objective.destination.x = this.IY.objective.destination.x;
+                minions[l].IY.objective.destination.y = this.IY.objective.destination.y;
+                minions[l].IY.objective.destination.isTrue = true;
+            }
+        }
+        else {
+            for (let l = 0; l < minions.length; l++) {
+                minions[l].IY.objective.action = "random";
+            }
+        }
+
     }
 
 
