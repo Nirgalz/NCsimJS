@@ -548,7 +548,9 @@ class Minion {
         while (possibleDestinations === false) {
             if (minions[n] !== undefined) {
                 possibleDestinations = minions[n].getTilesFromType("grass");
-                possibleDestinations = minions[n].getTilesFromType("dirt");
+                if (possibleDestinations === false) {
+                    possibleDestinations = minions[n].getTilesFromType("dirt");
+                }
                 n++;
             }
             else {
